@@ -286,7 +286,7 @@
                 Dunkle Schokolade, After Eight.
             </p>
 
-            <h3>🍨 Portionen (23–26)</h3>
+            <h3>🍨 Portionen </h3>
             <div class="items-grid" id="grid-portions"></div>
 
             <h3 style="margin-top:20px;">🍨 Eisbecher &amp; Spezial</h3>
