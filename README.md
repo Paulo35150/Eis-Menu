@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -11,7 +12,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url('fundo-gelado.jpg'); /* <-- aqui metes o nome da tua foto */
+            background-image: url('fundo-gelado.jpg'); /* opcional: fundo geral */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -42,7 +43,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             justify-content: center;
         }
 
@@ -51,6 +52,17 @@
             border-radius: 6px;
             border: 1px solid #ccc;
             min-width: 140px;
+        }
+
+        .info-note {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #444;
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .category-buttons {
@@ -78,7 +90,7 @@
             display: none;
             border-radius: 12px;
             padding: 10px;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.95);
             box-shadow: 0 1px 4px rgba(0,0,0,0.1);
             margin-bottom: 15px;
         }
@@ -87,11 +99,10 @@
             display: block;
         }
 
-        /* LISTAS VERTICAIS DENTRO DA "CASA" COM SCROLL */
         .items-grid {
             display: block;
-            max-height: 480px;      /* altura máxima da lista dentro da categoria */
-            overflow-y: auto;       /* scroll vertical apenas dentro da categoria */
+            max-height: 480px;
+            overflow-y: auto;
             padding-right: 4px;
         }
 
@@ -202,11 +213,6 @@
             font-size: 0.75rem;
             color: #555;
         }
-
-        .flavour-note {
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
@@ -217,9 +223,24 @@
             <h3>Digitale Speisekarte &amp; Tischbestellung</h3>
         </div>
 
+        <!-- FOTO NO TOPO -->
+        <div style="text-align:center;">
+            <img src="eis-sanremo.jpg" alt="Eisbecher" style="
+                width: 100%;
+                max-width: 380px;
+                border-radius: 12px;
+                margin-bottom: 15px;
+            ">
+        </div>
+
         <div class="table-info">
             <input type="text" id="tableNumber" placeholder="Tischnummer">
             <input type="text" id="guestName" placeholder="Name / Familie (optional)">
+        </div>
+
+        <div class="info-note">
+            <strong>Bitte zuerst die Tischnummer eingeben.</strong><br>
+            Danach können Sie die gewünschten Produkte auswählen und die Bestellung abschicken.
         </div>
 
         <div class="category-buttons">
@@ -231,14 +252,19 @@
         <!-- EIS & BECHER -->
         <div id="cat-eis" class="category active">
             <h2>🍨 Eis &amp; Becher</h2>
-            <p class="flavour-note">
+            <p>
                 <strong>Eissorten (Auswahl):</strong>
                 Vanille, Stracciatella, Schokolade, Amarena Kirsch, Joghurt,
                 Cookies, Erdbeer, Himbeere, Banane, Schlumpfeis, Zitrone,
                 Mango, Limette, Maracuja, Walnuss, Malaga, Pistazie,
                 Dunkle Schokolade, After Eight.
             </p>
+
+            <h3>🍨 Eisportionen & Becher</h3>
             <div class="items-grid" id="grid-eis"></div>
+
+            <h3 style="margin-top:20px;">👶 Für unsere kleinen Gäste</h3>
+            <div class="items-grid" id="grid-kids"></div>
         </div>
 
         <!-- SNACKS, WAFFELN & DESSERTS -->
@@ -371,6 +397,16 @@ const eisItems = [
     {"id": "154","name": "Vulcano","price": 3.7}
 ];
 
+// Für unsere kleinen Gäste
+const kidsItems = [
+    {"id": "1601","name": "Pinocchio","price": 5.10},
+    {"id": "1602","name": "Spaghetti Bambini","price": 5.60},
+    {"id": "1603","name": "Kinder Spaghetti Schoko","price": 5.70},
+    {"id": "1604","name": "Kinder Spaghetti Gummibärchen","price": 5.70},
+    {"id": "1605","name": "Kinder Spaghetti","price": 5.40},
+    {"id": "1606","name": "Kinder Spaghetti Erdbeere","price": 6.00}
+];
+
 const essenItems = [
     {"id": "160","name": "Erdbeer Donut","price": 6.9},
     {"id": "161","name": "Schoko Donut","price": 6.9},
@@ -454,7 +490,6 @@ const getraenkeItems = [
     {"id": "434","name": "Hugo","price": 6.1}
 ];
 
-/* categorias */
 document.querySelectorAll('.cat-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -469,14 +504,15 @@ function formatDisplayPrice(value) {
     return value.toFixed(2).replace('.', ',') + ' €';
 }
 
-/* criar cartões */
 function buildCards() {
     const eisGrid = document.getElementById('grid-eis');
+    const kidsGrid = document.getElementById('grid-kids');
     const essenGrid = document.getElementById('grid-essen');
     const getraenkeGrid = document.getElementById('grid-getraenke');
 
     const flavourOptions = flavours.map(f => `<option value="${f}">${f}</option>`).join('');
 
+    // Eis & Becher normal (com sabores e Sahne)
     eisItems.forEach(item => {
         const card = document.createElement('div');
         card.className = 'item-card';
@@ -511,6 +547,29 @@ function buildCards() {
         eisGrid.appendChild(card);
     });
 
+    // Für unsere kleinen Gäste – mais simples, sem sabores
+    kidsItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        card.setAttribute('data-name', item.name);
+        card.setAttribute('data-price', item.price);
+
+        card.innerHTML = `
+            <div class="item-header">
+                <span class="item-name">${item.id}. ${item.name}</span>
+                <span class="item-price">${formatDisplayPrice(item.price)}</span>
+            </div>
+            <div class="item-row">
+                <label>Menge:
+                    <input type="number" min="1" value="1" class="qty-input">
+                </label>
+                <button class="add-btn">Zur Bestellung hinzufügen</button>
+            </div>
+        `;
+        kidsGrid.appendChild(card);
+    });
+
+    // Snacks & Desserts
     essenItems.forEach(item => {
         const card = document.createElement('div');
         card.className = 'item-card';
@@ -532,6 +591,7 @@ function buildCards() {
         essenGrid.appendChild(card);
     });
 
+    // Getränke
     getraenkeItems.forEach(item => {
         const card = document.createElement('div');
         card.className = 'item-card';
@@ -590,7 +650,7 @@ function updateOrderDisplay() {
     totalEl.textContent = 'Gesamt: ' + formatDisplayPrice(total);
 }
 
-/* Tischnummer obrigatória ao adicionar item */
+// Tischnummer obrigatória
 function attachAddHandlers() {
     document.querySelectorAll('.item-card .add-btn').forEach(function(button) {
         button.addEventListener('click', function() {
@@ -645,7 +705,6 @@ function attachAddHandlers() {
     });
 }
 
-/* limpar mesa */
 document.getElementById('clearOrderBtn').addEventListener('click', function() {
     order.length = 0;
     document.getElementById('tableNumber').value = '';
@@ -654,12 +713,10 @@ document.getElementById('clearOrderBtn').addEventListener('click', function() {
     alert('Tisch wurde geleert. Neue Gäste können bestellen.');
 });
 
-/* imprimir */
 document.getElementById('printBtn').addEventListener('click', function() {
     window.print();
 });
 
-/* enviar por WhatsApp */
 document.getElementById('whatsAppBtn').addEventListener('click', function() {
     if (order.length === 0) {
         alert('Keine Bestellung vorhanden.');
@@ -686,13 +743,12 @@ document.getElementById('whatsAppBtn').addEventListener('click', function() {
 
     text += '%0A Gesamt: ' + formatDisplayPrice(total);
 
-    const whatsAppNumber = "4917672809926"; // teu número em formato internacional, sem +
+    const whatsAppNumber = "4917672809926";
     const url = 'https://wa.me/' + whatsAppNumber + '?text=' + text;
 
     window.open(url, '_blank');
 });
 
-/* inicializar página */
 buildCards();
 attachAddHandlers();
 </script>
