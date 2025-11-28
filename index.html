@@ -8,47 +8,44 @@
 
     <style>
         :root {
-            --primary: #e53935;
-            --primary-dark: #b71c1c;
-            --bg: #fff8f2;
+            --primary: #d40000;
+            --primary-dark: #a00000;
+            --accent: #ffb703;
+            --bg: #f4f4f4;
             --card-bg: #ffffff;
-
-            --tab-portions: #ffb300;
-            --tab-kids: #ff4081;
-            --tab-eis: #29b6f6;
-            --tab-food: #66bb6a;
-            --tab-drinks: #ab47bc;
+            --tab-bg: #ffffff;
+            --tab-active: #d40000;
+            --tab-active-text: #ffffff;
+            --tab-border: #e0e0e0;
         }
         * { box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
-            background: radial-gradient(circle at top, #fffdf8 0%, #fff3e0 35%, #ffe0b2 100%);
+            background: var(--bg);
             margin: 0;
             padding: 0;
             color: #222;
         }
 
-        /* HEADER */
+        /* HEADER MIT LOGO NEUTRAL */
         .header {
             width: 100%;
-            background: linear-gradient(135deg, #ffffff 0%, #fff8e1 40%, #ffe0b2 100%);
-            padding: 12px 0 8px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            background: linear-gradient(135deg, #ffffff, #fdf3f3);
+            padding: 10px 0 12px 0;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .header-inner {
-            max-width: 900px;
+            max-width: 960px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             padding: 0 10px;
         }
         .header-logo {
-            max-width: 100%;
-            max-height: 80px;
-            height: auto;
+            height: 60px;
             width: auto;
             object-fit: contain;
         }
@@ -67,6 +64,9 @@
             .header-title {
                 font-size: 17px;
             }
+            .header-logo {
+                height: 48px;
+            }
         }
 
         .container {
@@ -74,6 +74,39 @@
             max-width: 960px;
             margin: 0 auto 25px auto;
         }
+
+        /* TABS (Gast / Chef) */
+        .tabs {
+            display: flex;
+            margin-bottom: 12px;
+            border-radius: 999px;
+            background: var(--tab-bg);
+            box-shadow: 0 0 8px rgba(0,0,0,0.06);
+            padding: 3px;
+        }
+        .tab-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 10px;
+            font-size: 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            color: #444;
+        }
+        .tab-btn.active {
+            background: var(--tab-active);
+            color: var(--tab-active-text);
+            font-weight: 600;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+
         .section-title {
             font-size: 18px;
             margin-top: 18px;
@@ -84,10 +117,9 @@
         .card {
             background: var(--card-bg);
             padding: 14px;
-            border-radius: 14px;
-            margin-bottom: 14px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.07);
         }
         label {
             font-size: 14px;
@@ -99,14 +131,13 @@
             width: 100%;
             padding: 9px 10px;
             font-size: 14px;
-            border-radius: 10px;
-            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
             background: #fff;
         }
         select:focus, input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(229,57,53,0.2);
         }
         .btn {
             background: var(--primary);
@@ -114,42 +145,38 @@
             padding: 10px;
             display: inline-block;
             text-align: center;
-            border-radius: 999px;
+            border-radius: 8px;
             text-decoration: none;
-            margin-top: 12px;
-            font-size: 16px;
+            margin-top: 10px;
+            font-size: 15px;
             border: none;
             cursor: pointer;
             width: 100%;
-            transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s ease;
         }
         .btn:hover {
             background: var(--primary-dark);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.18);
-            transform: translateY(-1px);
-        }
-        .btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
         }
         .btn:disabled {
-            background: #c5c5c5;
+            background: #999;
             cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
         }
-
+        .btn-secondary {
+            background: #555;
+        }
+        .btn-secondary:hover {
+            background: #333;
+        }
         #warenkorb {
-            background: rgba(255,255,255,0.98);
+            background: #fff;
             padding: 14px;
-            border-radius: 16px;
+            border-radius: 12px;
             margin-top: 20px;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
-            border: 1px solid rgba(255,255,255,0.9);
+            box-shadow: 0 0 10px rgba(0,0,0,0.07);
+            border: 1px solid #f0f0f0;
         }
         #liste-items div {
             padding: 6px 0;
-            border-bottom: 1px dashed #e0e0e0;
+            border-bottom: 1px solid #eee;
             font-size: 14px;
         }
         .line-item {
@@ -162,16 +189,13 @@
             flex: 1;
         }
         .btn-remove {
-            background: #ff7043;
+            background: #999;
             border: none;
             color: #fff;
-            padding: 4px 9px;
-            border-radius: 999px;
+            padding: 4px 8px;
+            border-radius: 6px;
             font-size: 11px;
             cursor: pointer;
-        }
-        .btn-remove:hover {
-            background: #f4511e;
         }
         .total {
             font-weight: bold;
@@ -184,270 +208,433 @@
             color: #666;
             margin-top: 3px;
         }
-
-        /* TABS / JANELAS */
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-        .tab-btn {
-            flex: 1 1 auto;
-            padding: 7px 8px;
-            font-size: 13px;
-            border-radius: 999px;
-            border: 1px solid #ddd;
-            background: #ffffff;
-            cursor: pointer;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        optgroup {
+            font-style: normal;
+            font-weight: bold;
             color: #444;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .tab-btn.active {
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 3px 9px rgba(0,0,0,0.15);
-        }
-        .tab-portions.active { background: var(--tab-portions); }
-        .tab-kids.active     { background: var(--tab-kids); }
-        .tab-eis.active      { background: var(--tab-eis); }
-        .tab-food.active     { background: var(--tab-food); }
-        .tab-drinks.active   { background: var(--tab-drinks); }
-
-        .tab-portions { border-color: rgba(255,179,0,0.6); }
-        .tab-kids     { border-color: rgba(255,64,129,0.5); }
-        .tab-eis      { border-color: rgba(41,182,246,0.5); }
-        .tab-food     { border-color: rgba(102,187,106,0.6); }
-        .tab-drinks   { border-color: rgba(171,71,188,0.6); }
-
-        @media (max-width: 600px) {
-            .tab-btn {
-                font-size: 11px;
-                padding: 6px 6px;
-            }
+            background: #f7f7f7;
         }
 
-        /* Chef-Bereich */
-        .admin-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+        /* Chef Bereich */
+        .chef-login-box {
+            max-width: 360px;
+            margin: 0 auto;
         }
-        .btn-logout {
-            background: #757575;
-            border: none;
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            cursor: pointer;
-            white-space: nowrap;
+        .chef-login-box input {
+            margin-top: 5px;
         }
-        .btn-logout:hover {
-            background: #616161;
+        .chef-orders {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 8px;
+            background: #fff;
+            margin-top: 10px;
         }
-        .admin-order {
-            border-bottom: 1px dashed #ddd;
+        .chef-order-item {
+            border-bottom: 1px solid #eee;
             padding: 6px 0;
-            font-size: 12px;
+            font-size: 13px;
         }
-        .btn-small {
-            background: #c62828;
-            border: none;
-            color: #fff;
-            padding: 3px 7px;
-            border-radius: 999px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-top: 3px;
-        }
-        .btn-small:hover {
-            background: #b71c1c;
+        .chef-order-item:last-child {
+            border-bottom: none;
         }
 
-        /* Rechtlicher Hinweis */
+        /* Rechtlicher Hinweis – nur im Chef Tab */
         .legal-box {
             font-size: 11px;
             color: #777;
-            margin: 10px auto 0 auto;
+            margin: 16px auto 0 auto;
             max-width: 960px;
-            text-align: left;
+            text-align: center;
             line-height: 1.5;
-            padding: 0 12px 18px 12px;
+            padding: 10px 12px 18px 12px;
         }
-        .legal-box details {
-            background: rgba(255,255,255,0.9);
-            border-radius: 10px;
-            padding: 8px 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .legal-box summary {
-            cursor: pointer;
+
+        .status-gps {
+            font-size: 11px;
+            margin-top: 4px;
+            color: #777;
         }
     </style>
 </head>
 
 <body>
 
+<!-- HEADER MIT LOGO NEUTRAL -->
 <header class="header">
     <div class="header-inner">
-        <img src="food-drinks-logo.png" alt="Food & Drinks Logo" class="header-logo">
+        <!-- logo: usa o mesmo nome do ficheiro que está no GitHub -->
+        <img src="IMG-20251128-WA0001.jpg" alt="Food & Drinks Logo" class="header-logo">
         <div class="header-title">Digitaler QR-Tischservice – Internes Bestellsystem</div>
     </div>
 </header>
 
 <div class="container">
 
-    <!-- TISCHWAHL -->
-    <div class="card">
-        <h2 class="section-title">Tisch wählen</h2>
-        <label for="tisch">Tischnummer auswählen:</label>
-        <select id="tisch">
-            <option value="">Tisch auswählen…</option>
-        </select>
-        <div class="small">Verfügbar: Tisch 1 bis 33</div>
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="gast">Gast – Bestellung</button>
+        <button class="tab-btn" data-tab="chef">Chef Login</button>
     </div>
 
-    <!-- PRODUKTWAHL -->
-    <div class="card">
-        <h2 class="section-title">Produkt wählen</h2>
+    <!-- TAB: GAST -->
+    <div id="tab-gast" class="tab-pane active">
 
-        <!-- 5 JANELAS -->
-        <div class="tabs">
-            <button class="tab-btn tab-portions active" data-group="portions">Portionen</button>
-            <button class="tab-btn tab-kids" data-group="kids">Kinder</button>
-            <button class="tab-btn tab-eis" data-group="eis">Eisbecher & Spaghetti</button>
-            <button class="tab-btn tab-food" data-group="food">Snacks & Waffeln</button>
-            <button class="tab-btn tab-drinks" data-group="drinks">Getränke</button>
-        </div>
-
-        <label for="produkt">Produkt:</label>
-        <select id="produkt"></select>
-
-        <!-- Sortenwahl nur für Portionen (optional) -->
-        <div id="geschmack-box" style="margin-top:12px; display:none;">
-            <label>Sorten (optional, bis zu 3 wählen):</label>
-            <select id="geschmack1"></select>
-            <select id="geschmack2" style="margin-top:6px;"></select>
-            <select id="geschmack3" style="margin-top:6px;"></select>
-            <div class="small">
-                Wenn keine Sorten gewählt werden, kommt die Portion in unserer Standardmischung.
-            </div>
-        </div>
-
-        <!-- Sahne-Option -->
-        <div id="sahne-box" style="margin-top:8px; display:none;">
-            <label for="sahne">Sahne:</label>
-            <select id="sahne">
-                <option value="">Bitte auswählen (optional)</option>
-                <option value="mit Sahne">mit Sahne</option>
-                <option value="ohne Sahne">ohne Sahne</option>
+        <!-- TISCHWAHL -->
+        <div class="card">
+            <h2 class="section-title">Tisch wählen</h2>
+            <label for="tisch">Tischnummer auswählen:</label>
+            <select id="tisch">
+                <option value="">Tisch auswählen…</option>
             </select>
-            <div class="small">
-                Wenn nichts gewählt wird, bereiten wir es wie auf der Karte zu.
+            <div class="small">Verfügbar: Tisch 1 bis 33</div>
+            <div id="gps-status" class="status-gps">
+                Standortprüfung aktiv: Bestellungen sind nur in der Nähe des Geschäfts möglich.
             </div>
         </div>
 
-        <label for="bemerkung" style="margin-top:8px;">Bemerkung (optional):</label>
-        <input id="bemerkung" type="text" placeholder="z.B. ohne Sahne, wenig Soße …">
+        <!-- PRODUKTWAHL -->
+        <div class="card">
+            <h2 class="section-title">Produkt wählen</h2>
 
-        <button class="btn" onclick="addToCart()">Zum Warenkorb hinzufügen</button>
-    </div>
+            <label for="produkt">Produkt:</label>
+            <select id="produkt">
+                <option value="">Bitte wählen…</option>
 
-    <!-- WARENKORB -->
-    <div id="warenkorb">
-        <h2 class="section-title">🧺 Warenkorb</h2>
-        <div id="liste-items"></div>
-        <div class="total" id="gesamt">Gesamt: 0,00 €</div>
+                <optgroup label="Portionen (Sorten optional)">
+                    <option value="23">23. Kinder Portion (2 Kugeln) – 3,50 €</option>
+                    <option value="24">24. Kleine Portion (3 Kugeln) – 5,00 €</option>
+                    <option value="25">25. Normale Portion (4 Kugeln) – 6,50 €</option>
+                    <option value="26">26. Große Portion (6 Kugeln) – 9,50 €</option>
+                </optgroup>
 
-        <button id="btn-whatsapp" class="btn" onclick="sendWhatsApp()" disabled>
-            Bestellung per WhatsApp senden 📲
-        </button>
+                <optgroup label="Eisbecher">
+                    <option value="30">30. Amarena Becher – 8,50 €</option>
+                    <option value="31">31. Erdbeer Becher – 8,50 €</option>
+                    <option value="32">32. Banana Cup – 9,00 €</option>
+                    <option value="33">33. Liebes Traum – 13,50 €</option>
+                    <option value="34">34. Kiwi Becher – 8,50 €</option>
+                    <option value="35">35. Frucht Becher – 8,50 €</option>
+                    <option value="36">36. Großer Frucht Becher – 11,90 €</option>
+                    <option value="37">37. Großer Amarena Becher – 12,50 €</option>
+                    <option value="38">38. Großer Erdbeer Becher – 12,50 €</option>
+                    <option value="39">39. Erdbeer-Banane Becher – 10,90 €</option>
+                    <option value="40">40. Exotischer Becher – 12,00 €</option>
+                    <option value="41">41. Wald Becher – 10,50 €</option>
+                    <option value="42">42. Bella Italia – 11,00 €</option>
+                    <option value="43">43. Mango Becher – 9,00 €</option>
+                    <option value="44">44. Banana Split – 10,00 €</option>
+                    <option value="45">45. Sommer Becher – 13,00 €</option>
+                    <option value="46">46. Coppa Melone – 9,50 €</option>
+                    <option value="47">47. Heidelbeer Becher – 9,50 €</option>
+                    <option value="48">48. Himbeer Becher – 9,50 €</option>
 
-        <button id="btn-print" class="btn" style="margin-top:8px; background:#007b83;" onclick="printOrder()" disabled>
-            Bestellung drucken 🖨️
-        </button>
+                    <option value="81">81. Heiße Kirschen – 8,50 €</option>
+                    <option value="82">82. Heiße Himbeeren – 9,00 €</option>
+                    <option value="83">83. Zimt Becher – 8,50 €</option>
+                    <option value="84">84. Cup Dänemark – 8,50 €</option>
+                    <option value="85">85. Wiener Mokka – 8,50 €</option>
 
-        <button class="btn" style="margin-top:8px; background:#555;" onclick="resetTable()">
-            Tisch löschen / neue Gäste
-        </button>
+                    <option value="90">90. Amaretto Becher – 8,50 €</option>
+                    <option value="91">91. Schwarzwald Becher – 9,00 €</option>
+                    <option value="92">92. Malaga Becher – 9,00 €</option>
+                    <option value="93">93. Mon Chéri Becher – 9,50 €</option>
+                    <option value="94">94. Raffaello Becher – 9,50 €</option>
+                    <option value="96">96. Eierlikör Becher – 8,50 €</option>
+                    <option value="98">98. Nuss Becher – 9,50 €</option>
+                    <option value="99">99. Rocher Becher – 9,50 €</option>
+                    <option value="100">100. Giotto Becher – 9,00 €</option>
+                    <option value="101">101. Berg Becher – 10,50 €</option>
+                    <option value="102">102. Walnuss Becher – 9,50 €</option>
+                    <option value="103">103. Coppa Delizia – 10,90 €</option>
 
-        <div class="small" style="margin-top:6px;" id="gps-info">
-            GPS wird geprüft… bitte Standort-Freigabe erlauben.
+                    <option value="110">110. After Eight Becher – 8,90 €</option>
+                    <option value="111">111. Stracciatella Becher – 7,90 €</option>
+                    <option value="112">112. Tartufo Nero – 9,50 €</option>
+                    <option value="113">113. Tartufo Bianco – 9,50 €</option>
+                    <option value="114">114. Hausbecher – 20,00 €</option>
+                    <option value="116">116. Krokant Becher – 8,50 €</option>
+                    <option value="117">117. Schoko Becher – 8,50 €</option>
+                    <option value="118">118. Schoko Becher groß – 12,00 €</option>
+                    <option value="122">122. Pistazien Becher – 11,50 €</option>
+                </optgroup>
+
+                <optgroup label="Spaghetti Eis & Pizza Eis">
+                    <option value="50">50. Spaghetti Eis – 6,50 €</option>
+                    <option value="51">51. Spaghetti Eis groß – 9,50 €</option>
+                    <option value="52">52. Spaghetti Vanille – 7,40 €</option>
+                    <option value="53">53. Spaghetti Erdbeere – 8,90 €</option>
+                    <option value="54">54. Spaghetti Kiwi – 8,50 €</option>
+                    <option value="55">55. Spaghetti Vanille-Schoko – 7,50 €</option>
+                    <option value="56">56. Spaghetti Carbonara – 9,50 €</option>
+                    <option value="57">57. Spaghetti Nussknacker – 9,50 €</option>
+                    <option value="58">58. Spaghetti Amarena – 8,90 €</option>
+                    <option value="59">59. Spaghetti Waldfrüchte – 8,90 €</option>
+                    <option value="60">60. Spaghetti Melone – 8,90 €</option>
+                    <option value="61">61. Spaghetti Tutti Frutti – 8,90 €</option>
+                    <option value="62">62. Lasagne Eis – 8,90 €</option>
+
+                    <option value="63">63. Pizza Margherita – 9,00 €</option>
+                    <option value="64">64. Pizza Grandiosa – 12,00 €</option>
+                </optgroup>
+
+                <optgroup label="Joghurt Becher">
+                    <option value="70">70. Mixgetränk Spezial – 6,50 €</option>
+                    <option value="71">71. Joghurrette Becher – 9,50 €</option>
+                    <option value="72">72. Joghurt Cocktail – 9,50 €</option>
+                    <option value="73">73. Joghurt Kiwi – 9,00 €</option>
+                    <option value="74">74. Joghurt Erdbeere – 9,00 €</option>
+                    <option value="75">75. Joghurt Ananas – 9,00 €</option>
+                    <option value="76">76. Müsli Joghurt Becher – 9,00 €</option>
+                    <option value="77">77. Joghurt Heidelbeere – 9,00 €</option>
+                    <option value="78">78. Joghurt Banane – 9,00 €</option>
+                    <option value="79">79. Joghurt Amarena – 9,00 €</option>
+                    <option value="80">80. Joghurt Himbeere – 9,00 €</option>
+                </optgroup>
+
+                <optgroup label="Donuts Eis">
+                    <option value="160">Erdbeer Donut – 6,90 €</option>
+                    <option value="161">Schoko Donut – 6,90 €</option>
+                    <option value="162">Caramel Donut – 6,90 €</option>
+                    <option value="163">Pistazien Donut – 7,20 €</option>
+                    <option value="164">Kinder Donut – 6,50 €</option>
+                </optgroup>
+
+                <optgroup label="Eisgetränke & Cocktails">
+                    <option value="130">130. Flipper – 5,00 €</option>
+                    <option value="131">131. Bellini – 6,00 €</option>
+                    <option value="132">132. Mimosa – 6,00 €</option>
+                    <option value="133">133. Formula 1 – 6,00 €</option>
+                    <option value="134">134. Formula 2 – 6,00 €</option>
+
+                    <option value="140">140. Eiskaffee – 5,50 €</option>
+                    <option value="141">141. Eisschokolade – 5,50 €</option>
+                    <option value="142">142. Eis-Cappuccino – 5,50 €</option>
+
+                    <option value="150">150. Milch-Mix 0,3 l – 4,00 €</option>
+                    <option value="151">151. Milchshake 0,3 l – 4,60 €</option>
+                    <option value="152">152. Riesen Milch-Mix 0,5 l – 5,00 €</option>
+                    <option value="153">153. Riesen Milchshake 0,5 l – 5,50 €</option>
+                    <option value="154">154. Vulcano – 3,70 €</option>
+                    <option value="155">155. Orangensaft (frisch) – 4,50 €</option>
+                    <option value="156">156. Kalte Zitrone – 3,50 €</option>
+                </optgroup>
+
+                <optgroup label="Kaffee & Heißgetränke (Auswahl)">
+                    <option value="200">Espresso – 2,00 €</option>
+                    <option value="201">Espresso Macchiato – 2,30 €</option>
+                    <option value="202">Espresso Corretto – 3,40 €</option>
+                    <option value="203">Doppelter Espresso – 3,60 €</option>
+                    <option value="204">Doppelter Espresso Macchiato – 3,80 €</option>
+                    <option value="210">Kaffee – 2,20 €</option>
+                    <option value="220">Milchkaffee – 3,00 €</option>
+                    <option value="221">Milchkaffee mit Baileys – 4,00 €</option>
+                    <option value="230">Latte Macchiato – 3,60 €</option>
+                    <option value="231">Latte Macchiato mit Sirup – 3,20 €</option>
+                    <option value="240">Cappuccino – 2,60 €</option>
+                    <option value="241">Cappuccino groß – 3,00 €</option>
+                    <option value="244">Cappuccino mit Amaretto – 4,00 €</option>
+                    <option value="245">Cappuccino mit Eierlikör – 4,00 €</option>
+                    <option value="246">Cappuccino mit Baileys – 4,00 €</option>
+                </optgroup>
+
+                <optgroup label="Kalte Getränke">
+                    <option value="300">Coca-Cola 0,2 l – 2,70 €</option>
+                    <option value="301">Coca-Cola Light 0,2 l – 2,70 €</option>
+                    <option value="302">Coca-Cola Zero 0,2 l – 2,70 €</option>
+                    <option value="303">Fanta 0,2 l – 2,70 €</option>
+                    <option value="304">Mezzo Mix 0,2 l – 2,70 €</option>
+                    <option value="305">Sprite 0,2 l – 2,70 €</option>
+                    <option value="306">Bitter Lemon 0,2 l – 2,70 €</option>
+                    <option value="307">Apfelschorle – 1,90 €</option>
+                    <option value="308">Eistee – 1,90 €</option>
+                    <option value="309">Wild Berry – 2,20 €</option>
+                    <option value="310">Tonic Water – 2,20 €</option>
+                    <option value="311">S.Pellegrino 0,25 l – 2,40 €</option>
+                    <option value="312">S.Pellegrino 0,75 l – 5,90 €</option>
+                </optgroup>
+
+                <optgroup label="Bier, Wein & Aperitif">
+                    <option value="350">Krombacher Pils 0,33 l – 2,80 €</option>
+                    <option value="351">Krombacher Radler 0,33 l – 2,80 €</option>
+                    <option value="352">Erdinger Weißbier 0,5 l – 4,50 €</option>
+                    <option value="353">Erdinger Alkoholfrei 0,33 l – 2,80 €</option>
+                    <option value="354">Erdinger Alkoholfrei 0,5 l – 4,50 €</option>
+
+                    <option value="400">Rotwein trocken 0,2 l – 4,90 €</option>
+                    <option value="401">Weißwein trocken 0,2 l – 4,90 €</option>
+                    <option value="402">Glas Sekt – 3,90 €</option>
+                    <option value="403">Campari Sekt – 3,90 €</option>
+
+                    <option value="410">Aperitif Rosato – 5,90 €</option>
+                    <option value="430">Grappa – 4,70 €</option>
+                    <option value="431">Asbach – 3,20 €</option>
+                    <option value="432">Ramazzotti – 3,20 €</option>
+                    <option value="433">Aperol – 6,10 €</option>
+                    <option value="434">Hugo – 6,10 €</option>
+                </optgroup>
+
+                <optgroup label="Snacks & Herzhaftes">
+                    <option value="500">Flammkuchen Elsässer Art – 8,90 €</option>
+                    <option value="501">Flammkuchen Wildlachs & Shrimps – 8,90 €</option>
+                    <option value="502">Flammkuchen Griechische Art – 8,90 €</option>
+
+                    <option value="510">Toast mit Käse – 3,70 €</option>
+                    <option value="511">Toast mit Käse & Schinken – 4,30 €</option>
+                    <option value="512">Toast mit Salami & Käse – 4,30 €</option>
+                    <option value="513">Toast Hawaii – 5,60 €</option>
+
+                    <option value="520">Baguette XXL (Salami/Schinken/Caprese) – 6,90 €</option>
+                </optgroup>
+
+                <optgroup label="Desserts & Waffeln">
+                    <option value="600">Apfelstrudel – 3,70 €</option>
+                    <option value="601">Apfelstrudel mit Vanillesoße – 4,00 €</option>
+                    <option value="602">Apfelstrudel mit Sahne – 4,70 €</option>
+                    <option value="603">Apfelstrudel mit Eis – 6,10 €</option>
+                    <option value="610">Hausgemachtes Tiramisu – 4,20 €</option>
+
+                    <option value="620">Waffel mit Puderzucker – 4,00 €</option>
+                    <option value="621">Waffel mit Sahne – 5,00 €</option>
+                    <option value="622">Waffel mit Eis – 5,30 €</option>
+                    <option value="623">Waffel mit Eis & Sahne – 6,30 €</option>
+                    <option value="624">Waffel mit Nutella – 5,00 €</option>
+
+                    <option value="631">630a. Waffel Zimt & Banane – 6,80 €</option>
+                    <option value="632">630b. Waffel Obstsalat – 7,90 €</option>
+                    <option value="633">630c. Waffel Erdbeeren – 7,50 €</option>
+                    <option value="634">630d. Waffel Waldbeeren – 7,20 €</option>
+                    <option value="635">630e. Waffel Schoko-Banane – 7,90 €</option>
+                    <option value="636">630f. Waffel Heiße Kirschen – 7,00 €</option>
+                    <option value="637">630g. Waffel Schoko – 6,80 €</option>
+                    <option value="638">630h. Waffel Tutti Frutti – 7,50 €</option>
+                </optgroup>
+
+            </select>
+
+            <!-- Sortenwahl nur für Portionen (optional) -->
+            <div id="geschmack-box" style="margin-top:12px; display:none;">
+                <label>Sorten (optional, bis zu 3 wählen):</label>
+                <select id="geschmack1"></select>
+                <select id="geschmack2" style="margin-top:6px;"></select>
+                <select id="geschmack3" style="margin-top:6px;"></select>
+                <div class="small">
+                    Wenn keine Sorten gewählt werden, kommt die Portion in unserer Standardmischung.
+                </div>
+            </div>
+
+            <!-- Sahne-Option (nur bei Eis-Artikeln angezeigt) -->
+            <div id="sahne-box" style="margin-top:8px; display:none;">
+                <label for="sahne">Sahne:</label>
+                <select id="sahne">
+                    <option value="">Bitte auswählen (optional)</option>
+                    <option value="mit Sahne">mit Sahne</option>
+                    <option value="ohne Sahne">ohne Sahne</option>
+                </select>
+                <div class="small">
+                    Wenn nichts gewählt wird, bereiten wir es wie auf der Karte zu.
+                </div>
+            </div>
+
+            <label for="bemerkung" style="margin-top:8px;">Bemerkung (optional):</label>
+            <input id="bemerkung" type="text" placeholder="z.B. ohne Sahne, wenig Soße …">
+
+            <button class="btn" onclick="addToCart()">Zum Warenkorb hinzufügen</button>
+        </div>
+
+        <!-- WARENKORB -->
+        <div id="warenkorb">
+            <h2 class="section-title">🧺 Warenkorb</h2>
+            <div id="liste-items"></div>
+            <div class="total" id="gesamt">Gesamt: 0,00 €</div>
+
+            <button id="btn-whatsapp" class="btn" onclick="prepareSend('whatsapp')" disabled>
+                Bestellung per WhatsApp senden 📲
+            </button>
+
+            <button id="btn-print" class="btn btn-secondary" onclick="prepareSend('print')" disabled>
+                Bestellung drucken 🖨️
+            </button>
+
+            <button class="btn btn-secondary" style="margin-top:8px;" onclick="resetTable()">
+                Tisch löschen / Neue Gäste
+            </button>
+
+            <div class="small" style="margin-top:6px;">
+                Nach dem Senden bleibt der Tisch gespeichert. Neue Gäste bitte mit „Tisch löschen / Neue Gäste“ starten.
+            </div>
         </div>
     </div>
 
-    <!-- CHEF LOGIN -->
-    <div class="card" id="admin-login-card">
-        <h2 class="section-title">Chef-Bereich</h2>
-        <p class="small">
-            Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert.
-        </p>
-        <label for="admin-password">Chef-Passwort:</label>
-        <input id="admin-password" type="password" placeholder="Passwort eingeben">
-        <button class="btn" onclick="adminLogin()">Chef-Login</button>
+    <!-- TAB: CHEF -->
+    <div id="tab-chef" class="tab-pane">
+
+        <div id="chef-login-box" class="card chef-login-box">
+            <h2 class="section-title">Chef Login</h2>
+            <label for="chef-pass">Passwort:</label>
+            <input id="chef-pass" type="password" placeholder="Passwort eingeben">
+            <button class="btn" onclick="chefLogin()">Login</button>
+            <div class="small">Standard-Passwort: 1234 (bitte im Code später anpassen).</div>
+        </div>
+
+        <div id="chef-panel" style="display:none;">
+            <div class="card">
+                <h2 class="section-title">Bestellübersicht</h2>
+                <div class="small">
+                    Hier werden alle gesendeten Bestellungen (WhatsApp / Druck) gespeichert.
+                    Der Verlauf liegt nur lokal im Browser (internes System).
+                </div>
+                <div id="chef-orders" class="chef-orders"></div>
+
+                <button class="btn btn-secondary" onclick="clearOrderLog()">
+                    Verlauf komplett löschen
+                </button>
+                <button class="btn" style="margin-top:6px;" onclick="chefLogout()">
+                    Logout
+                </button>
+            </div>
+
+            <!-- RECHTLICHER HINWEIS NUR FÜR CHEF -->
+            <div class="legal-box">
+                <strong>Rechtlicher Hinweis:</strong><br>
+                Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine
+                Registrierkasse oder steuerrechtlich relevante Aufzeichnung.<br><br>
+                Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung
+                aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine
+                Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.<br><br>
+                Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der
+                Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K
+                und darf nicht als Kassensystem verwendet werden.<br><br>
+                Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender
+                dieses Systems.
+            </div>
+        </div>
     </div>
 
-    <!-- CHEF PANEL -->
-    <div class="card" id="admin-panel" style="display:none;">
-        <div class="admin-header">
-            <h2 class="section-title" style="margin-bottom:0;">Gespeicherte Bestellungen</h2>
-            <button class="btn-logout" onclick="adminLogout()">Logout</button>
-        </div>
-        <div class="small" style="margin-top:4px;">
-            Hier werden alle Bestellungen gespeichert, die per WhatsApp gesendet oder gedruckt wurden.
-            Der Chef kann einzelne Bestellungen oder alle Einträge löschen.
-        </div>
-        <div id="admin-orders-list" style="margin-top:10px;"></div>
-        <button class="btn" style="margin-top:10px; background:#c62828;" onclick="clearAllOrders()">
-            Alle Bestellungen löschen
-        </button>
-    </div>
-
-</div>
-
-<!-- RECHTLICHER HINWEIS (jetzt einklappbar) -->
-<div class="legal-box">
-    <details>
-        <summary><strong>Rechtlicher Hinweis (anklicken)</strong></summary>
-        <p>
-            Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine
-            Registrierkasse oder steuerrechtlich relevante Aufzeichnung.
-        </p>
-        <p>
-            Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung
-            aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine
-            Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.
-        </p>
-        <p>
-            Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der
-            Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K
-            und darf nicht als Kassensystem verwendet werden.
-        </p>
-        <p>
-            Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender
-            dieses Systems.
-        </p>
-    </details>
 </div>
 
 <script>
+/* =====================
+   KONFIGURATION
+   ===================== */
+
+// WhatsApp Nummer (ohne +)
 const WHATSAPP_NUMMER = "4917672809926";
 
-/* Chef Passwort – MUDA AQUI PARA O QUE QUISERES */
-const ADMIN_PASSWORD = "chef123";
+// Koordinaten des Geschäfts (Beispiel! Bitte anpassen)
+// Tipp: Im Google Maps die Koordinaten ablesen und hier einsetzen
+const CAFE_LAT = 51.0519;   // Beispielwert
+const CAFE_LNG = 8.3930;    // Beispielwert
+const MAX_RADIUS_M = 150;   // 150 Meter
 
-const CAFE_LAT = 51.051;
-const CAFE_LNG = 8.392;
-const MAX_DIST_KM = 1.5;
+// Chef Passwort
+const CHEF_PASSWORD = "1234";
 
-let gpsOk = false;
-let adminOrders = [];
-let isAdmin = false;
+/* =====================
+   PRODUKT & SORTEN DATEN
+   ===================== */
 
 const PRODUKTE = {
     23: { name: "23. Kinder Portion (2 Kugeln)", preis: 3.50, type: "cup3" },
@@ -634,13 +821,32 @@ const PRODUKTE = {
     638:{ name: "630h. Waffel Tutti Frutti", preis: 7.50, type: "normal" }
 };
 
+// Sortenliste (optional für Portionen)
 const SORTEN = [
-    "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
-    "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
-    "Erdbeere","Mango","Banane","Himbeere","Limette",
-    "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien"
+    "Vanille",
+    "Amarena",
+    "Joghurt",
+    "Nuss",
+    "Schokolade",
+    "Stracciatella",
+    "After Eight",
+    "Schlumpfeis",
+    "Malaga",
+    "Walnuss",
+    "Cookies",
+    "Zitrone",
+    "Erdbeere",
+    "Mango",
+    "Banane",
+    "Himbeere",
+    "Limette",
+    "Dunkle Schokolade",
+    "Paw Patrol",
+    "Snickers",
+    "Pistazien"
 ];
 
+// Produkte mit optionaler Sahne-Auswahl
 const SAHNE_PRODUKTE = new Set([
     23, 24, 25, 26,
     30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
@@ -660,44 +866,15 @@ const SAHNE_PRODUKTE = new Set([
     631,632,633,634,635,636,637,638
 ]);
 
-const GROUPS = {
-    portions: [23,24,25,26],
-    kids: [23,160,161,162,163,164,130,154,150,151,152,153],
-    eis: [
-        30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
-        50,51,52,53,54,55,56,57,58,59,60,61,62,
-        70,71,72,73,74,75,76,77,78,79,80,
-        81,82,83,84,85,
-        90,91,92,93,94,96,98,99,100,101,102,103,
-        110,111,112,113,114,116,117,118,122
-    ],
-    food: [
-        500,501,502,
-        510,511,512,513,
-        520,
-        600,601,602,603,
-        610,
-        620,621,622,623,624,
-        631,632,633,634,635,636,637,638
-    ],
-    drinks: [
-        140,141,142,
-        150,151,152,153,154,155,156,
-        200,201,202,203,204,
-        210,220,221,
-        230,231,
-        240,241,244,245,246,
-        300,301,302,303,304,305,306,307,308,309,310,311,312,
-        350,351,352,353,354,
-        400,401,402,403,410,
-        430,431,432,433,434
-    ]
-};
-
 let warenkorb = [];
-let currentGroup = "portions";
+let orderLog = [];
+let chefLoggedIn = false;
 
-/* Tische */
+/* =====================
+   INITIALISIERUNG
+   ===================== */
+
+// Tische 1–33 füllen
 const tischSelect = document.getElementById("tisch");
 for (let i = 1; i <= 33; i++) {
     const opt = document.createElement("option");
@@ -706,7 +883,7 @@ for (let i = 1; i <= 33; i++) {
     tischSelect.appendChild(opt);
 }
 
-/* Sorten */
+// Sorten-Selects füllen
 function fillSortenSelect(id) {
     const sel = document.getElementById(id);
     sel.innerHTML = "<option value=''>Sorte wählen…</option>";
@@ -719,41 +896,17 @@ function fillSortenSelect(id) {
 }
 ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
 
-/* Produkt-Select je Gruppe */
-function buildProduktSelect(group) {
-    const select = document.getElementById("produkt");
-    select.innerHTML = "<option value=''>Bitte wählen…</option>";
-    const ids = GROUPS[group] || [];
-    ids.forEach(id => {
-        const p = PRODUKTE[id];
-        if (!p) return;
-        const opt = document.createElement("option");
-        opt.value = id;
-        opt.textContent = p.name + " – " + p.preis.toFixed(2).replace(".", ",") + " €";
-        select.appendChild(opt);
-    });
-
-    document.getElementById("geschmack-box").style.display = "none";
-    document.getElementById("sahne-box").style.display = "none";
-    ["geschmack1","geschmack2","geschmack3"].forEach(id=>{
-        document.getElementById(id).value = "";
-    });
-    document.getElementById("sahne").value = "";
-    document.getElementById("bemerkung").value = "";
-}
-
-/* Tabs */
+// Tabs (Gast / Chef)
 document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-        currentGroup = btn.dataset.group;
         document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
         btn.classList.add("active");
-        buildProduktSelect(currentGroup);
+        document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
     });
 });
-buildProduktSelect(currentGroup);
 
-/* Produktwechsel */
+// Produktwechsel: Sorten-Box und Sahne-Box anzeigen/verstecken
 document.getElementById("produkt").addEventListener("change", function() {
     const wert = this.value;
     const geschmackBox = document.getElementById("geschmack-box");
@@ -768,6 +921,7 @@ document.getElementById("produkt").addEventListener("change", function() {
 
     const idNum = parseInt(wert, 10);
 
+    // Sorten nur bei Portionen
     if (PRODUKTE[wert].type === "cup3") {
         geschmackBox.style.display = "block";
     } else {
@@ -778,6 +932,7 @@ document.getElementById("produkt").addEventListener("change", function() {
         });
     }
 
+    // Sahne nur bei Artikeln mit Eis/Sahne
     if (SAHNE_PRODUKTE.has(idNum)) {
         sahneBox.style.display = "block";
     } else {
@@ -786,7 +941,10 @@ document.getElementById("produkt").addEventListener("change", function() {
     }
 });
 
-/* Warenkorb */
+/* =====================
+   WARENKORB FUNKTIONEN
+   ===================== */
+
 function addToCart() {
     const tisch = document.getElementById("tisch").value;
     if (!tisch) {
@@ -804,6 +962,7 @@ function addToCart() {
     let sorten = [];
     const bemerkung = document.getElementById("bemerkung").value.trim();
 
+    // Sorten nur bei Portionen
     if (produkt.type === "cup3") {
         const s1 = document.getElementById("geschmack1").value;
         const s2 = document.getElementById("geschmack2").value;
@@ -813,6 +972,7 @@ function addToCart() {
         if (s3) sorten.push(s3);
     }
 
+    // Sahne nur bei Produkten mit Eis/Sahne
     let sahne = "";
     const idNum = parseInt(produktId, 10);
     if (SAHNE_PRODUKTE.has(idNum)) {
@@ -829,6 +989,7 @@ function addToCart() {
         sahne: sahne
     });
 
+    // Eingaben leeren
     document.getElementById("bemerkung").value = "";
     if (produkt.type === "cup3") {
         ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
@@ -883,7 +1044,7 @@ function updateCart() {
 
     totalDiv.textContent = "Gesamt: " + total.toFixed(2).replace(".", ",") + " €";
     const hasItems = warenkorb.length > 0;
-    btnWpp.disabled = !hasItems || !gpsOk;
+    btnWpp.disabled = !hasItems;
     btnPrint.disabled = !hasItems;
 }
 
@@ -892,15 +1053,79 @@ function removeItem(index) {
     updateCart();
 }
 
-/* Texto da encomenda */
-function buildOrderText() {
-    const tisch = document.getElementById("tisch").value || "-";
-    let total = 0;
-    let text = `Tisch ${tisch} - Bestellung:\n`;
+/* =====================
+   GPS / STANDORT
+   ===================== */
 
+function haversineDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371000; // Erde Radius in Meter
+    const toRad = deg => deg * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a =
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+function prepareSend(mode) {
+    // mode: "whatsapp" oder "print"
+    if (warenkorb.length === 0) {
+        alert("Der Warenkorb ist leer.");
+        return;
+    }
+    if (!navigator.geolocation) {
+        alert("Standortbestimmung wird von diesem Gerät nicht unterstützt. Bestellung nicht möglich.");
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(
+        pos => {
+            const distance = haversineDistance(
+                pos.coords.latitude,
+                pos.coords.longitude,
+                CAFE_LAT,
+                CAFE_LNG
+            );
+            if (distance > MAX_RADIUS_M) {
+                alert("Sie befinden sich zu weit vom Geschäft entfernt (>" + MAX_RADIUS_M +
+                      " m). Bestellung ist nur direkt vor Ort möglich.");
+                return;
+            }
+            if (mode === "whatsapp") {
+                sendWhatsApp();
+            } else if (mode === "print") {
+                printOrder();
+            }
+        },
+        err => {
+            alert("Standort konnte nicht ermittelt werden. Bitte GPS erlauben, um zu bestellen.");
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+    );
+}
+
+/* =====================
+   SENDEN / DRUCKEN + LOG
+   ===================== */
+
+function buildOrderText() {
+    const tisch = document.getElementById("tisch").value;
+    if (!tisch) {
+        alert("Bitte zuerst den Tisch auswählen.");
+        return null;
+    }
+    if (warenkorb.length === 0) {
+        alert("Der Warenkorb ist leer.");
+        return null;
+    }
+
+    let total = 0;
+    let lines = [];
     warenkorb.forEach(item => {
         total += item.preis;
-        let line = `• ${item.name} (${item.preis.toFixed(2)} €)`;
+        let line = `${item.name} (${item.preis.toFixed(2)} €)`;
         if (item.type === "cup3" && item.sorten.length > 0) {
             line += ` – Sorten: ${item.sorten.join(", ")}`;
         }
@@ -910,78 +1135,158 @@ function buildOrderText() {
         if (item.sahne) {
             line += ` – Sahne: ${item.sahne}`;
         }
-        text += line + "\n";
+        lines.push(line);
     });
 
-    text += `\nGesamtbetrag: ${total.toFixed(2)} €`;
-    return text;
+    return {
+        tisch,
+        total,
+        lines
+    };
 }
 
-/* Guardar pedido para o chefe */
-function storeOrder(channel) {
-    const tisch = document.getElementById("tisch").value || "-";
-    const textPlain = buildOrderText();
-    const timestamp = new Date().toLocaleString("de-DE");
-    adminOrders.push({ tisch, channel, text: textPlain, time: timestamp });
-    if (isAdmin) updateAdminList();
-}
-
-/* WhatsApp */
 function sendWhatsApp() {
-    if (!gpsOk) {
-        alert("Bestellung nur vor Ort möglich. Bitte Standort-Freigabe erlauben.");
-        return;
-    }
+    const data = buildOrderText();
+    if (!data) return;
 
-    const tisch = document.getElementById("tisch").value;
-    if (!tisch) {
-        alert("Bitte zuerst den Tisch auswählen.");
-        return;
-    }
-    if (warenkorb.length === 0) {
-        alert("Der Warenkorb ist leer.");
-        return;
-    }
+    let text = `Tisch ${data.tisch} - Bestellung:%0A`;
+    data.lines.forEach(l => { text += "• " + encodeURIComponent(l) + "%0A"; });
+    text += `%0AGesamtbetrag: ${data.total.toFixed(2)} €`;
 
-    storeOrder("WhatsApp");
-    const text = encodeURIComponent(buildOrderText());
     const url = `https://wa.me/${WHATSAPP_NUMMER}?text=${text}`;
     window.open(url, "_blank");
 
+    saveOrderToLog("WhatsApp", data);
     warenkorb = [];
     updateCart();
 }
 
-/* Drucker */
 function printOrder() {
-    if (warenkorb.length === 0) {
-        alert("Der Warenkorb ist leer.");
-        return;
-    }
-    const tisch = document.getElementById("tisch").value || "-";
-    const textHtml = buildOrderText().replace(/\n/g, "<br>");
-
-    storeOrder("Drucker");
+    const data = buildOrderText();
+    if (!data) return;
 
     const win = window.open("", "_blank");
-    win.document.open();
-    win.document.write(`
+    const html = `
         <html>
         <head>
-            <title>Bestellung Tisch ${tisch}</title>
             <meta charset="UTF-8">
+            <title>Bestellung Tisch ${data.tisch}</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 10px; }
+                h1 { font-size: 18px; margin-bottom: 8px; }
+                ul { padding-left: 18px; }
+                li { margin-bottom: 4px; font-size: 13px; }
+                .total { margin-top: 8px; font-weight: bold; }
+            </style>
         </head>
-        <body style="font-family:Arial,sans-serif; font-size:14px;">
-            <h2>Bestellung Tisch ${tisch}</h2>
-            <p>${textHtml}</p>
+        <body>
+            <h1>Tisch ${data.tisch} – Bestellung</h1>
+            <ul>
+                ${data.lines.map(l => `<li>${l}</li>`).join("")}
+            </ul>
+            <div class="total">Gesamt: ${data.total.toFixed(2)} €</div>
         </body>
         </html>
-    `);
+    `;
+    win.document.write(html);
     win.document.close();
+    win.focus();
     win.print();
+
+    saveOrderToLog("Druck", data);
+    warenkorb = [];
+    updateCart();
 }
 
-/* Reset */
+// Bestellung im Chef-Log speichern
+function saveOrderToLog(channel, data) {
+    const entry = {
+        time: new Date().toLocaleString("de-DE"),
+        tisch: data.tisch,
+        total: data.total,
+        lines: data.lines,
+        channel
+    };
+    orderLog.push(entry);
+    try {
+        localStorage.setItem("orderLog", JSON.stringify(orderLog));
+    } catch (e) {}
+    renderOrderLog();
+}
+
+/* =====================
+   CHEF LOGIN / LOG
+   ===================== */
+
+function loadOrderLog() {
+    try {
+        const raw = localStorage.getItem("orderLog");
+        if (raw) {
+            orderLog = JSON.parse(raw);
+        }
+    } catch (e) {
+        orderLog = [];
+    }
+    renderOrderLog();
+}
+
+function renderOrderLog() {
+    const box = document.getElementById("chef-orders");
+    if (!box) return;
+
+    if (orderLog.length === 0) {
+        box.innerHTML = "<div class='small'>Noch keine Bestellungen gespeichert.</div>";
+        return;
+    }
+
+    box.innerHTML = "";
+    orderLog.slice().reverse().forEach(entry => {
+        const div = document.createElement("div");
+        div.className = "chef-order-item";
+        div.innerHTML = `
+            <strong>${entry.time}</strong> – Tisch ${entry.tisch} (${entry.channel})<br>
+            ${entry.lines.map(l => "<div>• " + l + "</div>").join("")}
+            <div class="small">Gesamt: ${entry.total.toFixed(2).replace(".", ",")} €</div>
+        `;
+        box.appendChild(div);
+    });
+}
+
+function clearOrderLog() {
+    if (!confirm("Verlauf wirklich komplett löschen?")) return;
+    orderLog = [];
+    try {
+        localStorage.removeItem("orderLog");
+    } catch (e) {}
+    renderOrderLog();
+}
+
+function chefLogin() {
+    const pass = document.getElementById("chef-pass").value;
+    if (pass === CHEF_PASSWORD) {
+        chefLoggedIn = true;
+        document.getElementById("chef-login-box").style.display = "none";
+        document.getElementById("chef-panel").style.display = "block";
+        renderOrderLog();
+    } else {
+        alert("Falsches Passwort.");
+    }
+}
+
+function chefLogout() {
+    chefLoggedIn = false;
+    document.getElementById("chef-login-box").style.display = "block";
+    document.getElementById("chef-panel").style.display = "none";
+    document.getElementById("chef-pass").value = "";
+}
+
+// beim Laden gespeicherten Verlauf ziehen
+loadOrderLog();
+
+/* =====================
+   TISCH RESET
+   ===================== */
+
 function resetTable() {
     if (!confirm("Möchten Sie den Tisch wirklich zurücksetzen? Alle Bestellungen werden gelöscht.")) {
         return;
@@ -1006,109 +1311,6 @@ function resetTable() {
 
     document.getElementById("bemerkung").value = "";
 }
-
-/* GPS */
-function deg2rad(deg) { return deg * (Math.PI / 180); }
-
-function distanceKm(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = deg2rad(lat2 - lat1);
-    const dLon = deg2rad(lon2 - lon1);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-}
-
-function initLocation() {
-    const info = document.getElementById("gps-info");
-    const btnWpp = document.getElementById("btn-whatsapp");
-
-    if (!navigator.geolocation) {
-        info.textContent = "GPS nicht verfügbar – Bestellung per WhatsApp ist deaktiviert.";
-        gpsOk = false;
-        btnWpp.disabled = true;
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            const dist = distanceKm(lat, lng, CAFE_LAT, CAFE_LNG);
-
-            if (dist <= MAX_DIST_KM) {
-                gpsOk = true;
-                info.textContent = "Standort OK – Bestellung per WhatsApp ist möglich.";
-            } else {
-                gpsOk = false;
-                info.textContent = "Sie sind zu weit vom Standort entfernt – Bestellung per WhatsApp nicht möglich.";
-            }
-            updateCart();
-        },
-        (err) => {
-            gpsOk = false;
-            info.textContent = "Standort konnte nicht bestimmt werden – bitte GPS erlauben.";
-            btnWpp.disabled = true;
-        }
-    );
-}
-
-/* Chef-Login & Admin-Panel */
-function adminLogin() {
-    const pw = document.getElementById("admin-password").value;
-    if (pw === ADMIN_PASSWORD) {
-        isAdmin = true;
-        document.getElementById("admin-login-card").style.display = "none";
-        document.getElementById("admin-panel").style.display = "block";
-        updateAdminList();
-    } else {
-        alert("Falsches Passwort.");
-    }
-}
-
-function adminLogout() {
-    isAdmin = false;
-    document.getElementById("admin-panel").style.display = "none";
-    document.getElementById("admin-login-card").style.display = "block";
-    document.getElementById("admin-password").value = "";
-}
-
-function updateAdminList() {
-    const list = document.getElementById("admin-orders-list");
-    list.innerHTML = "";
-    if (adminOrders.length === 0) {
-        list.innerHTML = "<div class='small'>Noch keine Bestellungen gespeichert.</div>";
-        return;
-    }
-
-    adminOrders.forEach((o, idx) => {
-        const div = document.createElement("div");
-        div.className = "admin-order";
-        div.innerHTML = `
-            <strong>${o.time}</strong> – Tisch ${o.tisch} (${o.channel})<br>
-            ${o.text.replace(/\n/g,"<br>")}
-            <br>
-            <button class="btn-small" onclick="deleteOrder(${idx})">Löschen</button>
-        `;
-        list.appendChild(div);
-    });
-}
-
-function deleteOrder(index) {
-    adminOrders.splice(index, 1);
-    updateAdminList();
-}
-
-function clearAllOrders() {
-    if (!confirm("Alle gespeicherten Bestellungen wirklich löschen?")) return;
-    adminOrders = [];
-    updateAdminList();
-}
-
-window.addEventListener("load", initLocation);
 </script>
 
 </body>
