@@ -185,7 +185,7 @@
             margin-top: 3px;
         }
 
-        /* TABS / JANELAS */
+        /* TABS */
         .tabs {
             display: flex;
             flex-wrap: wrap;
@@ -295,7 +295,7 @@
 
 <header class="header">
     <div class="header-inner">
-        <!-- mete o ficheiro do logo na mesma pasta, por ex.: sanremo-digital-systems-horizontal.png -->
+        <!-- mete o ficheiro do logo horizontal na mesma pasta -->
         <img src="sanremo-digital-systems-horizontal.png" alt="Sanremo Digital Systems Logo" class="header-logo">
         <div class="header-title">Digitaler QR-Tischservice – Internes Bestellsystem</div>
     </div>
@@ -317,7 +317,6 @@
     <div class="card">
         <h2 class="section-title">Produkt wählen</h2>
 
-        <!-- 5 JANELAS -->
         <div class="tabs">
             <button class="tab-btn tab-portions active" data-group="portions">Portionen</button>
             <button class="tab-btn tab-kids" data-group="kids">Kinder</button>
@@ -386,7 +385,8 @@
     <div class="card" id="admin-login-card">
         <h2 class="section-title">Chef-Bereich</h2>
         <p class="small">
-            Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert.
+            Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert
+            und Produkte / Preise angepasst.
         </p>
         <label for="admin-password">Chef-Passwort:</label>
         <input id="admin-password" type="password" placeholder="Passwort eingeben">
@@ -407,11 +407,100 @@
         <button class="btn" style="margin-top:10px; background:#c62828;" onclick="clearAllOrders()">
             Alle Bestellungen löschen
         </button>
+
+        <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
+
+        <!-- PRODUKT-VERWALTUNG -->
+        <h3 class="section-title" style="border-left-color:#00796b;">Produkte bearbeiten</h3>
+        <label for="admin-product-select">Bestehendes Produkt wählen:</label>
+        <select id="admin-product-select"></select>
+        <div class="small">
+            Änderungen werden lokal im Browser gespeichert (pro Gerät / Standort).
+        </div>
+
+        <label for="admin-prod-name">Name:</label>
+        <input id="admin-prod-name" type="text">
+
+        <label for="admin-prod-price">Preis (€):</label>
+        <input id="admin-prod-price" type="number" step="0.01">
+
+        <label for="admin-prod-group">Gruppe:</label>
+        <select id="admin-prod-group">
+            <option value="portions">Portionen</option>
+            <option value="kids">Kinder</option>
+            <option value="eis">Eisbecher & Spaghetti</option>
+            <option value="food">Snacks & Waffeln</option>
+            <option value="drinks">Getränke</option>
+        </select>
+
+        <label for="admin-prod-type">Art:</label>
+        <select id="admin-prod-type">
+            <option value="normal">Normal</option>
+            <option value="cup3">Portion (Sortenwahl)</option>
+        </select>
+
+        <label style="margin-top:6px;">
+            <input type="checkbox" id="admin-prod-sahne">
+            Sahne-Option (+1,20 €) erlauben
+        </label>
+
+        <button class="btn" style="margin-top:10px;" onclick="saveExistingProduct()">
+            Ausgewähltes Produkt speichern
+        </button>
+        <button class="btn" style="margin-top:6px; background:#c62828;" onclick="deleteExistingProduct()">
+            Ausgewähltes Produkt löschen
+        </button>
+
+        <h3 class="section-title" style="border-left-color:#0288d1; margin-top:20px;">Neues Produkt hinzufügen</h3>
+        <label for="new-prod-id">Produkt-Nr. (z.B. 701):</label>
+        <input id="new-prod-id" type="number">
+
+        <label for="new-prod-name">Name:</label>
+        <input id="new-prod-name" type="text">
+
+        <label for="new-prod-price">Preis (€):</label>
+        <input id="new-prod-price" type="number" step="0.01">
+
+        <label for="new-prod-group">Gruppe:</label>
+        <select id="new-prod-group">
+            <option value="portions">Portionen</option>
+            <option value="kids">Kinder</option>
+            <option value="eis">Eisbecher & Spaghetti</option>
+            <option value="food">Snacks & Waffeln</option>
+            <option value="drinks">Getränke</option>
+        </select>
+
+        <label for="new-prod-type">Art:</label>
+        <select id="new-prod-type">
+            <option value="normal">Normal</option>
+            <option value="cup3">Portion (Sortenwahl)</option>
+        </select>
+
+        <label style="margin-top:6px;">
+            <input type="checkbox" id="new-prod-sahne">
+            Sahne-Option (+1,20 €) erlauben
+        </label>
+
+        <button class="btn" style="margin-top:10px;" onclick="addNewProduct()">
+            Neues Produkt anlegen
+        </button>
+
+        <!-- SORTEN-VERWALTUNG -->
+        <h3 class="section-title" style="border-left-color:#6a1b9a; margin-top:20px;">Eissorten verwalten</h3>
+        <div id="sorten-list" class="small" style="margin-bottom:8px;"></div>
+
+        <label for="new-sorte">Neue Sorte:</label>
+        <input id="new-sorte" type="text" placeholder="z.B. Stracciatella Light">
+
+        <button class="btn" style="margin-top:6px;" onclick="addNewSorte()">
+            Sorte hinzufügen
+        </button>
+
     </div>
 
 </div>
 
-<!-- RECHTLICHER HINWEIS (einklappbar) -->
+<!-- RECHTLICHER HINWEIS -->
 <div class="legal-box">
     <details>
         <summary><strong>Rechtlicher Hinweis (anklicken)</strong></summary>
@@ -438,9 +527,8 @@
 
 <script>
 const WHATSAPP_NUMMER = "4917672809926";
-
-/* Chef Passwort */
 const ADMIN_PASSWORD = "1234";
+const SAHNE_AUFSCHLAG = 1.20;
 
 /* Koordinaten deines Cafés (anpassen wenn nötig) */
 const CAFE_LAT = 51.051;
@@ -451,251 +539,222 @@ let gpsOk = false;
 let adminOrders = [];
 let isAdmin = false;
 
-/* PRODUKTE – wie antes */
-const PRODUKTE = {
-    23: { name: "23. Kinder Portion (2 Kugeln)", preis: 3.50, type: "cup3" },
-    24: { name: "24. Kleine Portion (3 Kugeln)", preis: 5.00, type: "cup3" },
-    25: { name: "25. Normale Portion (4 Kugeln)", preis: 6.50, type: "cup3" },
-    26: { name: "26. Große Portion (6 Kugeln)", preis: 9.50, type: "cup3" },
+/* BASIS-PRODUKTE (Standard) */
+const BASE_PRODUCTS = {
+    23: { id:23,  name:"23. Kinder Portion (2 Kugeln)",      preis:3.50, type:"cup3",  group:"portions", sahne:true },
+    24: { id:24,  name:"24. Kleine Portion (3 Kugeln)",      preis:5.00, type:"cup3",  group:"portions", sahne:true },
+    25: { id:25,  name:"25. Normale Portion (4 Kugeln)",     preis:6.50, type:"cup3",  group:"portions", sahne:true },
+    26: { id:26,  name:"26. Große Portion (6 Kugeln)",       preis:9.50, type:"cup3",  group:"portions", sahne:true },
 
-    30: { name: "30. Amarena Becher", preis: 8.50, type: "normal" },
-    31: { name: "31. Erdbeer Becher", preis: 8.50, type: "normal" },
-    32: { name: "32. Banana Cup", preis: 9.00, type: "normal" },
-    33: { name: "33. Liebes Traum", preis: 13.50, type: "normal" },
-    34: { name: "34. Kiwi Becher", preis: 8.50, type: "normal" },
-    35: { name: "35. Frucht Becher", preis: 8.50, type: "normal" },
-    36: { name: "36. Großer Frucht Becher", preis: 11.90, type: "normal" },
-    37: { name: "37. Großer Amarena Becher", preis: 12.50, type: "normal" },
-    38: { name: "38. Großer Erdbeer Becher", preis: 12.50, type: "normal" },
-    39: { name: "39. Erdbeer-Banane Becher", preis: 10.90, type: "normal" },
-    40: { name: "40. Exotischer Becher", preis: 12.00, type: "normal" },
-    41: { name: "41. Wald Becher", preis: 10.50, type: "normal" },
-    42: { name: "42. Bella Italia", preis: 11.00, type: "normal" },
-    43: { name: "43. Mango Becher", preis: 9.00, type: "normal" },
-    44: { name: "44. Banana Split", preis: 10.00, type: "normal" },
-    45: { name: "45. Sommer Becher", preis: 13.00, type: "normal" },
-    46: { name: "46. Coppa Melone", preis: 9.50, type: "normal" },
-    47: { name: "47. Heidelbeer Becher", preis: 9.50, type: "normal" },
-    48: { name: "48. Himbeer Becher", preis: 9.50, type: "normal" },
+    30: { id:30,  name:"30. Amarena Becher",                  preis:8.50, type:"normal", group:"eis", sahne:true },
+    31: { id:31,  name:"31. Erdbeer Becher",                  preis:8.50, type:"normal", group:"eis", sahne:true },
+    32: { id:32,  name:"32. Banana Cup",                      preis:9.00, type:"normal", group:"eis", sahne:true },
+    33: { id:33,  name:"33. Liebes Traum",                    preis:13.50,type:"normal", group:"eis", sahne:true },
+    34: { id:34,  name:"34. Kiwi Becher",                     preis:8.50, type:"normal", group:"eis", sahne:true },
+    35: { id:35,  name:"35. Frucht Becher",                   preis:8.50, type:"normal", group:"eis", sahne:true },
+    36: { id:36,  name:"36. Großer Frucht Becher",            preis:11.90,type:"normal", group:"eis", sahne:true },
+    37: { id:37,  name:"37. Großer Amarena Becher",           preis:12.50,type:"normal", group:"eis", sahne:true },
+    38: { id:38,  name:"38. Großer Erdbeer Becher",           preis:12.50,type:"normal", group:"eis", sahne:true },
+    39: { id:39,  name:"39. Erdbeer-Banane Becher",           preis:10.90,type:"normal", group:"eis", sahne:true },
+    40: { id:40,  name:"40. Exotischer Becher",               preis:12.00,type:"normal", group:"eis", sahne:true },
+    41: { id:41,  name:"41. Wald Becher",                     preis:10.50,type:"normal", group:"eis", sahne:true },
+    42: { id:42,  name:"42. Bella Italia",                    preis:11.00,type:"normal", group:"eis", sahne:true },
+    43: { id:43,  name:"43. Mango Becher",                    preis:9.00, type:"normal", group:"eis", sahne:true },
+    44: { id:44,  name:"44. Banana Split",                    preis:10.00,type:"normal", group:"eis", sahne:true },
+    45: { id:45,  name:"45. Sommer Becher",                   preis:13.00,type:"normal", group:"eis", sahne:true },
+    46: { id:46,  name:"46. Coppa Melone",                    preis:9.50, type:"normal", group:"eis", sahne:true },
+    47: { id:47,  name:"47. Heidelbeer Becher",               preis:9.50, type:"normal", group:"eis", sahne:true },
+    48: { id:48,  name:"48. Himbeer Becher",                  preis:9.50, type:"normal", group:"eis", sahne:true },
 
-    50: { name: "50. Spaghetti Eis", preis: 6.50, type: "normal" },
-    51: { name: "51. Spaghetti Eis groß", preis: 9.50, type: "normal" },
-    52: { name: "52. Spaghetti Vanille", preis: 7.40, type: "normal" },
-    53: { name: "53. Spaghetti Erdbeere", preis: 8.90, type: "normal" },
-    54: { name: "54. Spaghetti Kiwi", preis: 8.50, type: "normal" },
-    55: { name: "55. Spaghetti Vanille-Schoko", preis: 7.50, type: "normal" },
-    56: { name: "56. Spaghetti Carbonara", preis: 9.50, type: "normal" },
-    57: { name: "57. Spaghetti Nussknacker", preis: 9.50, type: "normal" },
-    58: { name: "58. Spaghetti Amarena", preis: 8.90, type: "normal" },
-    59: { name: "59. Spaghetti Waldfrüchte", preis: 8.90, type: "normal" },
-    60: { name: "60. Spaghetti Melone", preis: 8.90, type: "normal" },
-    61: { name: "61. Spaghetti Tutti Frutti", preis: 8.90, type: "normal" },
-    62: { name: "62. Lasagne Eis", preis: 8.90, type: "normal" },
+    50: { id:50,  name:"50. Spaghetti Eis",                   preis:6.50, type:"normal", group:"eis", sahne:true },
+    51: { id:51,  name:"51. Spaghetti Eis groß",              preis:9.50, type:"normal", group:"eis", sahne:true },
+    52: { id:52,  name:"52. Spaghetti Vanille",               preis:7.40, type:"normal", group:"eis", sahne:true },
+    53: { id:53,  name:"53. Spaghetti Erdbeere",              preis:8.90, type:"normal", group:"eis", sahne:true },
+    54: { id:54,  name:"54. Spaghetti Kiwi",                  preis:8.50, type:"normal", group:"eis", sahne:true },
+    55: { id:55,  name:"55. Spaghetti Vanille-Schoko",        preis:7.50, type:"normal", group:"eis", sahne:true },
+    56: { id:56,  name:"56. Spaghetti Carbonara",             preis:9.50, type:"normal", group:"eis", sahne:true },
+    57: { id:57,  name:"57. Spaghetti Nussknacker",           preis:9.50, type:"normal", group:"eis", sahne:true },
+    58: { id:58,  name:"58. Spaghetti Amarena",               preis:8.90, type:"normal", group:"eis", sahne:true },
+    59: { id:59,  name:"59. Spaghetti Waldfrüchte",           preis:8.90, type:"normal", group:"eis", sahne:true },
+    60: { id:60,  name:"60. Spaghetti Melone",                preis:8.90, type:"normal", group:"eis", sahne:true },
+    61: { id:61,  name:"61. Spaghetti Tutti Frutti",          preis:8.90, type:"normal", group:"eis", sahne:true },
+    62: { id:62,  name:"62. Lasagne Eis",                     preis:8.90, type:"normal", group:"eis", sahne:true },
 
-    63: { name: "63. Pizza Margherita", preis: 9.00, type: "normal" },
-    64: { name: "64. Pizza Grandiosa", preis: 12.00, type: "normal" },
+    63: { id:63,  name:"63. Pizza Margherita",                preis:9.00, type:"normal", group:"food", sahne:false },
+    64: { id:64,  name:"64. Pizza Grandiosa",                 preis:12.00,type:"normal", group:"food", sahne:false },
 
-    70: { name: "70. Mixgetränk Spezial", preis: 6.50, type: "normal" },
-    71: { name: "71. Joghurrette Becher", preis: 9.50, type: "normal" },
-    72: { name: "72. Joghurt Cocktail", preis: 9.50, type: "normal" },
-    73: { name: "73. Joghurt Kiwi", preis: 9.00, type: "normal" },
-    74: { name: "74. Joghurt Erdbeere", preis: 9.00, type: "normal" },
-    75: { name: "75. Joghurt Ananas", preis: 9.00, type: "normal" },
-    76: { name: "76. Müsli Joghurt Becher", preis: 9.00, type: "normal" },
-    77: { name: "77. Joghurt Heidelbeere", preis: 9.00, type: "normal" },
-    78: { name: "78. Joghurt Banane", preis: 9.00, type: "normal" },
-    79: { name: "79. Joghurt Amarena", preis: 9.00, type: "normal" },
-    80: { name: "80. Joghurt Himbeere", preis: 9.00, type: "normal" },
+    70: { id:70,  name:"70. Mixgetränk Spezial",              preis:6.50, type:"normal", group:"eis", sahne:true },
+    71: { id:71,  name:"71. Joghurrette Becher",              preis:9.50, type:"normal", group:"eis", sahne:true },
+    72: { id:72,  name:"72. Joghurt Cocktail",                preis:9.50, type:"normal", group:"eis", sahne:true },
+    73: { id:73,  name:"73. Joghurt Kiwi",                    preis:9.00, type:"normal", group:"eis", sahne:true },
+    74: { id:74,  name:"74. Joghurt Erdbeere",                preis:9.00, type:"normal", group:"eis", sahne:true },
+    75: { id:75,  name:"75. Joghurt Ananas",                  preis:9.00, type:"normal", group:"eis", sahne:true },
+    76: { id:76,  name:"76. Müsli Joghurt Becher",            preis:9.00, type:"normal", group:"eis", sahne:true },
+    77: { id:77,  name:"77. Joghurt Heidelbeere",             preis:9.00, type:"normal", group:"eis", sahne:true },
+    78: { id:78,  name:"78. Joghurt Banane",                  preis:9.00, type:"normal", group:"eis", sahne:true },
+    79: { id:79,  name:"79. Joghurt Amarena",                 preis:9.00, type:"normal", group:"eis", sahne:true },
+    80: { id:80,  name:"80. Joghurt Himbeere",                preis:9.00, type:"normal", group:"eis", sahne:true },
 
-    81: { name: "81. Heiße Kirschen", preis: 8.50, type: "normal" },
-    82: { name: "82. Heiße Himbeeren", preis: 9.00, type: "normal" },
-    83: { name: "83. Zimt Becher", preis: 8.50, type: "normal" },
-    84: { name: "84. Cup Dänemark", preis: 8.50, type: "normal" },
-    85: { name: "85. Wiener Mokka", preis: 8.50, type: "normal" },
+    81: { id:81,  name:"81. Heiße Kirschen",                  preis:8.50, type:"normal", group:"eis", sahne:true },
+    82: { id:82,  name:"82. Heiße Himbeeren",                 preis:9.00, type:"normal", group:"eis", sahne:true },
+    83: { id:83,  name:"83. Zimt Becher",                     preis:8.50, type:"normal", group:"eis", sahne:true },
+    84: { id:84,  name:"84. Cup Dänemark",                    preis:8.50, type:"normal", group:"eis", sahne:true },
+    85: { id:85,  name:"85. Wiener Mokka",                    preis:8.50, type:"normal", group:"eis", sahne:true },
 
-    90: { name: "90. Amaretto Becher", preis: 8.50, type: "normal" },
-    91: { name: "91. Schwarzwald Becher", preis: 9.00, type: "normal" },
-    92: { name: "92. Malaga Becher", preis: 9.00, type: "normal" },
-    93: { name: "93. Mon Chéri Becher", preis: 9.50, type: "normal" },
-    94: { name: "94. Raffaello Becher", preis: 9.50, type: "normal" },
-    96: { name: "96. Eierlikör Becher", preis: 8.50, type: "normal" },
-    98: { name: "98. Nuss Becher", preis: 9.50, type: "normal" },
-    99: { name: "99. Rocher Becher", preis: 9.50, type: "normal" },
-    100:{ name: "100. Giotto Becher", preis: 9.00, type: "normal" },
-    101:{ name: "101. Berg Becher", preis: 10.50, type: "normal" },
-    102:{ name: "102. Walnuss Becher", preis: 9.50, type: "normal" },
-    103:{ name: "103. Coppa Delizia", preis: 10.90, type: "normal" },
+    90: { id:90,  name:"90. Amaretto Becher",                 preis:8.50, type:"normal", group:"eis", sahne:true },
+    91: { id:91,  name:"91. Schwarzwald Becher",              preis:9.00, type:"normal", group:"eis", sahne:true },
+    92: { id:92,  name:"92. Malaga Becher",                   preis:9.00, type:"normal", group:"eis", sahne:true },
+    93: { id:93,  name:"93. Mon Chéri Becher",                preis:9.50, type:"normal", group:"eis", sahne:true },
+    94: { id:94,  name:"94. Raffaello Becher",                preis:9.50, type:"normal", group:"eis", sahne:true },
+    96: { id:96,  name:"96. Eierlikör Becher",                preis:8.50, type:"normal", group:"eis", sahne:true },
+    98: { id:98,  name:"98. Nuss Becher",                     preis:9.50, type:"normal", group:"eis", sahne:true },
+    99: { id:99,  name:"99. Rocher Becher",                   preis:9.50, type:"normal", group:"eis", sahne:true },
+    100:{ id:100, name:"100. Giotto Becher",                  preis:9.00, type:"normal", group:"eis", sahne:true },
+    101:{ id:101, name:"101. Berg Becher",                    preis:10.50,type:"normal", group:"eis", sahne:true },
+    102:{ id:102, name:"102. Walnuss Becher",                 preis:9.50, type:"normal", group:"eis", sahne:true },
+    103:{ id:103, name:"103. Coppa Delizia",                  preis:10.90,type:"normal", group:"eis", sahne:true },
 
-    110:{ name: "110. After Eight Becher", preis: 8.90, type: "normal" },
-    111:{ name: "111. Stracciatella Becher", preis: 7.90, type: "normal" },
-    112:{ name: "112. Tartufo Nero", preis: 9.50, type: "normal" },
-    113:{ name: "113. Tartufo Bianco", preis: 9.50, type: "normal" },
-    114:{ name: "114. Hausbecher", preis: 20.00, type: "normal" },
-    116:{ name: "116. Krokant Becher", preis: 8.50, type: "normal" },
-    117:{ name: "117. Schoko Becher", preis: 8.50, type: "normal" },
-    118:{ name: "118. Schoko Becher groß", preis: 12.00, type: "normal" },
-    122:{ name: "122. Pistazien Becher", preis: 11.50, type: "normal" },
+    110:{ id:110, name:"110. After Eight Becher",             preis:8.90, type:"normal", group:"eis", sahne:true },
+    111:{ id:111, name:"111. Stracciatella Becher",           preis:7.90, type:"normal", group:"eis", sahne:true },
+    112:{ id:112, name:"112. Tartufo Nero",                   preis:9.50, type:"normal", group:"eis", sahne:true },
+    113:{ id:113, name:"113. Tartufo Bianco",                 preis:9.50, type:"normal", group:"eis", sahne:true },
+    114:{ id:114, name:"114. Hausbecher",                     preis:20.00,type:"normal", group:"eis", sahne:true },
+    116:{ id:116, name:"116. Krokant Becher",                 preis:8.50, type:"normal", group:"eis", sahne:true },
+    117:{ id:117, name:"117. Schoko Becher",                  preis:8.50, type:"normal", group:"eis", sahne:true },
+    118:{ id:118, name:"118. Schoko Becher groß",             preis:12.00,type:"normal", group:"eis", sahne:true },
+    122:{ id:122, name:"122. Pistazien Becher",               preis:11.50,type:"normal", group:"eis", sahne:true },
 
-    130:{ name: "130. Flipper", preis: 5.00, type: "normal" },
-    131:{ name: "131. Bellini", preis: 6.00, type: "normal" },
-    132:{ name: "132. Mimosa", preis: 6.00, type: "normal" },
-    133:{ name: "133. Formula 1", preis: 6.00, type: "normal" },
-    134:{ name: "134. Formula 2", preis: 6.00, type: "normal" },
+    130:{ id:130, name:"130. Flipper",                        preis:5.00, type:"normal", group:"kids", sahne:true },
+    131:{ id:131, name:"131. Bellini",                        preis:6.00, type:"normal", group:"drinks", sahne:false },
+    132:{ id:132, name:"132. Mimosa",                         preis:6.00, type:"normal", group:"drinks", sahne:false },
+    133:{ id:133, name:"133. Formula 1",                      preis:6.00, type:"normal", group:"kids", sahne:false },
+    134:{ id:134, name:"134. Formula 2",                      preis:6.00, type:"normal", group:"kids", sahne:false },
 
-    140:{ name: "140. Eiskaffee", preis: 5.50, type: "normal" },
-    141:{ name: "141. Eisschokolade", preis: 5.50, type: "normal" },
-    142:{ name: "142. Eis-Cappuccino", preis: 5.50, type: "normal" },
+    140:{ id:140, name:"140. Eiskaffee",                      preis:5.50, type:"normal", group:"drinks", sahne:true },
+    141:{ id:141, name:"141. Eisschokolade",                  preis:5.50, type:"normal", group:"drinks", sahne:true },
+    142:{ id:142, name:"142. Eis-Cappuccino",                 preis:5.50, type:"normal", group:"drinks", sahne:true },
 
-    150:{ name: "150. Milch-Mix 0,3 l", preis: 4.00, type: "normal" },
-    151:{ name: "151. Milchshake 0,3 l", preis: 4.60, type: "normal" },
-    152:{ name: "152. Riesen Milch-Mix 0,5 l", preis: 5.00, type: "normal" },
-    153:{ name: "153. Riesen Milchshake 0,5 l", preis: 5.50, type: "normal" },
-    154:{ name: "154. Vulcano", preis: 3.70, type: "normal" },
-    155:{ name: "155. Orangensaft (frisch)", preis: 4.50, type: "normal" },
-    156:{ name: "156. Kalte Zitrone", preis: 3.50, type: "normal" },
+    150:{ id:150, name:"150. Milch-Mix 0,3 l",                preis:4.00, type:"normal", group:"kids",   sahne:true },
+    151:{ id:151, name:"151. Milchshake 0,3 l",               preis:4.60, type:"normal", group:"kids",   sahne:true },
+    152:{ id:152, name:"152. Riesen Milch-Mix 0,5 l",         preis:5.00, type:"normal", group:"kids",   sahne:true },
+    153:{ id:153, name:"153. Riesen Milchshake 0,5 l",        preis:5.50, type:"normal", group:"kids",   sahne:true },
+    154:{ id:154, name:"154. Vulcano",                        preis:3.70, type:"normal", group:"kids",   sahne:true },
+    155:{ id:155, name:"155. Orangensaft (frisch)",           preis:4.50, type:"normal", group:"drinks", sahne:false },
+    156:{ id:156, name:"156. Kalte Zitrone",                  preis:3.50, type:"normal", group:"drinks", sahne:false },
 
-    160:{ name: "Erdbeer Donut", preis: 6.90, type: "normal" },
-    161:{ name: "Schoko Donut", preis: 6.90, type: "normal" },
-    162:{ name: "Caramel Donut", preis: 6.90, type: "normal" },
-    163:{ name: "Pistazien Donut", preis: 7.20, type: "normal" },
-    164:{ name: "Kinder Donut", preis: 6.50, type: "normal" },
+    160:{ id:160, name:"Erdbeer Donut",                       preis:6.90, type:"normal", group:"kids", sahne:true },
+    161:{ id:161, name:"Schoko Donut",                        preis:6.90, type:"normal", group:"kids", sahne:true },
+    162:{ id:162, name:"Caramel Donut",                       preis:6.90, type:"normal", group:"kids", sahne:true },
+    163:{ id:163, name:"Pistazien Donut",                     preis:7.20, type:"normal", group:"kids", sahne:true },
+    164:{ id:164, name:"Kinder Donut",                        preis:6.50, type:"normal", group:"kids", sahne:true },
 
-    200:{ name: "Espresso", preis: 2.00, type: "normal" },
-    201:{ name: "Espresso Macchiato", preis: 2.30, type: "normal" },
-    202:{ name: "Espresso Corretto", preis: 3.40, type: "normal" },
-    203:{ name: "Doppelter Espresso", preis: 3.60, type: "normal" },
-    204:{ name: "Doppelter Espresso Macchiato", preis: 3.80, type: "normal" },
-    210:{ name: "Kaffee", preis: 2.20, type: "normal" },
-    220:{ name: "Milchkaffee", preis: 3.00, type: "normal" },
-    221:{ name: "Milchkaffee mit Baileys", preis: 4.00, type: "normal" },
-    230:{ name: "Latte Macchiato", preis: 3.60, type: "normal" },
-    231:{ name: "Latte Macchiato mit Sirup", preis: 3.20, type: "normal" },
-    240:{ name: "Cappuccino", preis: 2.60, type: "normal" },
-    241:{ name: "Cappuccino groß", preis: 3.00, type: "normal" },
-    244:{ name: "Cappuccino mit Amaretto", preis: 4.00, type: "normal" },
-    245:{ name: "Cappuccino mit Eierlikör", preis: 4.00, type: "normal" },
-    246:{ name: "Cappuccino mit Baileys", preis: 4.00, type: "normal" },
+    200:{ id:200, name:"Espresso",                            preis:2.00, type:"normal", group:"drinks", sahne:false },
+    201:{ id:201, name:"Espresso Macchiato",                  preis:2.30, type:"normal", group:"drinks", sahne:false },
+    202:{ id:202, name:"Espresso Corretto",                   preis:3.40, type:"normal", group:"drinks", sahne:false },
+    203:{ id:203, name:"Doppelter Espresso",                  preis:3.60, type:"normal", group:"drinks", sahne:false },
+    204:{ id:204, name:"Doppelter Espresso Macchiato",        preis:3.80, type:"normal", group:"drinks", sahne:false },
+    210:{ id:210, name:"Kaffee",                              preis:2.20, type:"normal", group:"drinks", sahne:false },
+    220:{ id:220, name:"Milchkaffee",                         preis:3.00, type:"normal", group:"drinks", sahne:true },
+    221:{ id:221, name:"Milchkaffee mit Baileys",             preis:4.00, type:"normal", group:"drinks", sahne:true },
+    230:{ id:230, name:"Latte Macchiato",                     preis:3.60, type:"normal", group:"drinks", sahne:true },
+    231:{ id:231, name:"Latte Macchiato mit Sirup",           preis:3.20, type:"normal", group:"drinks", sahne:true },
+    240:{ id:240, name:"Cappuccino",                          preis:2.60, type:"normal", group:"drinks", sahne:true },
+    241:{ id:241, name:"Cappuccino groß",                     preis:3.00, type:"normal", group:"drinks", sahne:true },
+    244:{ id:244, name:"Cappuccino mit Amaretto",             preis:4.00, type:"normal", group:"drinks", sahne:true },
+    245:{ id:245, name:"Cappuccino mit Eierlikör",            preis:4.00, type:"normal", group:"drinks", sahne:true },
+    246:{ id:246, name:"Cappuccino mit Baileys",              preis:4.00, type:"normal", group:"drinks", sahne:true },
 
-    300:{ name: "Coca-Cola 0,2 l", preis: 2.70, type: "normal" },
-    301:{ name: "Coca-Cola Light 0,2 l", preis: 2.70, type: "normal" },
-    302:{ name: "Coca-Cola Zero 0,2 l", preis: 2.70, type: "normal" },
-    303:{ name: "Fanta 0,2 l", preis: 2.70, type: "normal" },
-    304:{ name: "Mezzo Mix 0,2 l", preis: 2.70, type: "normal" },
-    305:{ name: "Sprite 0,2 l", preis: 2.70, type: "normal" },
-    306:{ name: "Bitter Lemon 0,2 l", preis: 2.70, type: "normal" },
-    307:{ name: "Apfelschorle", preis: 1.90, type: "normal" },
-    308:{ name: "Eistee", preis: 1.90, type: "normal" },
-    309:{ name: "Wild Berry", preis: 2.20, type: "normal" },
-    310:{ name: "Tonic Water", preis: 2.20, type: "normal" },
-    311:{ name: "S.Pellegrino 0,25 l", preis: 2.40, type: "normal" },
-    312:{ name: "S.Pellegrino 0,75 l", preis: 5.90, type: "normal" },
+    300:{ id:300, name:"Coca-Cola 0,2 l",                     preis:2.70, type:"normal", group:"drinks", sahne:false },
+    301:{ id:301, name:"Coca-Cola Light 0,2 l",               preis:2.70, type:"normal", group:"drinks", sahne:false },
+    302:{ id:302, name:"Coca-Cola Zero 0,2 l",                preis:2.70, type:"normal", group:"drinks", sahne:false },
+    303:{ id:303, name:"Fanta 0,2 l",                         preis:2.70, type:"normal", group:"drinks", sahne:false },
+    304:{ id:304, name:"Mezzo Mix 0,2 l",                     preis:2.70, type:"normal", group:"drinks", sahne:false },
+    305:{ id:305, name:"Sprite 0,2 l",                        preis:2.70, type:"normal", group:"drinks", sahne:false },
+    306:{ id:306, name:"Bitter Lemon 0,2 l",                  preis:2.70, type:"normal", group:"drinks", sahne:false },
+    307:{ id:307, name:"Apfelschorle",                        preis:1.90, type:"normal", group:"drinks", sahne:false },
+    308:{ id:308, name:"Eistee",                              preis:1.90, type:"normal", group:"drinks", sahne:false },
+    309:{ id:309, name:"Wild Berry",                          preis:2.20, type:"normal", group:"drinks", sahne:false },
+    310:{ id:310, name:"Tonic Water",                         preis:2.20, type:"normal", group:"drinks", sahne:false },
+    311:{ id:311, name:"S.Pellegrino 0,25 l",                 preis:2.40, type:"normal", group:"drinks", sahne:false },
+    312:{ id:312, name:"S.Pellegrino 0,75 l",                 preis:5.90, type:"normal", group:"drinks", sahne:false },
 
-    350:{ name: "Krombacher Pils 0,33 l", preis: 2.80, type: "normal" },
-    351:{ name: "Krombacher Radler 0,33 l", preis: 2.80, type: "normal" },
-    352:{ name: "Erdinger Weißbier 0,5 l", preis: 4.50, type: "normal" },
-    353:{ name: "Erdinger Alkoholfrei 0,33 l", preis: 2.80, type: "normal" },
-    354:{ name: "Erdinger Alkoholfrei 0,5 l", preis: 4.50, type: "normal" },
+    350:{ id:350, name:"Krombacher Pils 0,33 l",              preis:2.80, type:"normal", group:"drinks", sahne:false },
+    351:{ id:351, name:"Krombacher Radler 0,33 l",            preis:2.80, type:"normal", group:"drinks", sahne:false },
+    352:{ id:352, name:"Erdinger Weißbier 0,5 l",             preis:4.50, type:"normal", group:"drinks", sahne:false },
+    353:{ id:353, name:"Erdinger Alkoholfrei 0,33 l",         preis:2.80, type:"normal", group:"drinks", sahne:false },
+    354:{ id:354, name:"Erdinger Alkoholfrei 0,5 l",          preis:4.50, type:"normal", group:"drinks", sahne:false },
 
-    400:{ name: "Rotwein trocken 0,2 l", preis: 4.90, type: "normal" },
-    401:{ name: "Weißwein trocken 0,2 l", preis: 4.90, type: "normal" },
-    402:{ name: "Glas Sekt", preis: 3.90, type: "normal" },
-    403:{ name: "Campari Sekt", preis: 3.90, type: "normal" },
-    410:{ name: "Aperitif Rosato", preis: 5.90, type: "normal" },
-    430:{ name: "Grappa", preis: 4.70, type: "normal" },
-    431:{ name: "Asbach", preis: 3.20, type: "normal" },
-    432:{ name: "Ramazzotti", preis: 3.20, type: "normal" },
-    433:{ name: "Aperol", preis: 6.10, type: "normal" },
-    434:{ name: "Hugo", preis: 6.10, type: "normal" },
+    400:{ id:400, name:"Rotwein trocken 0,2 l",               preis:4.90, type:"normal", group:"drinks", sahne:false },
+    401:{ id:401, name:"Weißwein trocken 0,2 l",              preis:4.90, type:"normal", group:"drinks", sahne:false },
+    402:{ id:402, name:"Glas Sekt",                           preis:3.90, type:"normal", group:"drinks", sahne:false },
+    403:{ id:403, name:"Campari Sekt",                        preis:3.90, type:"normal", group:"drinks", sahne:false },
+    410:{ id:410, name:"Aperitif Rosato",                     preis:5.90, type:"normal", group:"drinks", sahne:false },
+    430:{ id:430, name:"Grappa",                              preis:4.70, type:"normal", group:"drinks", sahne:false },
+    431:{ id:431, name:"Asbach",                              preis:3.20, type:"normal", group:"drinks", sahne:false },
+    432:{ id:432, name:"Ramazzotti",                          preis:3.20, type:"normal", group:"drinks", sahne:false },
+    433:{ id:433, name:"Aperol",                              preis:6.10, type:"normal", group:"drinks", sahne:false },
+    434:{ id:434, name:"Hugo",                                preis:6.10, type:"normal", group:"drinks", sahne:false },
 
-    500:{ name: "Flammkuchen Elsässer Art", preis: 8.90, type: "normal" },
-    501:{ name: "Flammkuchen Wildlachs & Shrimps", preis: 8.90, type: "normal" },
-    502:{ name: "Flammkuchen Griechische Art", preis: 8.90, type: "normal" },
-    510:{ name: "Toast mit Käse", preis: 3.70, type: "normal" },
-    511:{ name: "Toast mit Käse & Schinken", preis: 4.30, type: "normal" },
-    512:{ name: "Toast mit Salami & Käse", preis: 4.30, type: "normal" },
-    513:{ name: "Toast Hawaii", preis: 5.60, type: "normal" },
-    520:{ name: "Baguette XXL", preis: 6.90, type: "normal" },
+    500:{ id:500, name:"Flammkuchen Elsässer Art",            preis:8.90, type:"normal", group:"food", sahne:false },
+    501:{ id:501, name:"Flammkuchen Wildlachs & Shrimps",     preis:8.90, type:"normal", group:"food", sahne:false },
+    502:{ id:502, name:"Flammkuchen Griechische Art",         preis:8.90, type:"normal", group:"food", sahne:false },
+    510:{ id:510, name:"Toast mit Käse",                      preis:3.70, type:"normal", group:"food", sahne:false },
+    511:{ id:511, name:"Toast mit Käse & Schinken",           preis:4.30, type:"normal", group:"food", sahne:false },
+    512:{ id:512, name:"Toast mit Salami & Käse",             preis:4.30, type:"normal", group:"food", sahne:false },
+    513:{ id:513, name:"Toast Hawaii",                        preis:5.60, type:"normal", group:"food", sahne:false },
+    520:{ id:520, name:"Baguette XXL",                        preis:6.90, type:"normal", group:"food", sahne:false },
 
-    600:{ name: "Apfelstrudel", preis: 3.70, type: "normal" },
-    601:{ name: "Apfelstrudel mit Vanillesoße", preis: 4.00, type: "normal" },
-    602:{ name: "Apfelstrudel mit Sahne", preis: 4.70, type: "normal" },
-    603:{ name: "Apfelstrudel mit Eis", preis: 6.10, type: "normal" },
-    610:{ name: "Hausgemachtes Tiramisu", preis: 4.20, type: "normal" },
-    620:{ name: "Waffel mit Puderzucker", preis: 4.00, type: "normal" },
-    621:{ name: "Waffel mit Sahne", preis: 5.00, type: "normal" },
-    622:{ name: "Waffel mit Eis", preis: 5.30, type: "normal" },
-    623:{ name: "Waffel mit Eis & Sahne", preis: 6.30, type: "normal" },
-    624:{ name: "Waffel mit Nutella", preis: 5.00, type: "normal" },
+    600:{ id:600, name:"Apfelstrudel",                        preis:3.70, type:"normal", group:"food", sahne:true },
+    601:{ id:601, name:"Apfelstrudel mit Vanillesoße",        preis:4.00, type:"normal", group:"food", sahne:true },
+    602:{ id:602, name:"Apfelstrudel mit Sahne",              preis:4.70, type:"normal", group:"food", sahne:true },
+    603:{ id:603, name:"Apfelstrudel mit Eis",                preis:6.10, type:"normal", group:"food", sahne:true },
+    610:{ id:610, name:"Hausgemachtes Tiramisu",              preis:4.20, type:"normal", group:"food", sahne:true },
+    620:{ id:620, name:"Waffel mit Puderzucker",              preis:4.00, type:"normal", group:"food", sahne:false },
+    621:{ id:621, name:"Waffel mit Sahne",                    preis:5.00, type:"normal", group:"food", sahne:true },
+    622:{ id:622, name:"Waffel mit Eis",                      preis:5.30, type:"normal", group:"food", sahne:true },
+    623:{ id:623, name:"Waffel mit Eis & Sahne",              preis:6.30, type:"normal", group:"food", sahne:true },
+    624:{ id:624, name:"Waffel mit Nutella",                  preis:5.00, type:"normal", group:"food", sahne:true },
 
-    631:{ name: "630a. Waffel Zimt & Banane", preis: 6.80, type: "normal" },
-    632:{ name: "630b. Waffel Obstsalat", preis: 7.90, type: "normal" },
-    633:{ name: "630c. Waffel Erdbeeren", preis: 7.50, type: "normal" },
-    634:{ name: "630d. Waffel Waldbeeren", preis: 7.20, type: "normal" },
-    635:{ name: "630e. Waffel Schoko-Banane", preis: 7.90, type: "normal" },
-    636:{ name: "630f. Waffel Heiße Kirschen", preis: 7.00, type: "normal" },
-    637:{ name: "630g. Waffel Schoko", preis: 6.80, type: "normal" },
-    638:{ name: "630h. Waffel Tutti Frutti", preis: 7.50, type: "normal" }
+    631:{ id:631, name:"630a. Waffel Zimt & Banane",          preis:6.80, type:"normal", group:"food", sahne:true },
+    632:{ id:632, name:"630b. Waffel Obstsalat",              preis:7.90, type:"normal", group:"food", sahne:true },
+    633:{ id:633, name:"630c. Waffel Erdbeeren",              preis:7.50, type:"normal", group:"food", sahne:true },
+    634:{ id:634, name:"630d. Waffel Waldbeeren",             preis:7.20, type:"normal", group:"food", sahne:true },
+    635:{ id:635, name:"630e. Waffel Schoko-Banane",          preis:7.90, type:"normal", group:"food", sahne:true },
+    636:{ id:636, name:"630f. Waffel Heiße Kirschen",         preis:7.00, type:"normal", group:"food", sahne:true },
+    637:{ id:637, name:"630g. Waffel Schoko",                 preis:6.80, type:"normal", group:"food", sahne:true },
+    638:{ id:638, name:"630h. Waffel Tutti Frutti",           preis:7.50, type:"normal", group:"food", sahne:true }
 };
 
-const SORTEN = [
+/* Standard-Sorten */
+let SORTEN = [
     "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
     "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
     "Erdbeere","Mango","Banane","Himbeere","Limette",
     "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien"
 ];
 
-const SAHNE_PRODUKTE = new Set([
-    23,24,25,26,
-    30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
-    81,82,83,84,85,
-    90,91,92,93,94,96,98,99,100,101,102,103,
-    110,111,112,113,114,116,117,118,122,
-    50,51,52,53,54,55,56,57,58,59,60,61,62,
-    63,64,
-    70,71,72,73,74,75,76,77,78,79,80,
-    160,161,162,163,164,
-    130,131,132,133,134,
-    140,141,142,
-    150,151,152,153,154,155,156,
-    600,601,602,603,
-    610,
-    620,621,622,623,624,
-    631,632,633,634,635,636,637,638
-]);
+/* Produkte-Konfiguration aus localStorage laden */
+let PRODUCTS = JSON.parse(JSON.stringify(BASE_PRODUCTS)); // Kopie
 
-const GROUPS = {
-    portions: [23,24,25,26],
-    kids: [23,160,161,162,163,164,130,154,150,151,152,153],
-    eis: [
-        30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
-        50,51,52,53,54,55,56,57,58,59,60,61,62,
-        70,71,72,73,74,75,76,77,78,79,80,
-        81,82,83,84,85,
-        90,91,92,93,94,96,98,99,100,101,102,103,
-        110,111,112,113,114,116,117,118,122
-    ],
-    food: [
-        500,501,502,
-        510,511,512,513,
-        520,
-        600,601,602,603,
-        610,
-        620,621,622,623,624,
-        631,632,633,634,635,636,637,638
-    ],
-    drinks: [
-        140,141,142,
-        150,151,152,153,154,155,156,
-        200,201,202,203,204,
-        210,220,221,
-        230,231,
-        240,241,244,245,246,
-        300,301,302,303,304,305,306,307,308,309,310,311,312,
-        350,351,352,353,354,
-        400,401,402,403,410,
-        430,431,432,433,434
-    ]
-};
+(function restoreConfig() {
+    try {
+        const p = localStorage.getItem("sanremo_products");
+        if (p) PRODUCTS = JSON.parse(p);
+        const s = localStorage.getItem("sanremo_sorten");
+        if (s) SORTEN = JSON.parse(s);
+    } catch(e) {
+        console.warn("Konfiguration konnte nicht geladen werden:", e);
+    }
+})();
+
+function saveConfig() {
+    try {
+        localStorage.setItem("sanremo_products", JSON.stringify(PRODUCTS));
+        localStorage.setItem("sanremo_sorten", JSON.stringify(SORTEN));
+    } catch(e) {
+        console.warn("Konfiguration konnte nicht gespeichert werden:", e);
+    }
+}
 
 let warenkorb = [];
 let currentGroup = "portions";
@@ -709,7 +768,7 @@ for (let i = 1; i <= 33; i++) {
     tischSelect.appendChild(opt);
 }
 
-/* Sorten */
+/* Sorten-Selects füllen */
 function fillSortenSelect(id) {
     const sel = document.getElementById(id);
     sel.innerHTML = "<option value=''>Sorte wählen…</option>";
@@ -722,19 +781,21 @@ function fillSortenSelect(id) {
 }
 ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
 
-/* Produto por grupo */
+/* Produkte nach Gruppe */
 function buildProduktSelect(group) {
     const select = document.getElementById("produkt");
     select.innerHTML = "<option value=''>Bitte wählen…</option>";
-    const ids = GROUPS[group] || [];
-    ids.forEach(id => {
-        const p = PRODUKTE[id];
-        if (!p) return;
-        const opt = document.createElement("option");
-        opt.value = id;
-        opt.textContent = p.name + " – " + p.preis.toFixed(2).replace(".", ",") + " €";
-        select.appendChild(opt);
-    });
+
+    Object.keys(PRODUCTS)
+        .map(id => PRODUCTS[id])
+        .filter(p => p.group === group)
+        .sort((a,b) => a.id - b.id)
+        .forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p.id;
+            opt.textContent = p.name + " – " + p.preis.toFixed(2).replace(".", ",") + " €";
+            select.appendChild(opt);
+        });
 
     document.getElementById("geschmack-box").style.display = "none";
     document.getElementById("sahne-box").style.display = "none";
@@ -762,16 +823,16 @@ document.getElementById("produkt").addEventListener("change", function() {
     const geschmackBox = document.getElementById("geschmack-box");
     const sahneBox = document.getElementById("sahne-box");
 
-    if (!wert || !PRODUKTE[wert]) {
+    if (!wert || !PRODUCTS[wert]) {
         geschmackBox.style.display = "none";
         sahneBox.style.display = "none";
         document.getElementById("sahne").value = "";
         return;
     }
 
-    const idNum = parseInt(wert, 10);
+    const produkt = PRODUCTS[wert];
 
-    if (PRODUKTE[wert].type === "cup3") {
+    if (produkt.type === "cup3") {
         geschmackBox.style.display = "block";
     } else {
         geschmackBox.style.display = "none";
@@ -781,7 +842,7 @@ document.getElementById("produkt").addEventListener("change", function() {
         });
     }
 
-    if (SAHNE_PRODUKTE.has(idNum)) {
+    if (produkt.sahne) {
         sahneBox.style.display = "block";
     } else {
         sahneBox.style.display = "none";
@@ -798,12 +859,12 @@ function addToCart() {
     }
 
     const produktId = document.getElementById("produkt").value;
-    if (!produktId || !PRODUKTE[produktId]) {
+    if (!produktId || !PRODUCTS[produktId]) {
         alert("Bitte ein Produkt auswählen.");
         return;
     }
 
-    const produkt = PRODUKTE[produktId];
+    const produkt = PRODUCTS[produktId];
     let sorten = [];
     const bemerkung = document.getElementById("bemerkung").value.trim();
 
@@ -818,18 +879,17 @@ function addToCart() {
 
     let sahne = "";
     let sahneZuschlag = 0;
-    const idNum = parseInt(produktId, 10);
-    if (SAHNE_PRODUKTE.has(idNum)) {
+    if (produkt.sahne) {
         sahne = document.getElementById("sahne").value;
         if (sahne === "mit Sahne") {
-            sahneZuschlag = 1.20;
+            sahneZuschlag = SAHNE_AUFSCHLAG;
         }
     }
 
     const endPreis = produkt.preis + sahneZuschlag;
 
     warenkorb.push({
-        id: produktId,
+        id: produkt.id,
         name: produkt.name,
         preis: endPreis,
         grundpreis: produkt.preis,
@@ -908,7 +968,7 @@ function removeItem(index) {
     updateCart();
 }
 
-/* Texto da encomenda */
+/* Bestellungstext */
 function buildOrderText() {
     const tisch = document.getElementById("tisch").value || "-";
     let total = 0;
@@ -937,7 +997,7 @@ function buildOrderText() {
     return text;
 }
 
-/* Guardar pedido para o chefe */
+/* Bestellungen für Chef speichern */
 function storeOrder(channel) {
     const tisch = document.getElementById("tisch").value || "-";
     const textPlain = buildOrderText();
@@ -1084,6 +1144,8 @@ function adminLogin() {
         document.getElementById("admin-login-card").style.display = "none";
         document.getElementById("admin-panel").style.display = "block";
         updateAdminList();
+        populateAdminProducts();
+        renderSortenList();
     } else {
         alert("Falsches Passwort.");
     }
@@ -1096,6 +1158,7 @@ function adminLogout() {
     document.getElementById("admin-password").value = "";
 }
 
+/* Admin: Bestell-Liste */
 function updateAdminList() {
     const list = document.getElementById("admin-orders-list");
     list.innerHTML = "";
@@ -1128,6 +1191,149 @@ function clearAllOrders() {
     updateAdminList();
 }
 
+/* Admin: Produkte verwalten */
+function populateAdminProducts() {
+    const sel = document.getElementById("admin-product-select");
+    sel.innerHTML = "<option value=''>Produkt wählen…</option>";
+    Object.keys(PRODUCTS)
+        .map(id => PRODUCTS[id])
+        .sort((a,b) => a.id - b.id)
+        .forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p.id;
+            opt.textContent = p.id + " – " + p.name + " (" + p.group + ")";
+            sel.appendChild(opt);
+        });
+
+    sel.onchange = () => {
+        const id = sel.value;
+        if (!id || !PRODUCTS[id]) return;
+        const p = PRODUCTS[id];
+        document.getElementById("admin-prod-name").value = p.name;
+        document.getElementById("admin-prod-price").value = p.preis.toString().replace(".", ",").replace(",",".");
+        document.getElementById("admin-prod-group").value = p.group;
+        document.getElementById("admin-prod-type").value = p.type;
+        document.getElementById("admin-prod-sahne").checked = !!p.sahne;
+    };
+}
+
+function saveExistingProduct() {
+    const sel = document.getElementById("admin-product-select");
+    const id = sel.value;
+    if (!id || !PRODUCTS[id]) {
+        alert("Bitte zuerst ein Produkt wählen.");
+        return;
+    }
+    const name = document.getElementById("admin-prod-name").value.trim();
+    let preis = parseFloat(document.getElementById("admin-prod-price").value.replace(",","."));
+    const group = document.getElementById("admin-prod-group").value;
+    const type = document.getElementById("admin-prod-type").value;
+    const sahne = document.getElementById("admin-prod-sahne").checked;
+
+    if (!name || isNaN(preis)) {
+        alert("Name und Preis sind erforderlich.");
+        return;
+    }
+
+    PRODUCTS[id].name = name;
+    PRODUCTS[id].preis = preis;
+    PRODUCTS[id].group = group;
+    PRODUCTS[id].type = type;
+    PRODUCTS[id].sahne = sahne;
+
+    saveConfig();
+    populateAdminProducts();
+    buildProduktSelect(currentGroup);
+    alert("Produkt gespeichert.");
+}
+
+function deleteExistingProduct() {
+    const sel = document.getElementById("admin-product-select");
+    const id = sel.value;
+    if (!id || !PRODUCTS[id]) {
+        alert("Bitte zuerst ein Produkt wählen.");
+        return;
+    }
+    if (!confirm("Produkt wirklich löschen?")) return;
+    delete PRODUCTS[id];
+    saveConfig();
+    populateAdminProducts();
+    buildProduktSelect(currentGroup);
+    alert("Produkt gelöscht.");
+}
+
+function addNewProduct() {
+    const idVal = document.getElementById("new-prod-id").value;
+    const name = document.getElementById("new-prod-name").value.trim();
+    let preis = parseFloat(document.getElementById("new-prod-price").value.replace(",","."));
+    const group = document.getElementById("new-prod-group").value;
+    const type = document.getElementById("new-prod-type").value;
+    const sahne = document.getElementById("new-prod-sahne").checked;
+
+    const id = parseInt(idVal, 10);
+    if (!idVal || isNaN(id) || !name || isNaN(preis)) {
+        alert("Bitte Produktnummer, Name und Preis eingeben.");
+        return;
+    }
+    if (PRODUCTS[id]) {
+        if (!confirm("Diese Produktnummer existiert bereits. Überschreiben?")) return;
+    }
+
+    PRODUCTS[id] = { id, name, preis, type, group, sahne };
+
+    document.getElementById("new-prod-id").value = "";
+    document.getElementById("new-prod-name").value = "";
+    document.getElementById("new-prod-price").value = "";
+    document.getElementById("new-prod-group").value = "portions";
+    document.getElementById("new-prod-type").value = "normal";
+    document.getElementById("new-prod-sahne").checked = false;
+
+    saveConfig();
+    populateAdminProducts();
+    buildProduktSelect(currentGroup);
+    alert("Neues Produkt angelegt.");
+}
+
+/* Admin: Sorten verwalten */
+function renderSortenList() {
+    const cont = document.getElementById("sorten-list");
+    if (!cont) return;
+    if (SORTEN.length === 0) {
+        cont.textContent = "Keine Sorten definiert.";
+        return;
+    }
+    let html = "";
+    SORTEN.forEach((s, idx) => {
+        html += `<span style="display:inline-block;margin:2px 4px;padding:2px 6px;border-radius:999px;background:#f1f1f1;">
+            ${s}
+            <button style="border:none;background:transparent;font-size:11px;cursor:pointer;" onclick="deleteSorte(${idx})">x</button>
+        </span>`;
+    });
+    cont.innerHTML = html;
+}
+
+function deleteSorte(idx) {
+    SORTEN.splice(idx, 1);
+    saveConfig();
+    renderSortenList();
+    ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
+}
+
+function addNewSorte() {
+    const input = document.getElementById("new-sorte");
+    const name = input.value.trim();
+    if (!name) {
+        alert("Bitte einen Sortennamen eingeben.");
+        return;
+    }
+    SORTEN.push(name);
+    input.value = "";
+    saveConfig();
+    renderSortenList();
+    ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
+}
+
+/* Init */
 window.addEventListener("load", initLocation);
 </script>
 
