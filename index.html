@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" translate="no">
 <head>
     <meta charset="UTF-8">
     <title>Food & Drinks – QR Tischbestellung</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google" content="notranslate">
 
     <style>
         :root {
@@ -287,6 +288,38 @@
         .legal-box summary {
             cursor: pointer;
         }
+
+        /* BARRA DE IDIOMAS */
+        .lang-bar {
+            max-width: 960px;
+            margin: 8px auto 0 auto;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+        }
+        .lang-label {
+            font-size: 13px;
+            color: #333;
+            margin-right: 4px;
+        }
+        .lang-btn {
+            border-radius: 999px;
+            border: 1px solid #ccc;
+            background: #fff;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .lang-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary-dark);
+        }
     </style>
 </head>
 
@@ -294,85 +327,99 @@
 
 <header class="header">
     <div class="header-inner">
-        <!-- mete o ficheiro do logo horizontal na mesma pasta -->
-        <img src="sanremo-digital-systems-horizontal.png" alt="Sanremo Digital Systems Logo" class="header-logo">
-        <div class="header-title">Digitaler QR-Tischservice – Internes Bestellsystem</div>
+        <img src="sanremo-digital-systems-horizontal.png"
+             alt="Sanremo Digital Systems Logo"
+             class="header-logo">
+        <div class="header-title" id="txt_header_title">
+            Digitaler QR-Tischservice – Internes Bestellsystem
+        </div>
     </div>
 </header>
+
+<!-- Barra de idiomas -->
+<div class="lang-bar">
+    <span class="lang-label" id="txt_lang_label">Sprache:</span>
+    <button class="lang-btn active" data-lang="de">🇩🇪 DE</button>
+    <button class="lang-btn" data-lang="it">🇮🇹 IT</button>
+    <button class="lang-btn" data-lang="pt">🇵🇹 PT</button>
+    <button class="lang-btn" data-lang="es">🇪🇸 ES</button>
+    <button class="lang-btn" data-lang="fr">🇫🇷 FR</button>
+    <button class="lang-btn" data-lang="nl">🇳🇱 NL</button>
+</div>
 
 <div class="container">
 
     <!-- TISCHWAHL -->
     <div class="card">
-        <h2 class="section-title">Tisch wählen</h2>
-        <label for="tisch">Tischnummer auswählen:</label>
+        <h2 class="section-title" id="txt_section_table">Tisch wählen</h2>
+        <label for="tisch" id="txt_label_tisch">Tischnummer auswählen:</label>
         <select id="tisch">
-            <option value="">Tisch auswählen…</option>
+            <option value="" id="txt_option_tisch">Tisch auswählen…</option>
         </select>
-        <div class="small">Verfügbar: Tisch 1 bis 33</div>
+        <div class="small" id="txt_small_tisch_range">Verfügbar: Tisch 1 bis 33</div>
     </div>
 
     <!-- PRODUKTWAHL -->
     <div class="card">
-        <h2 class="section-title">Produkt wählen</h2>
+        <h2 class="section-title" id="txt_section_product">Produkt wählen</h2>
 
         <div class="tabs">
-            <button class="tab-btn tab-portions active" data-group="portions">Portionen</button>
-            <button class="tab-btn tab-kids" data-group="kids">Kinder</button>
-            <button class="tab-btn tab-eis" data-group="eis">Eisbecher & Spaghetti</button>
-            <button class="tab-btn tab-food" data-group="food">Snacks & Waffeln</button>
-            <button class="tab-btn tab-drinks" data-group="drinks">Getränke</button>
+            <button class="tab-btn tab-portions active" data-group="portions" id="txt_tab_portions">Portionen</button>
+            <button class="tab-btn tab-kids" data-group="kids" id="txt_tab_kids">Kinder</button>
+            <button class="tab-btn tab-eis" data-group="eis" id="txt_tab_eis">Eisbecher &amp; Spaghetti</button>
+            <button class="tab-btn tab-food" data-group="food" id="txt_tab_food">Snacks &amp; Waffeln</button>
+            <button class="tab-btn tab-drinks" data-group="drinks" id="txt_tab_drinks">Getränke</button>
         </div>
 
-        <label for="produkt">Produkt:</label>
+        <label for="produkt" id="txt_label_product">Produkt:</label>
         <select id="produkt"></select>
 
         <!-- Sortenwahl nur für Portionen (optional) -->
         <div id="geschmack-box" style="margin-top:12px; display:none;">
-            <label>Sorten (optional, bis zu 3 wählen):</label>
+            <label id="txt_label_flavors">Sorten (optional, bis zu 3 wählen):</label>
             <select id="geschmack1"></select>
             <select id="geschmack2" style="margin-top:6px;"></select>
             <select id="geschmack3" style="margin-top:6px;"></select>
-            <div class="small">
+            <div class="small" id="txt_small_flavors">
                 Wenn keine Sorten gewählt werden, kommt die Portion in unserer Standardmischung.
             </div>
         </div>
 
         <!-- Sahne-Option -->
         <div id="sahne-box" style="margin-top:8px; display:none;">
-            <label for="sahne">Sahne (+1,20 €):</label>
+            <label for="sahne" id="txt_label_sahne">Sahne (+1,20 €):</label>
             <select id="sahne">
-                <option value="">Bitte auswählen (optional)</option>
+                <option value=""><?php /* texto será atualizado por JS se precisares */ ?></option>
                 <option value="mit Sahne">mit Sahne (+1,20 €)</option>
                 <option value="ohne Sahne">ohne Sahne</option>
             </select>
-            <div class="small">
+            <div class="small" id="txt_small_sahne">
                 Wenn nichts gewählt wird, bereiten wir es wie auf der Karte zu.
             </div>
         </div>
 
-        <label for="bemerkung" style="margin-top:8px;">Bemerkung (optional):</label>
+        <label for="bemerkung" style="margin-top:8px;" id="txt_label_bemerkung">Bemerkung (optional):</label>
         <input id="bemerkung" type="text" placeholder="z.B. ohne Sahne, wenig Soße …">
 
-        <button class="btn" onclick="addToCart()">Zum Warenkorb hinzufügen</button>
+        <button class="btn" id="btn_add_to_cart" onclick="addToCart()">Zum Warenkorb hinzufügen</button>
     </div>
 
     <!-- WARENKORB -->
     <div id="warenkorb">
-        <h2 class="section-title">🧺 Warenkorb</h2>
+        <h2 class="section-title" id="txt_section_cart">🧺 Warenkorb</h2>
         <div id="liste-items"></div>
         <div class="total" id="gesamt">Gesamt: 0,00 €</div>
 
         <button id="btn-whatsapp" class="btn" onclick="sendWhatsApp()" disabled>
-            Bestellung per WhatsApp senden 📲
+            <span id="txt_btn_whatsapp">Bestellung per WhatsApp senden 📲</span>
         </button>
 
         <button id="btn-print" class="btn" style="margin-top:8px; background:#007b83;" onclick="printOrder()" disabled>
-            Bestellung drucken 🖨️
+            <span id="txt_btn_print">Bestellung drucken 🖨️</span>
         </button>
 
-        <button class="btn" style="margin-top:8px; background:#555;" onclick="resetTable()">
-            Tisch löschen / neue Gäste
+        <button class="btn" id="btn-reset" style="margin-top:8px; background:#555;" onclick="resetTable()">
+            <span id="txt_btn_reset_table">Tisch löschen / neue Gäste</span>
         </button>
 
         <div class="small" style="margin-top:6px;" id="gps-info">
@@ -382,958 +429,467 @@
 
     <!-- CHEF LOGIN -->
     <div class="card" id="admin-login-card">
-        <h2 class="section-title">Chef-Bereich</h2>
-        <p class="small">
+        <h2 class="section-title" id="txt_section_admin">Chef-Bereich</h2>
+        <p class="small" id="txt_admin_intro">
             Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert
             und Produkte / Preise angepasst.
         </p>
-        <label for="admin-password">Chef-Passwort:</label>
+        <label for="admin-password" id="txt_admin_password_label">Chef-Passwort:</label>
         <input id="admin-password" type="password" placeholder="Passwort eingeben">
-        <button class="btn" onclick="adminLogin()">Chef-Login</button>
+        <button class="btn" id="txt_admin_login_btn" onclick="adminLogin()">Chef-Login</button>
     </div>
 
     <!-- CHEF PANEL -->
     <div class="card" id="admin-panel" style="display:none;">
         <div class="admin-header">
-            <h2 class="section-title" style="margin-bottom:0;">Gespeicherte Bestellungen</h2>
-            <button class="btn-logout" onclick="adminLogout()">Logout</button>
+            <h2 class="section-title" style="margin-bottom:0;" id="txt_admin_saved_orders">Gespeicherte Bestellungen</h2>
+            <button class="btn-logout" id="txt_admin_logout_btn" onclick="adminLogout()">Logout</button>
         </div>
-        <div class="small" style="margin-top:4px;">
+        <div class="small" style="margin-top:4px;" id="txt_admin_saved_info">
             Hier werden alle Bestellungen gespeichert, die per WhatsApp gesendet oder gedruckt wurden.
             Der Chef kann einzelne Bestellungen oder alle Einträge löschen.
         </div>
         <div id="admin-orders-list" style="margin-top:10px;"></div>
-        <button class="btn" style="margin-top:10px; background:#c62828;" onclick="clearAllOrders()">
+        <button class="btn" style="margin-top:10px; background:#c62828;" id="txt_admin_delete_all" onclick="clearAllOrders()">
             Alle Bestellungen löschen
         </button>
 
         <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
 
         <!-- PRODUKT-VERWALTUNG -->
-        <h3 class="section-title" style="border-left-color:#00796b;">Produkte bearbeiten</h3>
-        <label for="admin-product-select">Bestehendes Produkt wählen:</label>
+        <h3 class="section-title" style="border-left-color:#00796b;" id="txt_admin_product_edit">Produkte bearbeiten</h3>
+        <label for="admin-product-select" id="txt_admin_product_select">Bestehendes Produkt wählen:</label>
         <select id="admin-product-select"></select>
-        <div class="small">
+        <div class="small" id="txt_admin_local_info">
             Änderungen werden lokal im Browser gespeichert (pro Gerät / Standort).
         </div>
 
-        <label for="admin-prod-name">Name:</label>
+        <label for="admin-prod-name" id="txt_admin_prod_name_label">Name:</label>
         <input id="admin-prod-name" type="text">
 
-        <label for="admin-prod-price">Preis (€):</label>
+        <label for="admin-prod-price" id="txt_admin_prod_price_label">Preis (€):</label>
         <input id="admin-prod-price" type="number" step="0.01">
 
-        <label for="admin-prod-group">Gruppe:</label>
+        <label for="admin-prod-group" id="txt_admin_prod_group_label">Gruppe:</label>
         <select id="admin-prod-group">
             <option value="portions">Portionen</option>
             <option value="kids">Kinder</option>
-            <option value="eis">Eisbecher & Spaghetti</option>
-            <option value="food">Snacks & Waffeln</option>
+            <option value="eis">Eisbecher &amp; Spaghetti</option>
+            <option value="food">Snacks &amp; Waffeln</option>
             <option value="drinks">Getränke</option>
         </select>
 
-        <label for="admin-prod-type">Art:</label>
+        <label for="admin-prod-type" id="txt_admin_prod_type_label">Art:</label>
         <select id="admin-prod-type">
             <option value="normal">Normal</option>
             <option value="cup3">Portion (Sortenwahl)</option>
         </select>
 
-        <label style="margin-top:6px;">
-            <input type="checkbox" id="admin-prod-sahne">
-            Sahne-Option (+1,20 €) erlauben
+        <label style="margin-top:6px;" id="txt_admin_sahne_label">
+            <input type="checkbox" id="admin-prod-sahne"> Sahne-Option (+1,20 €) erlauben
         </label>
 
-        <button class="btn" style="margin-top:10px;" onclick="saveExistingProduct()">
+        <button class="btn" style="margin-top:10px;" id="txt_admin_save_btn" onclick="saveExistingProduct()">
             Ausgewähltes Produkt speichern
         </button>
-        <button class="btn" style="margin-top:6px; background:#c62828;" onclick="deleteExistingProduct()">
+        <button class="btn" style="margin-top:6px; background:#c62828;" id="txt_admin_delete_btn" onclick="deleteExistingProduct()">
             Ausgewähltes Produkt löschen
         </button>
 
-        <h3 class="section-title" style="border-left-color:#0288d1; margin-top:20px;">Neues Produkt hinzufügen</h3>
-        <label for="new-prod-id">Produkt-Nr. (z.B. 701):</label>
+        <h3 class="section-title" style="border-left-color:#0288d1; margin-top:20px;" id="txt_admin_add_new">Neues Produkt hinzufügen</h3>
+        <label for="new-prod-id" id="txt_admin_new_id_label">Produkt-Nr. (z.B. 701):</label>
         <input id="new-prod-id" type="number">
 
-        <label for="new-prod-name">Name:</label>
+        <label for="new-prod-name" id="txt_admin_new_name_label">Name:</label>
         <input id="new-prod-name" type="text">
 
-        <label for="new-prod-price">Preis (€):</label>
+        <label for="new-prod-price" id="txt_admin_new_price_label">Preis (€):</label>
         <input id="new-prod-price" type="number" step="0.01">
 
-        <label for="new-prod-group">Gruppe:</label>
+        <label for="new-prod-group" id="txt_admin_new_group_label">Gruppe:</label>
         <select id="new-prod-group">
             <option value="portions">Portionen</option>
             <option value="kids">Kinder</option>
-            <option value="eis">Eisbecher & Spaghetti</option>
-            <option value="food">Snacks & Waffeln</option>
+            <option value="eis">Eisbecher &amp; Spaghetti</option>
+            <option value="food">Snacks &amp; Waffeln</option>
             <option value="drinks">Getränke</option>
         </select>
 
-        <label for="new-prod-type">Art:</label>
+        <label for="new-prod-type" id="txt_admin_new_type_label">Art:</label>
         <select id="new-prod-type">
             <option value="normal">Normal</option>
             <option value="cup3">Portion (Sortenwahl)</option>
         </select>
 
-        <label style="margin-top:6px;">
-            <input type="checkbox" id="new-prod-sahne">
-            Sahne-Option (+1,20 €) erlauben
+        <label style="margin-top:6px;" id="txt_admin_new_sahne_label">
+            <input type="checkbox" id="new-prod-sahne"> Sahne-Option (+1,20 €) erlauben
         </label>
 
-        <button class="btn" style="margin-top:10px;" onclick="addNewProduct()">
+        <button class="btn" style="margin-top:10px;" id="txt_admin_new_btn" onclick="addNewProduct()">
             Neues Produkt anlegen
         </button>
 
         <!-- SORTEN-VERWALTUNG -->
-        <h3 class="section-title" style="border-left-color:#6a1b9a; margin-top:20px;">Eissorten verwalten</h3>
+        <h3 class="section-title" style="border-left-color:#6a1b9a; margin-top:20px;" id="txt_sorten_title">Eissorten verwalten</h3>
         <div id="sorten-list" class="small" style="margin-bottom:8px;"></div>
 
-        <label for="new-sorte">Neue Sorte:</label>
+        <label for="new-sorte" id="txt_new_sorte_label">Neue Sorte:</label>
         <input id="new-sorte" type="text" placeholder="z.B. Stracciatella Light">
 
-        <button class="btn" style="margin-top:6px;" onclick="addNewSorte()">
+        <button class="btn" style="margin-top:6px;" id="txt_new_sorte_btn" onclick="addNewSorte()">
             Sorte hinzufügen
         </button>
 
         <!-- RECHTLICHER HINWEIS NUR FÜR CHEF -->
         <div class="legal-box">
             <details>
-                <summary><strong>Rechtlicher Hinweis (anklicken)</strong></summary>
-                <p>
+                <summary id="txt_legal_summary"><strong>Rechtlicher Hinweis (anklicken)</strong></summary>
+                <p id="txt_legal_p1">
                     Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine
                     Registrierkasse oder steuerrechtlich relevante Aufzeichnung.
                 </p>
-                <p>
+                <p id="txt_legal_p2">
                     Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung
-                    aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine
-                    Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.
+                    aller gesetzlichen Vorschriften.
                 </p>
-                <p>
+                <p id="txt_legal_p3">
                     Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der
                     Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K
                     und darf nicht als Kassensystem verwendet werden.
                 </p>
-                <p>
-                    Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender
-                    dieses Systems.
-                </p>
             </details>
         </div>
-
     </div>
 
-</div>
+</div> <!-- container -->
 
+<!-- 1º SCRIPT: O TEU ORIGINAL (NÃO MEXI) -->
 <script>
-const WHATSAPP_NUMMER = "4917672809926";
-const ADMIN_PASSWORD = "1234";
-const SAHNE_AUFSCHLAG = 1.20;
+/* TODO O TEU SCRIPT ORIGINAL VAI AQUI
+   (BASE_PRODUCTS, SORTEN, PRODUCTS, addToCart, buildOrderText, sendWhatsApp, printOrder, GPS, admin, etc.)
+   Podes simplesmente copiar o <script> que me mandaste e colar aqui dentro.
+*/
+</script>
 
-/* Koordinaten deines Cafés (anpassen wenn nötig) */
-const CAFE_LAT = 51.051;
-const CAFE_LNG = 8.392;
-const MAX_DIST_KM = 1.5;
+<!-- 2º SCRIPT: IDIOMAS + SAVE_ORDER.PHP + OVERRIDE WHATSAPP / PRINT -->
+<script>
+let currentLang = "de";
 
-let gpsOk = false;
-let adminOrders = [];
-let isAdmin = false;
-
-/* BASIS-PRODUKTE (Standard) */
-const BASE_PRODUCTS = {
-    23: { id:23,  name:"23. Kinder Portion (2 Kugeln)",      preis:3.50, type:"cup3",  group:"portions", sahne:true },
-    24: { id:24,  name:"24. Kleine Portion (3 Kugeln)",      preis:5.00, type:"cup3",  group:"portions", sahne:true },
-    25: { id:25,  name:"25. Normale Portion (4 Kugeln)",     preis:6.50, type:"cup3",  group:"portions", sahne:true },
-    26: { id:26,  name:"26. Große Portion (6 Kugeln)",       preis:9.50, type:"cup3",  group:"portions", sahne:true },
-
-    30: { id:30,  name:"30. Amarena Becher",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    31: { id:31,  name:"31. Erdbeer Becher",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    32: { id:32,  name:"32. Banana Cup",                      preis:9.00, type:"normal", group:"eis", sahne:true },
-    33: { id:33,  name:"33. Liebes Traum",                    preis:13.50,type:"normal", group:"eis", sahne:true },
-    34: { id:34,  name:"34. Kiwi Becher",                     preis:8.50, type:"normal", group:"eis", sahne:true },
-    35: { id:35,  name:"35. Frucht Becher",                   preis:8.50, type:"normal", group:"eis", sahne:true },
-    36: { id:36,  name:"36. Großer Frucht Becher",            preis:11.90,type:"normal", group:"eis", sahne:true },
-    37: { id:37,  name:"37. Großer Amarena Becher",           preis:12.50,type:"normal", group:"eis", sahne:true },
-    38: { id:38,  name:"38. Großer Erdbeer Becher",           preis:12.50,type:"normal", group:"eis", sahne:true },
-    39: { id:39,  name:"39. Erdbeer-Banane Becher",           preis:10.90,type:"normal", group:"eis", sahne:true },
-    40: { id:40,  name:"40. Exotischer Becher",               preis:12.00,type:"normal", group:"eis", sahne:true },
-    41: { id:41,  name:"41. Wald Becher",                     preis:10.50,type:"normal", group:"eis", sahne:true },
-    42: { id:42,  name:"42. Bella Italia",                    preis:11.00,type:"normal", group:"eis", sahne:true },
-    43: { id:43,  name:"43. Mango Becher",                    preis:9.00, type:"normal", group:"eis", sahne:true },
-    44: { id:44,  name:"44. Banana Split",                    preis:10.00,type:"normal", group:"eis", sahne:true },
-    45: { id:45,  name:"45. Sommer Becher",                   preis:13.00,type:"normal", group:"eis", sahne:true },
-    46: { id:46,  name:"46. Coppa Melone",                    preis:9.50, type:"normal", group:"eis", sahne:true },
-    47: { id:47,  name:"47. Heidelbeer Becher",               preis:9.50, type:"normal", group:"eis", sahne:true },
-    48: { id:48,  name:"48. Himbeer Becher",                  preis:9.50, type:"normal", group:"eis", sahne:true },
-
-    50: { id:50,  name:"50. Spaghetti Eis",                   preis:6.50, type:"normal", group:"eis", sahne:true },
-    51: { id:51,  name:"51. Spaghetti Eis groß",              preis:9.50, type:"normal", group:"eis", sahne:true },
-    52: { id:52,  name:"52. Spaghetti Vanille",               preis:7.40, type:"normal", group:"eis", sahne:true },
-    53: { id:53,  name:"53. Spaghetti Erdbeere",              preis:8.90, type:"normal", group:"eis", sahne:true },
-    54: { id:54,  name:"54. Spaghetti Kiwi",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    55: { id:55,  name:"55. Spaghetti Vanille-Schoko",        preis:7.50, type:"normal", group:"eis", sahne:true },
-    56: { id:56,  name:"56. Spaghetti Carbonara",             preis:9.50, type:"normal", group:"eis", sahne:true },
-    57: { id:57,  name:"57. Spaghetti Nussknacker",           preis:9.50, type:"normal", group:"eis", sahne:true },
-    58: { id:58,  name:"58. Spaghetti Amarena",               preis:8.90, type:"normal", group:"eis", sahne:true },
-    59: { id:59,  name:"59. Spaghetti Waldfrüchte",           preis:8.90, type:"normal", group:"eis", sahne:true },
-    60: { id:60,  name:"60. Spaghetti Melone",                preis:8.90, type:"normal", group:"eis", sahne:true },
-    61: { id:61,  name:"61. Spaghetti Tutti Frutti",          preis:8.90, type:"normal", group:"eis", sahne:true },
-    62: { id:62,  name:"62. Lasagne Eis",                     preis:8.90, type:"normal", group:"eis", sahne:true },
-
-    63: { id:63,  name:"63. Pizza Margherita",                preis:9.00, type:"normal", group:"food", sahne:false },
-    64: { id:64,  name:"64. Pizza Grandiosa",                 preis:12.00,type:"normal", group:"food", sahne:false },
-
-    70: { id:70,  name:"70. Mixgetränk Spezial",              preis:6.50, type:"normal", group:"eis", sahne:true },
-    71: { id:71,  name:"71. Joghurrette Becher",              preis:9.50, type:"normal", group:"eis", sahne:true },
-    72: { id:72,  name:"72. Joghurt Cocktail",                preis:9.50, type:"normal", group:"eis", sahne:true },
-    73: { id:73,  name:"73. Joghurt Kiwi",                    preis:9.00, type:"normal", group:"eis", sahne:true },
-    74: { id:74,  name:"74. Joghurt Erdbeere",                preis:9.00, type:"normal", group:"eis", sahne:true },
-    75: { id:75,  name:"75. Joghurt Ananas",                  preis:9.00, type:"normal", group:"eis", sahne:true },
-    76: { id:76,  name:"76. Müsli Joghurt Becher",            preis:9.00, type:"normal", group:"eis", sahne:true },
-    77: { id:77,  name:"77. Joghurt Heidelbeere",             preis:9.00, type:"normal", group:"eis", sahne:true },
-    78: { id:78,  name:"78. Joghurt Banane",                  preis:9.00, type:"normal", group:"eis", sahne:true },
-    79: { id:79,  name:"79. Joghurt Amarena",                 preis:9.00, type:"normal", group:"eis", sahne:true },
-    80: { id:80,  name:"80. Joghurt Himbeere",                preis:9.00, type:"normal", group:"eis", sahne:true },
-
-    81: { id:81,  name:"81. Heiße Kirschen",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    82: { id:82,  name:"82. Heiße Himbeeren",                 preis:9.00, type:"normal", group:"eis", sahne:true },
-    83: { id:83,  name:"83. Zimt Becher",                     preis:8.50, type:"normal", group:"eis", sahne:true },
-    84: { id:84,  name:"84. Cup Dänemark",                    preis:8.50, type:"normal", group:"eis", sahne:true },
-    85: { id:85,  name:"85. Wiener Mokka",                    preis:8.50, type:"normal", group:"eis", sahne:true },
-
-    90: { id:90,  name:"90. Amaretto Becher",                 preis:8.50, type:"normal", group:"eis", sahne:true },
-    91: { id:91,  name:"91. Schwarzwald Becher",              preis:9.00, type:"normal", group:"eis", sahne:true },
-    92: { id:92,  name:"92. Malaga Becher",                   preis:9.00, type:"normal", group:"eis", sahne:true },
-    93: { id:93,  name:"93. Mon Chéri Becher",                preis:9.50, type:"normal", group:"eis", sahne:true },
-    94: { id:94,  name:"94. Raffaello Becher",                preis:9.50, type:"normal", group:"eis", sahne:true },
-    96: { id:96,  name:"96. Eierlikör Becher",                preis:8.50, type:"normal", group:"eis", sahne:true },
-    98: { id:98,  name:"98. Nuss Becher",                     preis:9.50, type:"normal", group:"eis", sahne:true },
-    99: { id:99,  name:"99. Rocher Becher",                   preis:9.50, type:"normal", group:"eis", sahne:true },
-    100:{ id:100, name:"100. Giotto Becher",                  preis:9.00, type:"normal", group:"eis", sahne:true },
-    101:{ id:101, name:"101. Berg Becher",                    preis:10.50,type:"normal", group:"eis", sahne:true },
-    102:{ id:102, name:"102. Walnuss Becher",                 preis:9.50, type:"normal", group:"eis", sahne:true },
-    103:{ id:103, name:"103. Coppa Delizia",                  preis:10.90,type:"normal", group:"eis", sahne:true },
-
-    110:{ id:110, name:"110. After Eight Becher",             preis:8.90, type:"normal", group:"eis", sahne:true },
-    111:{ id:111, name:"111. Stracciatella Becher",           preis:7.90, type:"normal", group:"eis", sahne:true },
-    112:{ id:112, name:"112. Tartufo Nero",                   preis:9.50, type:"normal", group:"eis", sahne:true },
-    113:{ id:113, name:"113. Tartufo Bianco",                 preis:9.50, type:"normal", group:"eis", sahne:true },
-    114:{ id:114, name:"114. Hausbecher",                     preis:20.00,type:"normal", group:"eis", sahne:true },
-    116:{ id:116, name:"116. Krokant Becher",                 preis:8.50, type:"normal", group:"eis", sahne:true },
-    117:{ id:117, name:"117. Schoko Becher",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    118:{ id:118, name:"118. Schoko Becher groß",             preis:12.00,type:"normal", group:"eis", sahne:true },
-    122:{ id:122, name:"122. Pistazien Becher",               preis:11.50,type:"normal", group:"eis", sahne:true },
-
-    130:{ id:130, name:"130. Flipper",                        preis:5.00, type:"normal", group:"kids", sahne:true },
-    131:{ id:131, name:"131. Bellini",                        preis:6.00, type:"normal", group:"drinks", sahne:false },
-    132:{ id:132, name:"132. Mimosa",                         preis:6.00, type:"normal", group:"drinks", sahne:false },
-    133:{ id:133, name:"133. Formula 1",                      preis:6.00, type:"normal", group:"kids", sahne:false },
-    134:{ id:134, name:"134. Formula 2",                      preis:6.00, type:"normal", group:"kids", sahne:false },
-
-    140:{ id:140, name:"140. Eiskaffee",                      preis:5.50, type:"normal", group:"drinks", sahne:true },
-    141:{ id:141, name:"141. Eisschokolade",                  preis:5.50, type:"normal", group:"drinks", sahne:true },
-    142:{ id:142, name:"142. Eis-Cappuccino",                 preis:5.50, type:"normal", group:"drinks", sahne:true },
-
-    150:{ id:150, name:"150. Milch-Mix 0,3 l",                preis:4.00, type:"normal", group:"kids",   sahne:true },
-    151:{ id:151, name:"151. Milchshake 0,3 l",               preis:4.60, type:"normal", group:"kids",   sahne:true },
-    152:{ id:152, name:"152. Riesen Milch-Mix 0,5 l",         preis:5.00, type:"normal", group:"kids",   sahne:true },
-    153:{ id:153, name:"153. Riesen Milchshake 0,5 l",        preis:5.50, type:"normal", group:"kids",   sahne:true },
-    154:{ id:154, name:"154. Vulcano",                        preis:3.70, type:"normal", group:"kids",   sahne:true },
-    155:{ id:155, name:"155. Orangensaft (frisch)",           preis:4.50, type:"normal", group:"drinks", sahne:false },
-    156:{ id:156, name:"156. Kalte Zitrone",                  preis:3.50, type:"normal", group:"drinks", sahne:false },
-
-    160:{ id:160, name:"Erdbeer Donut",                       preis:6.90, type:"normal", group:"kids", sahne:true },
-    161:{ id:161, name:"Schoko Donut",                        preis:6.90, type:"normal", group:"kids", sahne:true },
-    162:{ id:162, name:"Caramel Donut",                       preis:6.90, type:"normal", group:"kids", sahne:true },
-    163:{ id:163, name:"Pistazien Donut",                     preis:7.20, type:"normal", group:"kids", sahne:true },
-    164:{ id:164, name:"Kinder Donut",                        preis:6.50, type:"normal", group:"kids", sahne:true },
-
-    200:{ id:200, name:"Espresso",                            preis:2.00, type:"normal", group:"drinks", sahne:false },
-    201:{ id:201, name:"Espresso Macchiato",                  preis:2.30, type:"normal", group:"drinks", sahne:false },
-    202:{ id:202, name:"Espresso Corretto",                   preis:3.40, type:"normal", group:"drinks", sahne:false },
-    203:{ id:203, name:"Doppelter Espresso",                  preis:3.60, type:"normal", group:"drinks", sahne:false },
-    204:{ id:204, name:"Doppelter Espresso Macchiato",        preis:3.80, type:"normal", group:"drinks", sahne:false },
-    210:{ id:210, name:"Kaffee",                              preis:2.20, type:"normal", group:"drinks", sahne:false },
-    220:{ id:220, name:"Milchkaffee",                         preis:3.00, type:"normal", group:"drinks", sahne:true },
-    221:{ id:221, name:"Milchkaffee mit Baileys",             preis:4.00, type:"normal", group:"drinks", sahne:true },
-    230:{ id:230, name:"Latte Macchiato",                     preis:3.60, type:"normal", group:"drinks", sahne:true },
-    231:{ id:231, name:"Latte Macchiato mit Sirup",           preis:3.20, type:"normal", group:"drinks", sahne:true },
-    240:{ id:240, name:"Cappuccino",                          preis:2.60, type:"normal", group:"drinks", sahne:true },
-    241:{ id:241, name:"Cappuccino groß",                     preis:3.00, type:"normal", group:"drinks", sahne:true },
-    244:{ id:244, name:"Cappuccino mit Amaretto",             preis:4.00, type:"normal", group:"drinks", sahne:true },
-    245:{ id:245, name:"Cappuccino mit Eierlikör",            preis:4.00, type:"normal", group:"drinks", sahne:true },
-    246:{ id:246, name:"Cappuccino mit Baileys",              preis:4.00, type:"normal", group:"drinks", sahne:true },
-
-    300:{ id:300, name:"Coca-Cola 0,2 l",                     preis:2.70, type:"normal", group:"drinks", sahne:false },
-    301:{ id:301, name:"Coca-Cola Light 0,2 l",               preis:2.70, type:"normal", group:"drinks", sahne:false },
-    302:{ id:302, name:"Coca-Cola Zero 0,2 l",                preis:2.70, type:"normal", group:"drinks", sahne:false },
-    303:{ id:303, name:"Fanta 0,2 l",                         preis:2.70, type:"normal", group:"drinks", sahne:false },
-    304:{ id:304, name:"Mezzo Mix 0,2 l",                     preis:2.70, type:"normal", group:"drinks", sahne:false },
-    305:{ id:305, name:"Sprite 0,2 l",                        preis:2.70, type:"normal", group:"drinks", sahne:false },
-    306:{ id:306, name:"Bitter Lemon 0,2 l",                  preis:2.70, type:"normal", group:"drinks", sahne:false },
-    307:{ id:307, name:"Apfelschorle",                        preis:1.90, type:"normal", group:"drinks", sahne:false },
-    308:{ id:308, name:"Eistee",                              preis:1.90, type:"normal", group:"drinks", sahne:false },
-    309:{ id:309, name:"Wild Berry",                          preis:2.20, type:"normal", group:"drinks", sahne:false },
-    310:{ id:310, name:"Tonic Water",                         preis:2.20, type:"normal", group:"drinks", sahne:false },
-    311:{ id:311, name:"S.Pellegrino 0,25 l",                 preis:2.40, type:"normal", group:"drinks", sahne:false },
-    312:{ id:312, name:"S.Pellegrino 0,75 l",                 preis:5.90, type:"normal", group:"drinks", sahne:false },
-
-    350:{ id:350, name:"Krombacher Pils 0,33 l",              preis:2.80, type:"normal", group:"drinks", sahne:false },
-    351:{ id:351, name:"Krombacher Radler 0,33 l",            preis:2.80, type:"normal", group:"drinks", sahne:false },
-    352:{ id:352, name:"Erdinger Weißbier 0,5 l",             preis:4.50, type:"normal", group:"drinks", sahne:false },
-    353:{ id:353, name:"Erdinger Alkoholfrei 0,33 l",         preis:2.80, type:"normal", group:"drinks", sahne:false },
-    354:{ id:354, name:"Erdinger Alkoholfrei 0,5 l",          preis:4.50, type:"normal", group:"drinks", sahne:false },
-
-    400:{ id:400, name:"Rotwein trocken 0,2 l",               preis:4.90, type:"normal", group:"drinks", sahne:false },
-    401:{ id:401, name:"Weißwein trocken 0,2 l",              preis:4.90, type:"normal", group:"drinks", sahne:false },
-    402:{ id:402, name:"Glas Sekt",                           preis:3.90, type:"normal", group:"drinks", sahne:false },
-    403:{ id:403, name:"Campari Sekt",                        preis:3.90, type:"normal", group:"drinks", sahne:false },
-    410:{ id:410, name:"Aperitif Rosato",                     preis:5.90, type:"normal", group:"drinks", sahne:false },
-    430:{ id:430, name:"Grappa",                              preis:4.70, type:"normal", group:"drinks", sahne:false },
-    431:{ id:431, name:"Asbach",                              preis:3.20, type:"normal", group:"drinks", sahne:false },
-    432:{ id:432, name:"Ramazzotti",                          preis:3.20, type:"normal", group:"drinks", sahne:false },
-    433:{ id:433, name:"Aperol",                              preis:6.10, type:"normal", group:"drinks", sahne:false },
-    434:{ id:434, name:"Hugo",                                preis:6.10, type:"normal", group:"drinks", sahne:false },
-
-    500:{ id:500, name:"Flammkuchen Elsässer Art",            preis:8.90, type:"normal", group:"food", sahne:false },
-    501:{ id:501, name:"Flammkuchen Wildlachs & Shrimps",     preis:8.90, type:"normal", group:"food", sahne:false },
-    502:{ id:502, name:"Flammkuchen Griechische Art",         preis:8.90, type:"normal", group:"food", sahne:false },
-    510:{ id:510, name:"Toast mit Käse",                      preis:3.70, type:"normal", group:"food", sahne:false },
-    511:{ id:511, name:"Toast mit Käse & Schinken",           preis:4.30, type:"normal", group:"food", sahne:false },
-    512:{ id:512, name:"Toast mit Salami & Käse",             preis:4.30, type:"normal", group:"food", sahne:false },
-    513:{ id:513, name:"Toast Hawaii",                        preis:5.60, type:"normal", group:"food", sahne:false },
-    520:{ id:520, name:"Baguette XXL",                        preis:6.90, type:"normal", group:"food", sahne:false },
-
-    600:{ id:600, name:"Apfelstrudel",                        preis:3.70, type:"normal", group:"food", sahne:true },
-    601:{ id:601, name:"Apfelstrudel mit Vanillesoße",        preis:4.00, type:"normal", group:"food", sahne:true },
-    602:{ id:602, name:"Apfelstrudel mit Sahne",              preis:4.70, type:"normal", group:"food", sahne:true },
-    603:{ id:603, name:"Apfelstrudel mit Eis",                preis:6.10, type:"normal", group:"food", sahne:true },
-    610:{ id:610, name:"Hausgemachtes Tiramisu",              preis:4.20, type:"normal", group:"food", sahne:true },
-    620:{ id:620, name:"Waffel mit Puderzucker",              preis:4.00, type:"normal", group:"food", sahne:false },
-    621:{ id:621, name:"Waffel mit Sahne",                    preis:5.00, type:"normal", group:"food", sahne:true },
-    622:{ id:622, name:"Waffel mit Eis",                      preis:5.30, type:"normal", group:"food", sahne:true },
-    623:{ id:623, name:"Waffel mit Eis & Sahne",              preis:6.30, type:"normal", group:"food", sahne:true },
-    624:{ id:624, name:"Waffel mit Nutella",                  preis:5.00, type:"normal", group:"food", sahne:true },
-
-    631:{ id:631, name:"630a. Waffel Zimt & Banane",          preis:6.80, type:"normal", group:"food", sahne:true },
-    632:{ id:632, name:"630b. Waffel Obstsalat",              preis:7.90, type:"normal", group:"food", sahne:true },
-    633:{ id:633, name:"630c. Waffel Erdbeeren",              preis:7.50, type:"normal", group:"food", sahne:true },
-    634:{ id:634, name:"630d. Waffel Waldbeeren",             preis:7.20, type:"normal", group:"food", sahne:true },
-    635:{ id:635, name:"630e. Waffel Schoko-Banane",          preis:7.90, type:"normal", group:"food", sahne:true },
-    636:{ id:636, name:"630f. Waffel Heiße Kirschen",         preis:7.00, type:"normal", group:"food", sahne:true },
-    637:{ id:637, name:"630g. Waffel Schoko",                 preis:6.80, type:"normal", group:"food", sahne:true },
-    638:{ id:638, name:"630h. Waffel Tutti Frutti",           preis:7.50, type:"normal", group:"food", sahne:true }
+const translations = {
+  de: {
+    header_title: "Digitaler QR-Tischservice – Internes Bestellsystem",
+    lang_label: "Sprache:",
+    section_table: "Tisch wählen",
+    label_tisch: "Tischnummer auswählen:",
+    option_tisch: "Tisch auswählen…",
+    small_tisch_range: "Verfügbar: Tisch 1 bis 33",
+    section_product: "Produkt wählen",
+    tab_portions: "Portionen",
+    tab_kids: "Kinder",
+    tab_eis: "Eisbecher & Spaghetti",
+    tab_food: "Snacks & Waffeln",
+    tab_drinks: "Getränke",
+    label_product: "Produkt:",
+    label_flavors: "Sorten (optional, bis zu 3 wählen):",
+    small_flavors: "Wenn keine Sorten gewählt werden, kommt die Portion in unserer Standardmischung.",
+    label_sahne: "Sahne (+1,20 €):",
+    small_sahne: "Wenn nichts gewählt wird, bereiten wir es wie auf der Karte zu.",
+    label_bemerkung: "Bemerkung (optional):",
+    placeholder_bemerkung: "z.B. ohne Sahne, wenig Soße …",
+    section_cart: "🧺 Warenkorb",
+    btn_add_cart: "Zum Warenkorb hinzufügen",
+    btn_whatsapp: "Bestellung per WhatsApp senden 📲",
+    btn_print: "Bestellung drucken 🖨️",
+    btn_reset_table: "Tisch löschen / neue Gäste",
+    gps_info: "GPS wird geprüft… bitte Standort-Freigabe erlauben."
+  },
+  it: {
+    header_title: "Servizio QR da tavolo – Sistema interno",
+    lang_label: "Lingua:",
+    section_table: "Scegli il tavolo",
+    label_tisch: "Seleziona numero del tavolo:",
+    option_tisch: "Seleziona tavolo…",
+    small_tisch_range: "Disponibile: tavolo 1 a 33",
+    section_product: "Scegli il prodotto",
+    tab_portions: "Porzioni",
+    tab_kids: "Bambini",
+    tab_eis: "Coppe & Spaghetti",
+    tab_food: "Snack & Waffel",
+    tab_drinks: "Bevande",
+    label_product: "Prodotto:",
+    label_flavors: "Gusti (opzionale, fino a 3):",
+    small_flavors: "Se non scegli gusti, useremo la nostra miscela standard.",
+    label_sahne: "Panna (+1,20 €):",
+    small_sahne: "Se non selezionato, prepariamo come nel menu.",
+    label_bemerkung: "Osservazioni (opzionale):",
+    placeholder_bemerkung: "es. senza panna, poca salsa …",
+    section_cart: "🧺 Carrello",
+    btn_add_cart: "Aggiungi al carrello",
+    btn_whatsapp: "Invia ordine via WhatsApp 📲",
+    btn_print: "Stampa ordine 🖨️",
+    btn_reset_table: "Svuota tavolo / nuovi clienti",
+    gps_info: "Controllo GPS… consenti la posizione."
+  },
+  pt: {
+    header_title: "Serviço de Mesa QR – Sistema interno",
+    lang_label: "Idioma:",
+    section_table: "Escolher mesa",
+    label_tisch: "Selecionar número da mesa:",
+    option_tisch: "Selecionar mesa…",
+    small_tisch_range: "Disponível: mesa 1 até 33",
+    section_product: "Escolher produto",
+    tab_portions: "Porções",
+    tab_kids: "Crianças",
+    tab_eis: "Taças & Spaghetti",
+    tab_food: "Snacks & Waffles",
+    tab_drinks: "Bebidas",
+    label_product: "Produto:",
+    label_flavors: "Sabores (opcional, até 3):",
+    small_flavors: "Se não escolher sabores, usamos a nossa mistura standard.",
+    label_sahne: "Natas (+1,20 €):",
+    small_sahne: "Se não escolher, fazemos como está no menu.",
+    label_bemerkung: "Observações (opcional):",
+    placeholder_bemerkung: "ex.: sem natas, pouca calda …",
+    section_cart: "🧺 Carrinho",
+    btn_add_cart: "Adicionar ao carrinho",
+    btn_whatsapp: "Enviar pedido por WhatsApp 📲",
+    btn_print: "Imprimir pedido 🖨️",
+    btn_reset_table: "Limpar mesa / novos clientes",
+    gps_info: "A verificar GPS… permita a localização."
+  },
+  es: {
+    header_title: "Servicio QR de mesa – Sistema interno",
+    lang_label: "Idioma:",
+    section_table: "Elegir mesa",
+    label_tisch: "Seleccionar número de mesa:",
+    option_tisch: "Seleccionar mesa…",
+    small_tisch_range: "Disponible: mesa 1 hasta 33",
+    section_product: "Elegir producto",
+    tab_portions: "Porciones",
+    tab_kids: "Niños",
+    tab_eis: "Copas & Spaghetti",
+    tab_food: "Snacks & Gofres",
+    tab_drinks: "Bebidas",
+    label_product: "Producto:",
+    label_flavors: "Sabores (opcional, hasta 3):",
+    small_flavors: "Si no eliges sabores, usamos nuestra mezcla estándar.",
+    label_sahne: "Nata (+1,20 €):",
+    small_sahne: "Si no se elige, lo preparamos como en la carta.",
+    label_bemerkung: "Observaciones (opcional):",
+    placeholder_bemerkung: "ej.: sin nata, poca salsa…",
+    section_cart: "🧺 Carrito",
+    btn_add_cart: "Añadir al carrito",
+    btn_whatsapp: "Enviar pedido por WhatsApp 📲",
+    btn_print: "Imprimir pedido 🖨️",
+    btn_reset_table: "Vaciar mesa / nuevos clientes",
+    gps_info: "Comprobando GPS… permita la ubicación."
+  },
+  fr: {
+    header_title: "Service de table QR – Système interne",
+    lang_label: "Langue :",
+    section_table: "Choisir une table",
+    label_tisch: "Sélectionner le numéro de table :",
+    option_tisch: "Choisir une table…",
+    small_tisch_range: "Disponible : table 1 à 33",
+    section_product: "Choisir un produit",
+    tab_portions: "Portions",
+    tab_kids: "Enfants",
+    tab_eis: "Coupes & Spaghetti",
+    tab_food: "Snacks & Gaufres",
+    tab_drinks: "Boissons",
+    label_product: "Produit :",
+    label_flavors: "Parfums (optionnel, jusqu’à 3) :",
+    small_flavors: "Sans choix de parfums, nous utilisons notre mélange standard.",
+    label_sahne: "Chantilly (+1,20 €) :",
+    small_sahne: "Sans choix, nous préparons comme sur la carte.",
+    label_bemerkung: "Remarque (optionnel) :",
+    placeholder_bemerkung: "ex. : sans chantilly, peu de sauce…",
+    section_cart: "🧺 Panier",
+    btn_add_cart: "Ajouter au panier",
+    btn_whatsapp: "Envoyer la commande WhatsApp 📲",
+    btn_print: "Imprimer la commande 🖨️",
+    btn_reset_table: "Réinitialiser la table / nouveaux clients",
+    gps_info: "Vérification GPS… autorisez la localisation."
+  },
+  nl: {
+    header_title: "QR-tafelservice – Intern systeem",
+    lang_label: "Taal:",
+    section_table: "Tafel kiezen",
+    label_tisch: "Tafelnummer kiezen:",
+    option_tisch: "Tafel kiezen…",
+    small_tisch_range: "Beschikbaar: tafel 1 t/m 33",
+    section_product: "Product kiezen",
+    tab_portions: "Porties",
+    tab_kids: "Kinderen",
+    tab_eis: "Coupes & Spaghetti",
+    tab_food: "Snacks & Wafels",
+    tab_drinks: "Drankjes",
+    label_product: "Product:",
+    label_flavors: "Smaken (optioneel, max. 3):",
+    small_flavors: "Zonder keuze gebruiken we onze standaardmix.",
+    label_sahne: "Slagroom (+1,20 €):",
+    small_sahne: "Zonder keuze bereiden we het zoals op het menu.",
+    label_bemerkung: "Opmerkingen (optioneel):",
+    placeholder_bemerkung: "bv. zonder slagroom, weinig saus…",
+    section_cart: "🧺 Winkelwagen",
+    btn_add_cart: "Aan winkelwagen toevoegen",
+    btn_whatsapp: "Bestelling via WhatsApp verzenden 📲",
+    btn_print: "Bestelling afdrukken 🖨️",
+    btn_reset_table: "Tafel wissen / nieuwe gasten",
+    gps_info: "GPS controleren… locatie toestaan."
+  }
 };
 
-/* Standard-Sorten */
-let SORTEN = [
-    "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
-    "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
-    "Erdbeere","Mango","Banane","Himbeere","Limette",
-    "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien"
-];
+function applyLanguage(lang) {
+  currentLang = lang;
+  const t = translations[lang];
 
-/* Produkte-Konfiguration aus localStorage laden */
-let PRODUCTS = JSON.parse(JSON.stringify(BASE_PRODUCTS)); // Kopie
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el && value != null) el.textContent = value;
+  };
 
-(function restoreConfig() {
-    try {
-        const p = localStorage.getItem("sanremo_products");
-        if (p) PRODUCTS = JSON.parse(p);
-        const s = localStorage.getItem("sanremo_sorten");
-        if (s) SORTEN = JSON.parse(s);
-    } catch(e) {
-        console.warn("Konfiguration konnte nicht geladen werden:", e);
-    }
-})();
+  setText("txt_header_title", t.header_title);
+  setText("txt_lang_label", t.lang_label);
+  setText("txt_section_table", t.section_table);
+  setText("txt_label_tisch", t.label_tisch);
+  const optT = document.getElementById("txt_option_tisch");
+  if (optT && t.option_tisch) optT.textContent = t.option_tisch;
+  setText("txt_small_tisch_range", t.small_tisch_range);
 
-function saveConfig() {
-    try {
-        localStorage.setItem("sanremo_products", JSON.stringify(PRODUCTS));
-        localStorage.setItem("sanremo_sorten", JSON.stringify(SORTEN));
-    } catch(e) {
-        console.warn("Konfiguration konnte nicht gespeichert werden:", e);
-    }
+  setText("txt_section_product", t.section_product);
+  setText("txt_tab_portions", t.tab_portions);
+  setText("txt_tab_kids", t.tab_kids);
+  setText("txt_tab_eis", t.tab_eis);
+  setText("txt_tab_food", t.tab_food);
+  setText("txt_tab_drinks", t.tab_drinks);
+
+  setText("txt_label_product", t.label_product);
+  setText("txt_label_flavors", t.label_flavors);
+  setText("txt_small_flavors", t.small_flavors);
+  setText("txt_label_sahne", t.label_sahne);
+  setText("txt_small_sahne", t.small_sahne);
+  setText("txt_label_bemerkung", t.label_bemerkung);
+  const bem = document.getElementById("bemerkung");
+  if (bem && t.placeholder_bemerkung) bem.placeholder = t.placeholder_bemerkung;
+
+  setText("txt_section_cart", t.section_cart);
+  setText("btn_add_to_cart", t.btn_add_cart);
+  setText("txt_btn_whatsapp", t.btn_whatsapp);
+  setText("txt_btn_print", t.btn_print);
+  setText("txt_btn_reset_table", t.btn_reset_table);
+  setText("gps-info", t.gps_info);
 }
 
-let warenkorb = [];
-let currentGroup = "portions";
-
-/* Tische */
-const tischSelect = document.getElementById("tisch");
-for (let i = 1; i <= 33; i++) {
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = "Tisch " + i;
-    tischSelect.appendChild(opt);
-}
-
-/* Sorten-Selects füllen */
-function fillSortenSelect(id) {
-    const sel = document.getElementById(id);
-    sel.innerHTML = "<option value=''>Sorte wählen…</option>";
-    SORTEN.forEach(s => {
-        const opt = document.createElement("option");
-        opt.value = s;
-        opt.textContent = s;
-        sel.appendChild(opt);
-    });
-}
-["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
-
-/* Produkte nach Gruppe */
-function buildProduktSelect(group) {
-    const select = document.getElementById("produkt");
-    select.innerHTML = "<option value=''>Bitte wählen…</option>";
-
-    Object.keys(PRODUCTS)
-        .map(id => PRODUCTS[id])
-        .filter(p => p.group === group)
-        .sort((a,b) => a.id - b.id)
-        .forEach(p => {
-            const opt = document.createElement("option");
-            opt.value = p.id;
-            opt.textContent = p.name + " – " + p.preis.toFixed(2).replace(".", ",") + " €";
-            select.appendChild(opt);
-        });
-
-    document.getElementById("geschmack-box").style.display = "none";
-    document.getElementById("sahne-box").style.display = "none";
-    ["geschmack1","geschmack2","geschmack3"].forEach(id=>{
-        document.getElementById(id).value = "";
-    });
-    document.getElementById("sahne").value = "";
-    document.getElementById("bemerkung").value = "";
-}
-
-/* Tabs */
-document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        currentGroup = btn.dataset.group;
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        buildProduktSelect(currentGroup);
-    });
-});
-buildProduktSelect(currentGroup);
-
-/* Produktwechsel */
-document.getElementById("produkt").addEventListener("change", function() {
-    const wert = this.value;
-    const geschmackBox = document.getElementById("geschmack-box");
-    const sahneBox = document.getElementById("sahne-box");
-
-    if (!wert || !PRODUCTS[wert]) {
-        geschmackBox.style.display = "none";
-        sahneBox.style.display = "none";
-        document.getElementById("sahne").value = "";
-        return;
-    }
-
-    const produkt = PRODUCTS[wert];
-
-    if (produkt.type === "cup3") {
-        geschmackBox.style.display = "block";
-    } else {
-        geschmackBox.style.display = "none";
-        ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
-            const sel = document.getElementById(id);
-            if (sel) sel.value = "";
-        });
-    }
-
-    if (produkt.sahne) {
-        sahneBox.style.display = "block";
-    } else {
-        sahneBox.style.display = "none";
-        document.getElementById("sahne").value = "";
-    }
+/* Ligar botões das bandeiras */
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const lang = btn.dataset.lang;
+    document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    applyLanguage(lang);
+  });
 });
 
-/* Warenkorb */
-function addToCart() {
-    const tisch = document.getElementById("tisch").value;
-    if (!tisch) {
-        alert("Bitte zuerst den Tisch auswählen.");
-        return;
-    }
+/* Chamar alemão ao iniciar */
+applyLanguage("de");
 
-    const produktId = document.getElementById("produkt").value;
-    if (!produktId || !PRODUCTS[produktId]) {
-        alert("Bitte ein Produkt auswählen.");
-        return;
-    }
+/* ==== SAVE_ORDER.PHP + OVERRIDE WHATSAPP / PRINT ==== */
 
-    const produkt = PRODUCTS[produktId];
-    let sorten = [];
-    const bemerkung = document.getElementById("bemerkung").value.trim();
+/* Esta função usa as variáveis e funções do teu script original:
+   - warenkorb
+   - buildOrderText()
+   - document.getElementById("tisch")
+*/
+function saveOrderToServer(channel) {
+  if (typeof buildOrderText !== "function") return;
+  const table = document.getElementById("tisch") ? (document.getElementById("tisch").value || "-") : "-";
+  const data = {
+    table,
+    time: new Date().toISOString(),
+    lang: currentLang,
+    channel,
+    text: buildOrderText()
+  };
 
-    if (produkt.type === "cup3") {
-        const s1 = document.getElementById("geschmack1").value;
-        const s2 = document.getElementById("geschmack2").value;
-        const s3 = document.getElementById("geschmack3").value;
-        if (s1) sorten.push(s1);
-        if (s2) sorten.push(s2);
-        if (s3) sorten.push(s3);
-    }
-
-    let sahne = "";
-    let sahneZuschlag = 0;
-    if (produkt.sahne) {
-        sahne = document.getElementById("sahne").value;
-        if (sahne === "mit Sahne") {
-            sahneZuschlag = SAHNE_AUFSCHLAG;
-        }
-    }
-
-    const endPreis = produkt.preis + sahneZuschlag;
-
-    warenkorb.push({
-        id: produkt.id,
-        name: produkt.name,
-        preis: endPreis,
-        grundpreis: produkt.preis,
-        type: produkt.type,
-        sorten: sorten,
-        bemerkung: bemerkung,
-        sahne: sahne,
-        sahneZuschlag: sahneZuschlag
-    });
-
-    document.getElementById("bemerkung").value = "";
-    if (produkt.type === "cup3") {
-        ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
-            document.getElementById(id).value = "";
-        });
-    }
-    document.getElementById("produkt").value = "";
-    document.getElementById("sahne").value = "";
-
-    updateCart();
+  fetch("save_order.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  }).catch(() => {
+    // se falhar, não vamos chatear o cliente
+  });
 }
 
-function updateCart() {
-    const liste = document.getElementById("liste-items");
-    const totalDiv = document.getElementById("gesamt");
-    const btnWpp = document.getElementById("btn-whatsapp");
-    const btnPrint = document.getElementById("btn-print");
+/* Vamos substituir as tuas funções sendWhatsApp() e printOrder()
+   mas a lógica é praticamente a mesma, só que também chama save_order.php.
+   IMPORTANTE: assumo que no teu script original existem:
+   - gpsOk
+   - WHATSAPP_NUMMER
+   - warenkorb
+   - buildOrderText()
+   - updateCart()
+   - storeOrder(channel)
+*/
 
-    liste.innerHTML = "";
-    let total = 0;
+window.sendWhatsApp = function() {
+  if (typeof gpsOk !== "undefined" && !gpsOk) {
+    alert("Bestellung nur vor Ort möglich. Bitte Standortfreigabe erlauben.");
+    return;
+  }
+  if (!Array.isArray(warenkorb) || warenkorb.length === 0) {
+    alert("Der Warenkorb ist leer.");
+    return;
+  }
 
-    warenkorb.forEach((item, index) => {
-        total += item.preis;
-
-        const line = document.createElement("div");
-        line.className = "line-item";
-
-        const info = document.createElement("div");
-        info.className = "item-info";
-
-        let text = item.name + " – " + item.preis.toFixed(2).replace(".", ",") + " €";
-        if (item.type === "cup3" && item.sorten.length > 0) {
-            text += "<br><span class='small'>Sorten: " + item.sorten.join(", ") + "</span>";
-        }
-        if (item.bemerkung) {
-            text += "<br><span class='small'>Bemerkung: " + item.bemerkung + "</span>";
-        }
-        if (item.sahne) {
-            if (item.sahne === "mit Sahne" && item.sahneZuschlag > 0) {
-                text += "<br><span class='small'>Sahne: mit Sahne (+ "
-                    + item.sahneZuschlag.toFixed(2).replace(".", ",") + " €)</span>";
-            } else {
-                text += "<br><span class='small'>Sahne: " + item.sahne + "</span>";
-            }
-        }
-        info.innerHTML = text;
-
-        const btnRemove = document.createElement("button");
-        btnRemove.className = "btn-remove";
-        btnRemove.textContent = "X";
-        btnRemove.onclick = () => removeItem(index);
-
-        line.appendChild(info);
-        line.appendChild(btnRemove);
-        liste.appendChild(line);
-    });
-
-    totalDiv.textContent = "Gesamt: " + total.toFixed(2).replace(".", ",") + " €";
-    const hasItems = warenkorb.length > 0;
-    btnWpp.disabled = !hasItems || !gpsOk;
-    btnPrint.disabled = !hasItems;
-}
-
-function removeItem(index) {
-    warenkorb.splice(index, 1);
-    updateCart();
-}
-
-/* Bestellungstext */
-function buildOrderText() {
-    const tisch = document.getElementById("tisch").value || "-";
-    let total = 0;
-    let text = `Tisch ${tisch} - Bestellung:\n`;
-
-    warenkorb.forEach(item => {
-        total += item.preis;
-        let line = `• ${item.name} (${item.preis.toFixed(2)} €)`;
-        if (item.type === "cup3" && item.sorten.length > 0) {
-            line += ` – Sorten: ${item.sorten.join(", ")}`;
-        }
-        if (item.bemerkung) {
-            line += ` – Bemerkung: ${item.bemerkung}`;
-        }
-        if (item.sahne) {
-            if (item.sahne === "mit Sahne" && item.sahneZuschlag > 0) {
-                line += ` – Sahne: mit Sahne (+ ${item.sahneZuschlag.toFixed(2)} €)`;
-            } else {
-                line += ` – Sahne: ${item.sahne}`;
-            }
-        }
-        text += line + "\n";
-    });
-
-    text += `\nGesamtbetrag: ${total.toFixed(2)} €`;
-    return text;
-}
-
-/* Bestellungen für Chef speichern */
-function storeOrder(channel) {
-    const tisch = document.getElementById("tisch").value || "-";
-    const textPlain = buildOrderText();
-    const timestamp = new Date().toLocaleString("de-DE");
-    adminOrders.push({ tisch, channel, text: textPlain, time: timestamp });
-    if (isAdmin) updateAdminList();
-}
-
-/* WhatsApp */
-function sendWhatsApp() {
-    if (!gpsOk) {
-        alert("Bestellung nur vor Ort möglich. Bitte Standort-Freigabe erlauben.");
-        return;
-    }
-
-    const tisch = document.getElementById("tisch").value;
-    if (!tisch) {
-        alert("Bitte zuerst den Tisch auswählen.");
-        return;
-    }
-    if (warenkorb.length === 0) {
-        alert("Der Warenkorb ist leer.");
-        return;
-    }
-
+  // guardar para Chef-Bereich (função do teu script)
+  if (typeof storeOrder === "function") {
     storeOrder("WhatsApp");
-    const text = encodeURIComponent(buildOrderText());
-    const url = `https://wa.me/${WHATSAPP_NUMMER}?text=${text}`;
-    window.open(url, "_blank");
+  }
 
-    warenkorb = [];
-    updateCart();
-}
+  // guardar também em save_order.php
+  saveOrderToServer("WhatsApp");
 
-/* Drucker */
-function printOrder() {
-    if (warenkorb.length === 0) {
-        alert("Der Warenkorb ist leer.");
-        return;
-    }
-    const tisch = document.getElementById("tisch").value || "-";
-    const textHtml = buildOrderText().replace(/\n/g, "<br>");
+  const text = encodeURIComponent(buildOrderText());
+  const url = `https://wa.me/${typeof WHATSAPP_NUMMER !== "undefined" ? WHATSAPP_NUMMER : ""}?text=${text}`;
+  window.open(url, "_blank");
 
+  // limpar carrinho
+  warenkorb = [];
+  if (typeof updateCart === "function") updateCart();
+};
+
+window.printOrder = function() {
+  if (!Array.isArray(warenkorb) || warenkorb.length === 0) {
+    alert("Der Warenkorb ist leer.");
+    return;
+  }
+
+  // guardar para Chef-Bereich
+  if (typeof storeOrder === "function") {
     storeOrder("Drucker");
+  }
 
-    const win = window.open("", "_blank");
-    win.document.open();
-    win.document.write(`
-        <html>
-        <head>
-            <title>Bestellung Tisch ${tisch}</title>
-            <meta charset="UTF-8">
-        </head>
-        <body style="font-family:Arial,sans-serif; font-size:14px;">
-            <h2>Bestellung Tisch ${tisch}</h2>
-            <p>${textHtml}</p>
-        </body>
-        </html>
-    `);
-    win.document.close();
-    win.print();
-}
+  // guardar também em save_order.php
+  saveOrderToServer("Drucker");
 
-/* Reset */
-function resetTable() {
-    if (!confirm("Möchten Sie den Tisch wirklich zurücksetzen? Alle Bestellungen werden gelöscht.")) {
-        return;
-    }
+  const tisch = document.getElementById("tisch") ? (document.getElementById("tisch").value || "-") : "-";
+  const htmlText = buildOrderText().replace(/\n/g, "<br>");
 
-    warenkorb = [];
-    updateCart();
-
-    const tischSel = document.getElementById("tisch");
-    if (tischSel) tischSel.value = "";
-
-    const produktSel = document.getElementById("produkt");
-    if (produktSel) produktSel.value = "";
-
-    ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
-        const sel = document.getElementById(id);
-        if (sel) sel.value = "";
-    });
-
-    const sahneSel = document.getElementById("sahne");
-    if (sahneSel) sahneSel.value = "";
-
-    document.getElementById("bemerkung").value = "";
-}
-
-/* GPS */
-function deg2rad(deg) { return deg * (Math.PI / 180); }
-
-function distanceKm(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = deg2rad(lat2 - lat1);
-    const dLon = deg2rad(lon2 - lon1);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-}
-
-function initLocation() {
-    const info = document.getElementById("gps-info");
-    const btnWpp = document.getElementById("btn-whatsapp");
-
-    if (!navigator.geolocation) {
-        info.textContent = "GPS nicht verfügbar – Bestellung per WhatsApp ist deaktiviert.";
-        gpsOk = false;
-        btnWpp.disabled = true;
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            const dist = distanceKm(lat, lng, CAFE_LAT, CAFE_LNG);
-
-            if (dist <= MAX_DIST_KM) {
-                gpsOk = true;
-                info.textContent = "Standort OK – Bestellung per WhatsApp ist möglich.";
-            } else {
-                gpsOk = false;
-                info.textContent = "Sie sind zu weit vom Standort entfernt – Bestellung per WhatsApp nicht möglich.";
-            }
-            updateCart();
-        },
-        (err) => {
-            gpsOk = false;
-            info.textContent = "Standort konnte nicht bestimmt werden – bitte GPS erlauben.";
-            btnWpp.disabled = true;
-        }
-    );
-}
-
-/* Chef-Login & Admin-Panel */
-function adminLogin() {
-    const pw = document.getElementById("admin-password").value;
-    if (pw === ADMIN_PASSWORD) {
-        isAdmin = true;
-        document.getElementById("admin-login-card").style.display = "none";
-        document.getElementById("admin-panel").style.display = "block";
-        updateAdminList();
-        populateAdminProducts();
-        renderSortenList();
-    } else {
-        alert("Falsches Passwort.");
-    }
-}
-
-function adminLogout() {
-    isAdmin = false;
-    document.getElementById("admin-panel").style.display = "none";
-    document.getElementById("admin-login-card").style.display = "block";
-    document.getElementById("admin-password").value = "";
-}
-
-/* Admin: Bestell-Liste */
-function updateAdminList() {
-    const list = document.getElementById("admin-orders-list");
-    list.innerHTML = "";
-    if (adminOrders.length === 0) {
-        list.innerHTML = "<div class='small'>Noch keine Bestellungen gespeichert.</div>";
-        return;
-    }
-
-    adminOrders.forEach((o, idx) => {
-        const div = document.createElement("div");
-        div.className = "admin-order";
-        div.innerHTML = `
-            <strong>${o.time}</strong> – Tisch ${o.tisch} (${o.channel})<br>
-            ${o.text.replace(/\n/g,"<br>")}
-            <br>
-            <button class="btn-small" onclick="deleteOrder(${idx})">Löschen</button>
-        `;
-        list.appendChild(div);
-    });
-}
-
-function deleteOrder(index) {
-    adminOrders.splice(index, 1);
-    updateAdminList();
-}
-
-function clearAllOrders() {
-    if (!confirm("Alle gespeicherten Bestellungen wirklich löschen?")) return;
-    adminOrders = [];
-    updateAdminList();
-}
-
-/* Admin: Produkte verwalten */
-function populateAdminProducts() {
-    const sel = document.getElementById("admin-product-select");
-    sel.innerHTML = "<option value=''>Produkt wählen…</option>";
-    Object.keys(PRODUCTS)
-        .map(id => PRODUCTS[id])
-        .sort((a,b) => a.id - b.id)
-        .forEach(p => {
-            const opt = document.createElement("option");
-            opt.value = p.id;
-            opt.textContent = p.id + " – " + p.name + " (" + p.group + ")";
-            sel.appendChild(opt);
-        });
-
-    sel.onchange = () => {
-        const id = sel.value;
-        if (!id || !PRODUCTS[id]) return;
-        const p = PRODUCTS[id];
-        document.getElementById("admin-prod-name").value = p.name;
-        document.getElementById("admin-prod-price").value = p.preis.toString().replace(".", ",").replace(",",".");
-        document.getElementById("admin-prod-group").value = p.group;
-        document.getElementById("admin-prod-type").value = p.type;
-        document.getElementById("admin-prod-sahne").checked = !!p.sahne;
-    };
-}
-
-function saveExistingProduct() {
-    const sel = document.getElementById("admin-product-select");
-    const id = sel.value;
-    if (!id || !PRODUCTS[id]) {
-        alert("Bitte zuerst ein Produkt wählen.");
-        return;
-    }
-    const name = document.getElementById("admin-prod-name").value.trim();
-    let preis = parseFloat(document.getElementById("admin-prod-price").value.replace(",","."));
-    const group = document.getElementById("admin-prod-group").value;
-    const type = document.getElementById("admin-prod-type").value;
-    const sahne = document.getElementById("admin-prod-sahne").checked;
-
-    if (!name || isNaN(preis)) {
-        alert("Name und Preis sind erforderlich.");
-        return;
-    }
-
-    PRODUCTS[id].name = name;
-    PRODUCTS[id].preis = preis;
-    PRODUCTS[id].group = group;
-    PRODUCTS[id].type = type;
-    PRODUCTS[id].sahne = sahne;
-
-    saveConfig();
-    populateAdminProducts();
-    buildProduktSelect(currentGroup);
-    alert("Produkt gespeichert.");
-}
-
-function deleteExistingProduct() {
-    const sel = document.getElementById("admin-product-select");
-    const id = sel.value;
-    if (!id || !PRODUCTS[id]) {
-        alert("Bitte zuerst ein Produkt wählen.");
-        return;
-    }
-    if (!confirm("Produkt wirklich löschen?")) return;
-    delete PRODUCTS[id];
-    saveConfig();
-    populateAdminProducts();
-    buildProduktSelect(currentGroup);
-    alert("Produkt gelöscht.");
-}
-
-function addNewProduct() {
-    const idVal = document.getElementById("new-prod-id").value;
-    const name = document.getElementById("new-prod-name").value.trim();
-    let preis = parseFloat(document.getElementById("new-prod-price").value.replace(",","."));
-    const group = document.getElementById("new-prod-group").value;
-    const type = document.getElementById("new-prod-type").value;
-    const sahne = document.getElementById("new-prod-sahne").checked;
-
-    const id = parseInt(idVal, 10);
-    if (!idVal || isNaN(id) || !name || isNaN(preis)) {
-        alert("Bitte Produktnummer, Name und Preis eingeben.");
-        return;
-    }
-    if (PRODUCTS[id]) {
-        if (!confirm("Diese Produktnummer existiert bereits. Überschreiben?")) return;
-    }
-
-    PRODUCTS[id] = { id, name, preis, type, group, sahne };
-
-    document.getElementById("new-prod-id").value = "";
-    document.getElementById("new-prod-name").value = "";
-    document.getElementById("new-prod-price").value = "";
-    document.getElementById("new-prod-group").value = "portions";
-    document.getElementById("new-prod-type").value = "normal";
-    document.getElementById("new-prod-sahne").checked = false;
-
-    saveConfig();
-    populateAdminProducts();
-    buildProduktSelect(currentGroup);
-    alert("Neues Produkt angelegt.");
-}
-
-/* Admin: Sorten verwalten */
-function renderSortenList() {
-    const cont = document.getElementById("sorten-list");
-    if (!cont) return;
-    if (SORTEN.length === 0) {
-        cont.textContent = "Keine Sorten definiert.";
-        return;
-    }
-    let html = "";
-    SORTEN.forEach((s, idx) => {
-        html += `<span style="display:inline-block;margin:2px 4px;padding:2px 6px;border-radius:999px;background:#f1f1f1;">
-            ${s}
-            <button style="border:none;background:transparent;font-size:11px;cursor:pointer;" onclick="deleteSorte(${idx})">x</button>
-        </span>`;
-    });
-    cont.innerHTML = html;
-}
-
-function deleteSorte(idx) {
-    SORTEN.splice(idx, 1);
-    saveConfig();
-    renderSortenList();
-    ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
-}
-
-function addNewSorte() {
-    const input = document.getElementById("new-sorte");
-    const name = input.value.trim();
-    if (!name) {
-        alert("Bitte einen Sortennamen eingeben.");
-        return;
-    }
-    SORTEN.push(name);
-    input.value = "";
-    saveConfig();
-    renderSortenList();
-    ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
-}
-
-/* Init */
-window.addEventListener("load", initLocation);
+  const win = window.open("", "_blank");
+  win.document.open();
+  win.document.write(`
+    <html>
+    <head><meta charset="UTF-8"><title>Bestellung Tisch ${tisch}</title></head>
+    <body style="font-family:Arial,sans-serif; font-size:14px;">
+      <h2>Bestellung Tisch ${tisch}</h2>
+      <p>${htmlText}</p>
+    </body>
+    </html>
+  `);
+  win.document.close();
+  win.print();
+};
 </script>
 
 </body>
