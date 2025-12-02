@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Food & Drinks – QR Tischbestellung</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- ADICIONEI FONT AWESOME NO HEAD -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -14,9 +13,9 @@
             --bg: #fff8f2;
             --card-bg: #ffffff;
             
-            /* NOVA COR PARA BARRA SUPERIOR - LARANJA/ROSA */
-            --header-gradient-start: #FF6B6B;
-            --header-gradient-end: #FF8E53;
+            /* NOVA COR PARA BARRA SUPERIOR - AZUL CLARO */
+            --header-gradient-start: #4A90E2;
+            --header-gradient-end: #64B5F6;
             
             --tab-portions: #ffb300;
             --tab-kids: #ff4081;
@@ -37,66 +36,71 @@
             overflow-x: hidden;
         }
 
-        /* HEADER COM NOVA COR - GRADIENTE LARANJA/ROSA */
+        /* HEADER COM NOVA COR - AZUL CLARO E TAMANHO AJUSTADO */
         .header {
             width: 100%;
+            max-width: 1200px; /* LIMITAR LARGURA DO HEADER */
+            margin: 0 auto;
             background: linear-gradient(135deg, var(--header-gradient-start) 0%, var(--header-gradient-end) 100%);
-            padding: 12px 0 8px 0;
+            padding: 10px 0 6px 0;
+            border-radius: 0 0 12px 12px;
             border-bottom: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
             position: relative;
         }
         .header-inner {
-            max-width: 1200px; /* AUMENTADO PARA MAIOR LARGURA */
+            max-width: 100%;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            padding: 0 15px; /* MAIS PADDING */
+            padding: 0 15px;
         }
         .logo-section {
             display: flex;
             align-items: center;
             gap: 10px;
+            flex: 1;
         }
         .header-logo {
             max-width: 100%;
-            max-height: 80px;
+            max-height: 60px; /* REDUZIDO */
             height: auto;
             width: auto;
             object-fit: contain;
         }
         .header-title {
-            font-size: 20px;
+            font-size: 16px; /* REDUZIDO */
             font-weight: 600;
             color: white;
             letter-spacing: 0.5px;
-            text-align: center;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            text-align: left;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            line-height: 1.3;
         }
         
         /* CONTROLES DO HEADER */
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
         
         /* SELEÇÃO DE IDIOMA */
         .language-selector {
             display: flex;
-            gap: 5px;
+            gap: 4px;
         }
         .lang-btn {
-            width: 32px;
-            height: 24px;
+            width: 28px;
+            height: 20px;
             border-radius: 3px;
             cursor: pointer;
             opacity: 0.8;
             transition: all 0.3s;
             border: 2px solid transparent;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .lang-btn:hover {
             opacity: 1;
@@ -105,7 +109,7 @@
         .lang-btn.active {
             opacity: 1;
             border-color: white;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
         }
         
         /* BOTÃO ADMIN */
@@ -113,16 +117,17 @@
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 16px;
             cursor: pointer;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 14px;
+            gap: 4px;
+            font-size: 12px;
             transition: all 0.3s;
             backdrop-filter: blur(10px);
+            white-space: nowrap;
         }
         .admin-btn:hover {
             background: rgba(255, 255, 255, 0.3);
@@ -132,65 +137,77 @@
         /* NÚMERO DA MESA NO HEADER */
         .table-display {
             background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
+            font-size: 12px;
         }
         .table-number {
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         /* CONTAINER PRINCIPAL MAIS LARGO */
         .container {
-            padding: 20px 15px; /* MAIS PADDING */
-            max-width: 1200px; /* AUMENTADO DE 960px PARA 1200px */
+            padding: 15px;
+            max-width: 1200px;
             margin: 0 auto 25px auto;
             width: 100%;
         }
 
         @media (max-width: 768px) {
+            .header {
+                max-width: 100%;
+                border-radius: 0;
+            }
             .header-inner {
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
                 padding: 0 10px;
             }
             .header-controls {
                 flex-wrap: wrap;
                 justify-content: center;
+                width: 100%;
             }
             .header-title {
-                font-size: 17px;
+                font-size: 14px;
                 text-align: center;
             }
+            .header-logo {
+                max-height: 50px;
+            }
             .admin-btn {
-                padding: 6px 12px;
-                font-size: 13px;
+                padding: 5px 10px;
+                font-size: 11px;
             }
             .table-display {
-                padding: 6px 12px;
-                font-size: 14px;
+                padding: 5px 10px;
+                font-size: 11px;
             }
             .container {
-                padding: 15px 10px;
+                padding: 10px;
             }
         }
 
         @media (max-width: 480px) {
             .header-title {
-                font-size: 15px;
+                font-size: 13px;
             }
             .header-controls {
-                gap: 8px;
+                gap: 6px;
             }
             .lang-btn {
-                width: 28px;
-                height: 20px;
+                width: 24px;
+                height: 18px;
+            }
+            .header-logo {
+                max-height: 45px;
             }
         }
 
@@ -260,7 +277,7 @@
             transform: none;
         }
 
-        /* SELEÇÃO DE SABORES - NOVO DESIGN */
+        /* SELEÇÃO DE SABORES - MELHORADO COM MAIS ESPAÇO */
         .flavor-selection {
             margin-top: 15px;
             background: #f8f9fa;
@@ -279,9 +296,12 @@
         
         .flavor-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 8px;
             margin-bottom: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 5px;
         }
         
         .flavor-option {
@@ -296,7 +316,7 @@
         }
         
         .flavor-option:hover {
-            border-color: #ff8e53;
+            border-color: #4A90E2;
             transform: translateY(-2px);
         }
         
@@ -314,7 +334,7 @@
             text-align: right;
         }
         
-        /* OPÇÕES DE SAHNE - NOVO DESIGN */
+        /* OPÇÕES DE SAHNE - NOVO DESIGN (APENAS UMA VEZ) */
         .sahne-selection {
             margin-top: 15px;
             background: #f8f9fa;
@@ -340,7 +360,7 @@
         }
         
         .sahne-option:hover {
-            border-color: #ff8e53;
+            border-color: #4A90E2;
         }
         
         .sahne-option.selected {
@@ -567,7 +587,7 @@
             font-size: 11px;
             color: #777;
             margin: 10px auto 0 auto;
-            max-width: 1200px; /* AUMENTADO PARA 1200px */
+            max-width: 1200px;
             text-align: left;
             line-height: 1.5;
             padding: 0 12px 18px 12px;
@@ -581,6 +601,33 @@
         .legal-box summary {
             cursor: pointer;
         }
+
+        /* BOTÃO PARA ADICIONAR MAIS SABORES NO ADMIN */
+        .add-flavor-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            align-items: center;
+        }
+        .add-flavor-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .add-flavor-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .add-flavor-btn:hover {
+            background: #45a049;
+        }
     </style>
 </head>
 
@@ -589,7 +636,6 @@
 <header class="header">
     <div class="header-inner">
         <div class="logo-section">
-            <!-- mete o ficheiro do logo horizontal na mesma pasta -->
             <img src="sanremo-digital-systems-horizontal.png" alt="Sanremo Digital Systems Logo" class="header-logo">
             <div class="header-title">Digitaler QR-Tischservice – Internes Bestellsystem</div>
         </div>
@@ -801,6 +847,7 @@
         <select id="admin-prod-type">
             <option value="normal">Normal</option>
             <option value="cup3">Portion (Sortenwahl)</option>
+            <option value="cup2">Kinder Portion (2 Kugeln)</option>
         </select>
 
         <label style="margin-top:6px;">
@@ -838,6 +885,7 @@
         <select id="new-prod-type">
             <option value="normal">Normal</option>
             <option value="cup3">Portion (Sortenwahl)</option>
+            <option value="cup2">Kinder Portion (2 Kugeln)</option>
         </select>
 
         <label style="margin-top:6px;">
@@ -849,16 +897,25 @@
             Neues Produkt anlegen
         </button>
 
-        <!-- SORTEN-VERWALTUNG -->
+        <!-- SORTEN-VERWALTUNG MELHORADA -->
         <h3 class="section-title" style="border-left-color:#6a1b9a; margin-top:20px;" id="flavors-title">Eissorten verwalten</h3>
-        <div id="sorten-list" class="small" style="margin-bottom:8px;"></div>
+        <div class="small" style="margin-bottom:8px;">Hier können Sie neue Eissorten hinzufügen. Klicken Sie auf das X, um eine Sorte zu löschen.</div>
+        
+        <div id="sorten-list" style="margin-bottom:15px; max-height: 200px; overflow-y: auto; padding: 10px; background: #f9f9f9; border-radius: 8px; border: 1px solid #eee;">
+            <!-- Sabores serão exibidos aqui -->
+        </div>
 
-        <label for="new-sorte" id="new-flavor-label">Neue Sorte:</label>
-        <input id="new-sorte" type="text" placeholder="z.B. Stracciatella Light">
+        <!-- NOVO: ADICIONAR MAIS SABORES FACILMENTE -->
+        <div class="add-flavor-container">
+            <input type="text" id="new-sorte" class="add-flavor-input" placeholder="Neue Sorte z.B. Stracciatella Light">
+            <button class="add-flavor-btn" onclick="addNewSorte()">
+                <i class="fas fa-plus"></i> Sorte hinzufügen
+            </button>
+        </div>
 
-        <button class="btn" style="margin-top:6px;" onclick="addNewSorte()" id="add-flavor-btn">
-            Sorte hinzufügen
-        </button>
+        <div class="small" style="margin-top:10px;">
+            <strong>Tipp:</strong> Sie können bis zu 30 verschiedene Eissorten hinzufügen.
+        </div>
 
         <!-- RECHTLICHER HINWEIS NUR FÜR CHEF -->
         <div class="legal-box">
@@ -912,8 +969,8 @@ const TRANSLATIONS = {
         
         // Labels
         "product-label": "Produkt:",
-        "flavor-label": "Wählen Sie 3 Geschmacksrichtungen:",
-        "flavor-info": "Bitte wählen Sie genau 3 Sorten aus.",
+        "flavor-label": "Wählen Sie Geschmacksrichtungen:",
+        "flavor-info": "Bitte wählen Sie die richtige Anzahl Sorten aus.",
         "cream-label": "Mit Sahne oder ohne Sahne?",
         "cream-info": "",
         "note-label": "Bemerkung (optional):",
@@ -969,7 +1026,7 @@ const TRANSLATIONS = {
         "legal-title": "Rechtlicher Hinweis (anklicken)",
         "legal-text-1": "Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine Registrierkasse oder steuerrechtlich relevante Aufzeichnung.",
         "legal-text-2": "Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.",
-        "legal-text-3": "Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K und darf nicht als Kassensystem verwendet werden.",
+        "legal-text-3": "Dieses System besitzt keine Verbindung zu uma eletronica Kasse, erfüllt nicht die Anforderungen der Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K und darf nicht als Kassensystem verwendet werden.",
         "legal-text-4": "Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender dieses Systems."
     },
     pt: {
@@ -989,8 +1046,8 @@ const TRANSLATIONS = {
         "tab-drinks": "Bebidas",
         
         "product-label": "Produto:",
-        "flavor-label": "Escolha 3 sabores:",
-        "flavor-info": "Por favor, escolha exatamente 3 sabores.",
+        "flavor-label": "Escolha sabores:",
+        "flavor-info": "Por favor, escolha o número correto de sabores.",
         "cream-label": "Com ou sem creme?",
         "cream-info": "",
         "note-label": "Observação (opcional):",
@@ -1056,8 +1113,8 @@ const TRANSLATIONS = {
         "tab-drinks": "Bevande",
         
         "product-label": "Prodotto:",
-        "flavor-label": "Scegliere 3 gusti:",
-        "flavor-info": "Per favore, scegliere esattamente 3 gusti.",
+        "flavor-label": "Scegliere gusti:",
+        "flavor-info": "Per favore, scegliere il numero corretto di gusti.",
         "cream-label": "Con panna o senza panna?",
         "cream-info": "",
         "note-label": "Nota (opzionale):",
@@ -1123,8 +1180,8 @@ const TRANSLATIONS = {
         "tab-drinks": "Dranken",
         
         "product-label": "Product:",
-        "flavor-label": "Kies 3 smaken:",
-        "flavor-info": "Kies alstublieft precies 3 smaken.",
+        "flavor-label": "Kies smaken:",
+        "flavor-info": "Kies alstublieft het juiste aantal smaken.",
         "cream-label": "Met slagroom of zonder slagroom?",
         "cream-info": "",
         "note-label": "Opmerking (optioneel):",
@@ -1287,7 +1344,7 @@ function setLanguage(lang) {
     }
 }
 
-// Função para mostrar opções de gelado (3 sabores + sahne)
+// Função para mostrar opções de gelado (sabores + sahne)
 function showIceOptions(produktId) {
     const container = document.getElementById('ice-options-container');
     const produkt = PRODUCTS[produktId];
@@ -1311,77 +1368,98 @@ function showIceOptions(produktId) {
     currentSelectedFlavors = [];
     currentSahneOption = 'mit Sahne'; // Default: com sahne
     
+    // Determinar quantos sabores devem ser escolhidos
+    let requiredFlavors = 3; // Default
+    let flavorLabel = TRANSLATIONS[currentLanguage]['flavor-label'];
+    
+    if (produkt.type === 'cup2' || (produkt.id === 23 && produkt.name.includes('Kinder Portion'))) {
+        // Kinder Portion (2 Kugeln) - apenas 2 sabores
+        requiredFlavors = 2;
+        flavorLabel = currentLanguage === 'de' ? 'Wählen Sie 2 Geschmacksrichtungen:' :
+                     currentLanguage === 'pt' ? 'Escolha 2 sabores:' :
+                     currentLanguage === 'it' ? 'Scegliere 2 gusti:' :
+                     'Kies 2 smaken:';
+    } else if (produkt.type === 'cup3') {
+        // Portion normal - 3 sabores
+        requiredFlavors = 3;
+        flavorLabel = currentLanguage === 'de' ? 'Wählen Sie 3 Geschmacksrichtungen:' :
+                     currentLanguage === 'pt' ? 'Escolha 3 sabores:' :
+                     currentLanguage === 'it' ? 'Scegliere 3 gusti:' :
+                     'Kies 3 smaken:';
+    }
+    
     // Criar HTML para opções de gelado
     let html = '';
     
     // Se for um produto que pode ter múltiplos sabores
-    if (produkt.type === 'cup3' || produkt.group === 'portions' || produkt.group === 'eis') {
+    if (produkt.type === 'cup3' || produkt.type === 'cup2' || produkt.group === 'portions' || produkt.group === 'eis') {
         html += `
         <div class="flavor-selection">
             <div class="flavor-title">
                 <i class="fas fa-palette"></i>
-                ${TRANSLATIONS[currentLanguage]['flavor-label']}
+                ${flavorLabel}
             </div>
             <div class="flavor-grid" id="flavor-grid">
                 <!-- Sabores serão inseridos por JavaScript -->
             </div>
-            <div class="flavor-counter" id="flavor-counter">0/3 ${currentLanguage === 'de' ? 'ausgewählt' : 'selecionados'}</div>
+            <div class="flavor-counter" id="flavor-counter">0/${requiredFlavors} ${currentLanguage === 'de' ? 'ausgewählt' : 'selecionados'}</div>
         </div>
         `;
     }
     
-    // Opção de Sahne para todos os produtos de gelado
-    html += `
-    <div class="sahne-selection">
-        <div class="flavor-title">
-            <i class="fas fa-whipped-cream"></i>
-            ${TRANSLATIONS[currentLanguage]['cream-label']}
-        </div>
-        <div class="sahne-options">
-            <div class="sahne-option selected" data-sahne="mit Sahne">
-                ${currentLanguage === 'de' ? 'Mit Sahne (+1,20 €)' : 
-                  currentLanguage === 'pt' ? 'Com creme (+1,20 €)' :
-                  currentLanguage === 'it' ? 'Con panna (+1,20 €)' :
-                  'Met slagroom (+1,20 €)'}
+    // Opção de Sahne para todos os produtos de gelado (APENAS UMA VEZ)
+    // Verificar se o produto permite opção de sahne
+    if (produkt.sahne) {
+        html += `
+        <div class="sahne-selection">
+            <div class="flavor-title">
+                <i class="fas fa-whipped-cream"></i>
+                ${TRANSLATIONS[currentLanguage]['cream-label']}
             </div>
-            <div class="sahne-option" data-sahne="ohne Sahne">
-                ${currentLanguage === 'de' ? 'Ohne Sahne' : 
-                  currentLanguage === 'pt' ? 'Sem creme' :
-                  currentLanguage === 'it' ? 'Senza panna' :
-                  'Zonder slagroom'}
+            <div class="sahne-options">
+                <div class="sahne-option selected" data-sahne="mit Sahne">
+                    ${currentLanguage === 'de' ? 'Mit Sahne (+1,20 €)' : 
+                      currentLanguage === 'pt' ? 'Com creme (+1,20 €)' :
+                      currentLanguage === 'it' ? 'Con panna (+1,20 €)' :
+                      'Met slagroom (+1,20 €)'}
+                </div>
+                <div class="sahne-option" data-sahne="ohne Sahne">
+                    ${currentLanguage === 'de' ? 'Ohne Sahne' : 
+                      currentLanguage === 'pt' ? 'Sem creme' :
+                      currentLanguage === 'it' ? 'Senza panna' :
+                      'Zonder slagroom'}
+                </div>
             </div>
         </div>
-    </div>
-    `;
+        `;
+    }
     
     container.innerHTML = html;
     container.style.display = 'block';
     
     // Preencher sabores disponíveis
-    if (produkt.type === 'cup3' || produkt.group === 'portions' || produkt.group === 'eis') {
+    if (produkt.type === 'cup3' || produkt.type === 'cup2' || produkt.group === 'portions' || produkt.group === 'eis') {
         const flavorGrid = document.getElementById('flavor-grid');
         if (flavorGrid) {
             flavorGrid.innerHTML = '';
             
-            // Mostrar apenas os primeiros 12 sabores para não sobrecarregar
-            const flavorsToShow = SORTEN.slice(0, 12);
-            
-            flavorsToShow.forEach(flavor => {
+            // Mostrar TODOS os sabores disponíveis (scroll se necessário)
+            SORTEN.forEach(flavor => {
                 const flavorDiv = document.createElement('div');
                 flavorDiv.className = 'flavor-option';
                 flavorDiv.textContent = flavor;
                 flavorDiv.addEventListener('click', function() {
-                    toggleFlavorSelection(this, flavor);
+                    toggleFlavorSelection(this, flavor, requiredFlavors);
                 });
                 flavorGrid.appendChild(flavorDiv);
             });
             
             // Atualizar contador
-            updateFlavorCounter();
+            updateFlavorCounter(requiredFlavors);
         }
     }
     
-    // Configurar opções de Sahne
+    // Configurar opções de Sahne (se existirem)
     const sahneOptions = container.querySelectorAll('.sahne-option');
     sahneOptions.forEach(option => {
         option.addEventListener('click', function() {
@@ -1393,7 +1471,7 @@ function showIceOptions(produktId) {
 }
 
 // Função para alternar seleção de sabor
-function toggleFlavorSelection(element, flavor) {
+function toggleFlavorSelection(element, flavor, maxFlavors) {
     if (currentSelectedFlavors.includes(flavor)) {
         // Remover sabor
         const index = currentSelectedFlavors.indexOf(flavor);
@@ -1401,25 +1479,29 @@ function toggleFlavorSelection(element, flavor) {
         element.classList.remove('selected');
     } else {
         // Adicionar sabor (se não atingiu o limite)
-        if (currentSelectedFlavors.length < 3) {
+        if (currentSelectedFlavors.length < maxFlavors) {
             currentSelectedFlavors.push(flavor);
             element.classList.add('selected');
         } else {
-            alert(TRANSLATIONS[currentLanguage]['flavor-info']);
+            const msg = currentLanguage === 'de' ? `Bitte wählen Sie maximal ${maxFlavors} Geschmacksrichtungen aus!` :
+                       currentLanguage === 'pt' ? `Por favor, escolha no máximo ${maxFlavors} sabores!` :
+                       currentLanguage === 'it' ? `Per favore, scegliere al massimo ${maxFlavors} gusti!` :
+                       `Kies alstublieft maximaal ${maxFlavors} smaken!`;
+            alert(msg);
         }
     }
     
-    updateFlavorCounter();
+    updateFlavorCounter(maxFlavors);
 }
 
 // Função para atualizar contador de sabores
-function updateFlavorCounter() {
+function updateFlavorCounter(maxFlavors) {
     const counter = document.getElementById('flavor-counter');
     if (counter) {
-        counter.textContent = `${currentSelectedFlavors.length}/3 ${currentLanguage === 'de' ? 'ausgewählt' : 'selecionados'}`;
+        counter.textContent = `${currentSelectedFlavors.length}/${maxFlavors} ${currentLanguage === 'de' ? 'ausgewählt' : 'selecionados'}`;
         
-        // Mudar cor se tiver 3 selecionados
-        if (currentSelectedFlavors.length === 3) {
+        // Mudar cor se tiver todos selecionados
+        if (currentSelectedFlavors.length === maxFlavors) {
             counter.style.color = '#4CAF50';
             counter.style.fontWeight = '600';
         } else {
@@ -1591,9 +1673,9 @@ let gpsOk = false;
 let adminOrders = [];
 let isAdmin = false;
 
-/* BASIS-PRODUKTE (Standard) */
+/* BASIS-PRODUKTE (Standard) - ATUALIZADO COM NOVO TIPO cup2 */
 const BASE_PRODUCTS = {
-    23: { id:23,  name:"23. Kinder Portion (2 Kugeln)",      preis:3.50, type:"cup3",  group:"portions", sahne:true },
+    23: { id:23,  name:"23. Kinder Portion (2 Kugeln)",      preis:3.50, type:"cup2",  group:"portions", sahne:true },
     24: { id:24,  name:"24. Kleine Portion (3 Kugeln)",      preis:5.00, type:"cup3",  group:"portions", sahne:true },
     25: { id:25,  name:"25. Normale Portion (4 Kugeln)",     preis:6.50, type:"cup3",  group:"portions", sahne:true },
     26: { id:26,  name:"26. Große Portion (6 Kugeln)",       preis:9.50, type:"cup3",  group:"portions", sahne:true },
@@ -1777,12 +1859,14 @@ const BASE_PRODUCTS = {
     638:{ id:638, name:"630h. Waffel Tutti Frutti",           preis:7.50, type:"normal", group:"food", sahne:true }
 };
 
-/* Standard-Sorten */
+/* Standard-Sorten com MAIS SABORES */
 let SORTEN = [
     "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
     "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
     "Erdbeere","Mango","Banane","Himbeere","Limette",
-    "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien"
+    "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien",
+    "Kokos","Haselnuss","Caramel","Kaffee","Tiramisu","Maracuja",
+    "Blaubeere","Pfirsich","Ananas","Minze","Weiße Schokolade"
 ];
 
 /* Produkte-Konfiguration aus localStorage laden */
@@ -1794,6 +1878,22 @@ let PRODUCTS = JSON.parse(JSON.stringify(BASE_PRODUCTS)); // Kopie
         if (p) PRODUCTS = JSON.parse(p);
         const s = localStorage.getItem("sanremo_sorten");
         if (s) SORTEN = JSON.parse(s);
+        // Garantir que temos pelo menos os sabores padrão
+        if (SORTEN.length < 25) {
+            // Adicionar sabores padrão se a lista estiver muito pequena
+            const defaultFlavors = [
+                "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
+                "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
+                "Erdbeere","Mango","Banane","Himbeere","Limette",
+                "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien",
+                "Kokos","Haselnuss","Caramel","Kaffee","Tiramisu","Maracuja",
+                "Blaubeere","Pfirsich","Ananas","Minze","Weiße Schokolade"
+            ];
+            // Combinar sem duplicados
+            const combined = [...new Set([...SORTEN, ...defaultFlavors])];
+            SORTEN = combined;
+            saveConfig();
+        }
     } catch(e) {
         console.warn("Konfiguration konnte nicht geladen werden:", e);
     }
@@ -1891,7 +1991,7 @@ document.getElementById("produkt").addEventListener("change", function() {
     showIceOptions(wert);
 
     // Manter compatibilidade com interface antiga
-    if (produkt.type === "cup3") {
+    if (produkt.type === "cup3" || produkt.type === "cup2") {
         geschmackBox.style.display = "block";
     } else {
         geschmackBox.style.display = "none";
@@ -1901,12 +2001,9 @@ document.getElementById("produkt").addEventListener("change", function() {
         });
     }
 
-    if (produkt.sahne) {
-        sahneBox.style.display = "block";
-    } else {
-        sahneBox.style.display = "none";
-        document.getElementById("sahne").value = "";
-    }
+    // OCULTAR a opção de Sahne duplicada - só mostrar na nova interface
+    sahneBox.style.display = "none";
+    document.getElementById("sahne").value = "";
 });
 
 /* Warenkorb - MODIFICADA PARA USAR NOVA INTERFACE */
@@ -1937,18 +2034,28 @@ function addToCart() {
             sorten = [...currentSelectedFlavors];
         }
         
+        // Determinar quantos sabores são necessários
+        let requiredFlavors = 3;
+        if (produkt.type === 'cup2' || (produkt.id === 23 && produkt.name.includes('Kinder Portion'))) {
+            requiredFlavors = 2;
+        }
+        
         // Verificar se precisa selecionar sabores
-        if ((produkt.type === 'cup3' || produkt.group === 'portions' || produkt.group === 'eis') && 
-            sorten.length < 3) {
-            alert("Bitte wählen Sie genau 3 Geschmacksrichtungen aus!");
+        if ((produkt.type === 'cup3' || produkt.type === 'cup2' || produkt.group === 'portions' || produkt.group === 'eis') && 
+            sorten.length < requiredFlavors) {
+            const msg = currentLanguage === 'de' ? `Bitte wählen Sie genau ${requiredFlavors} Geschmacksrichtungen aus!` :
+                       currentLanguage === 'pt' ? `Por favor, escolha exatamente ${requiredFlavors} sabores!` :
+                       currentLanguage === 'it' ? `Per favore, scegliere esattamente ${requiredFlavors} gusti!` :
+                       `Kies alstublieft precies ${requiredFlavors} smaken!`;
+            alert(msg);
             return;
         }
         
-        // Usar seleção de Sahne da nova interface
-        var sahne = currentSahneOption;
+        // Usar seleção de Sahne da nova interface (apenas se o produto permitir)
+        var sahne = produkt.sahne ? currentSahneOption : "";
     } else {
         // Usar interface antiga para produtos não-gelado
-        if (produkt.type === "cup3") {
+        if (produkt.type === "cup3" || produkt.type === "cup2") {
             const s1 = document.getElementById("geschmack1").value;
             const s2 = document.getElementById("geschmack2").value;
             const s3 = document.getElementById("geschmack3").value;
@@ -1986,7 +2093,7 @@ function addToCart() {
     document.getElementById("bemerkung").value = "";
     document.getElementById("produkt").value = "";
     
-    if (produkt.type === "cup3") {
+    if (produkt.type === "cup3" || produkt.type === "cup2") {
         ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
             document.getElementById(id).value = "";
         });
@@ -2085,7 +2192,7 @@ function buildOrderText() {
     return text;
 }
 
-/* Bestellungen für Chef speichern */
+/* Bestellungen para Chef speichern */
 function storeOrder(channel) {
     const tisch = document.getElementById("tisch").value || "-";
     const textPlain = buildOrderText();
@@ -2383,43 +2490,76 @@ function addNewProduct() {
     alert("Neues Produkt angelegt.");
 }
 
-/* Admin: Sorten verwalten */
+/* Admin: Sorten verwalten - MELHORADA */
 function renderSortenList() {
     const cont = document.getElementById("sorten-list");
     if (!cont) return;
     if (SORTEN.length === 0) {
-        cont.textContent = "Keine Sorten definiert.";
+        cont.innerHTML = "<div style='color:#666; font-style:italic;'>Keine Sorten definiert.</div>";
         return;
     }
-    let html = "";
+    
+    let html = "<div style='display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px;'>";
+    
     SORTEN.forEach((s, idx) => {
-        html += `<span style="display:inline-block;margin:2px 4px;padding:2px 6px;border-radius:999px;background:#f1f1f1;">
-            ${s}
-            <button style="border:none;background:transparent;font-size:11px;cursor:pointer;" onclick="deleteSorte(${idx})">x</button>
-        </span>`;
+        html += `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: white; border-radius: 8px; border: 1px solid #e0e0e0;">
+            <span style="font-size: 14px;">${s}</span>
+            <button onclick="deleteSorte(${idx})" style="background: #ff4444; color: white; border: none; border-radius: 4px; width: 24px; height: 24px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">
+                ×
+            </button>
+        </div>
+        `;
     });
+    
+    html += "</div>";
     cont.innerHTML = html;
 }
 
 function deleteSorte(idx) {
-    SORTEN.splice(idx, 1);
-    saveConfig();
-    renderSortenList();
-    ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
+    if (confirm("Diese Sorte wirklich löschen?")) {
+        SORTEN.splice(idx, 1);
+        saveConfig();
+        renderSortenList();
+        ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
+    }
 }
 
 function addNewSorte() {
     const input = document.getElementById("new-sorte");
     const name = input.value.trim();
+    
     if (!name) {
         alert("Bitte einen Sortennamen eingeben.");
         return;
     }
+    
+    if (SORTEN.includes(name)) {
+        alert("Diese Sorte existiert bereits!");
+        return;
+    }
+    
+    if (SORTEN.length >= 50) {
+        alert("Maximal 50 Sorten können hinzugefügt werden.");
+        return;
+    }
+    
     SORTEN.push(name);
     input.value = "";
     saveConfig();
     renderSortenList();
     ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
+    
+    // Feedback visual
+    const btn = document.querySelector('.add-flavor-btn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> Hinzugefügt!';
+    btn.style.background = '#4CAF50';
+    
+    setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = '';
+    }, 1500);
 }
 
 /* Init */
@@ -2429,6 +2569,24 @@ window.addEventListener("load", function() {
     setTimeout(() => {
         buildProduktSelect(currentGroup);
         updateTableDisplay();
+        // Garantir que temos sabores suficientes
+        if (SORTEN.length < 25) {
+            // Adicionar mais sabores por padrão
+            const moreFlavors = [
+                "Blaubeere", "Pfirsich", "Ananas", "Minze", "Weiße Schokolade",
+                "Karamell-Nuss", "Joghurt-Himbeere", "Cookies-Cream", "Schoko-Banane",
+                "Erdbeer-Joghurt", "Kokos-Schokolade", "Tiramisu", "Maracuja",
+                "Granatapfel", "Passionsfrucht", "Grüner Tee", "Rote Grütze"
+            ];
+            
+            moreFlavors.forEach(flavor => {
+                if (!SORTEN.includes(flavor) && SORTEN.length < 35) {
+                    SORTEN.push(flavor);
+                }
+            });
+            
+            saveConfig();
+        }
     }, 100);
 });
 </script>
