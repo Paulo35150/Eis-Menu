@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+PE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -35,7 +35,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.08);
             box-shadow: 0 2px 8px rgba(0,0,0,0.35);
         }
-        .header-inner {
+.header-inner {
             max-width: 900px;
             margin: 0 auto;
             display: flex;
@@ -107,7 +107,7 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(229,57,53,0.2);
         }
-        .btn {
+.btn {
             background: var(--primary);
             color: #fff;
             padding: 10px;
@@ -289,32 +289,40 @@
         }
     </style>
 </head>
-
 <body>
 
 <header class="header">
     <div class="header-inner">
-        <!-- mete o ficheiro do logo horizontal na mesma pasta -->
         <img src="sanremo-digital-systems-horizontal.png" alt="Sanremo Digital Systems Logo" class="header-logo">
-        <div class="header-title">Digitaler QR-Tischservice – Internes Bestellsystem</div>
+        <div class="header-title" data-i18n="headerTitle">Digitaler QR-Tischservice – Internes Bestellsystem</div>
     </div>
 </header>
 
 <div class="container">
 
+    <!-- LANGUAGE SELECTOR -->
+    <div class="card">
+        <label for="lang-select">Sprache / Língua / Lingua:</label>
+        <select id="lang-select">
+            <option value="de">Deutsch</option>
+            <option value="pt">Português</option>
+            <option value="it">Italiano</option>
+        </select>
+    </div>
+
     <!-- TISCHWAHL -->
     <div class="card">
-        <h2 class="section-title">Tisch wählen</h2>
-        <label for="tisch">Tischnummer auswählen:</label>
+        <h2 class="section-title" data-i18n="chooseTable">Tisch wählen</h2>
+        <label for="tisch" data-i18n="tableNumberLabel">Tischnummer auswählen:</label>
         <select id="tisch">
-            <option value="">Tisch auswählen…</option>
+            <option value="" data-i18n="tableSelectPlaceholder">Tisch auswählen…</option>
         </select>
-        <div class="small">Verfügbar: Tisch 1 bis 33</div>
+        <div class="small" data-i18n="tableRange">Verfügbar: Tisch 1 bis 33</div>
     </div>
 
     <!-- PRODUKTWAHL -->
     <div class="card">
-        <h2 class="section-title">Produkt wählen</h2>
+        <h2 class="section-title" data-i18n="chooseProduct">Produkt wählen</h2>
 
         <div class="tabs">
             <button class="tab-btn tab-portions active" data-group="portions">Portionen</button>
@@ -327,7 +335,6 @@
         <label for="produkt">Produkt:</label>
         <select id="produkt"></select>
 
-        <!-- Sortenwahl nur für Portionen (optional) -->
         <div id="geschmack-box" style="margin-top:12px; display:none;">
             <label>Sorten (optional, bis zu 3 wählen):</label>
             <select id="geschmack1"></select>
@@ -338,7 +345,6 @@
             </div>
         </div>
 
-        <!-- Sahne-Option -->
         <div id="sahne-box" style="margin-top:8px; display:none;">
             <label for="sahne">Sahne (+1,20 €):</label>
             <select id="sahne">
@@ -354,76 +360,76 @@
         <label for="bemerkung" style="margin-top:8px;">Bemerkung (optional):</label>
         <input id="bemerkung" type="text" placeholder="z.B. ohne Sahne, wenig Soße …">
 
-        <button class="btn" onclick="addToCart()">Zum Warenkorb hinzufügen</button>
+        <button class="btn" onclick="addToCart()" data-i18n="btnAddToCart">Zum Warenkorb hinzufügen</button>
     </div>
-
-    <!-- WARENKORB -->
+<!-- WARENKORB -->
     <div id="warenkorb">
-        <h2 class="section-title">🧺 Warenkorb</h2>
+        <h2 class="section-title" data-i18n="cartTitle">🧺 Warenkorb</h2>
         <div id="liste-items"></div>
-        <div class="total" id="gesamt">Gesamt: 0,00 €</div>
+        <div class="total" id="gesamt" data-i18n="cartTotalLabel">Gesamt: 0,00 €</div>
 
-        <button id="btn-whatsapp" class="btn" onclick="sendWhatsApp()" disabled>
+        <button id="btn-whatsapp" class="btn" onclick="sendWhatsApp()" disabled data-i18n="btnSendWhatsApp">
             Bestellung per WhatsApp senden 📲
         </button>
 
-        <button id="btn-print" class="btn" style="margin-top:8px; background:#007b83;" onclick="printOrder()" disabled>
-            Bestellung drucken 🖨️
+        <!-- Hier wird NICHT mehr direkt gedruckt, nur für die Küche gespeichert -->
+        <button id="btn-print" class="btn" style="margin-top:8px; background:#007b83;" onclick="storeOrderOnly()" disabled data-i18n="btnStoreForKitchen">
+            Bestellung für Küche speichern 🧾
         </button>
 
-        <button class="btn" style="margin-top:8px; background:#555;" onclick="resetTable()">
+        <button class="btn" style="margin-top:8px; background:#555;" onclick="resetTable()" data-i18n="btnResetTable">
             Tisch löschen / neue Gäste
         </button>
 
-        <div class="small" style="margin-top:6px;" id="gps-info">
+        <div class="small" style="margin-top:6px;" id="gps-info" data-i18n="gpsChecking">
             GPS wird geprüft… bitte Standort-Freigabe erlauben.
         </div>
     </div>
 
     <!-- CHEF LOGIN -->
     <div class="card" id="admin-login-card">
-        <h2 class="section-title">Chef-Bereich</h2>
-        <p class="small">
+        <h2 class="section-title" data-i18n="adminTitle">Chef-Bereich</h2>
+        <p class="small" data-i18n="adminDescription">
             Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert
             und Produkte / Preise angepasst.
         </p>
-        <label for="admin-password">Chef-Passwort:</label>
-        <input id="admin-password" type="password" placeholder="Passwort eingeben">
-        <button class="btn" onclick="adminLogin()">Chef-Login</button>
+        <label for="admin-password" data-i18n="adminPasswordLabel">Chef-Passwort:</label>
+        <input id="admin-password" type="password" placeholder="Passwort eingeben" data-i18n-placeholder="adminPasswordPlaceholder">
+        <button class="btn" onclick="adminLogin()" data-i18n="btnAdminLogin">Chef-Login</button>
     </div>
 
     <!-- CHEF PANEL -->
     <div class="card" id="admin-panel" style="display:none;">
         <div class="admin-header">
-            <h2 class="section-title" style="margin-bottom:0;">Gespeicherte Bestellungen</h2>
-            <button class="btn-logout" onclick="adminLogout()">Logout</button>
+            <h2 class="section-title" style="margin-bottom:0;" data-i18n="adminOrdersTitle">Gespeicherte Bestellungen</h2>
+            <button class="btn-logout" onclick="adminLogout()" data-i18n="btnLogout">Logout</button>
         </div>
-        <div class="small" style="margin-top:4px;">
-            Hier werden alle Bestellungen gespeichert, die per WhatsApp gesendet oder gedruckt wurden.
-            Der Chef kann einzelne Bestellungen oder alle Einträge löschen.
+        <div class="small" style="margin-top:4px;" data-i18n="adminOrdersInfo">
+            Hier werden alle Bestellungen gespeichert, die per WhatsApp gesendet oder für die Küche gespeichert wurden.
+            Der Chef kann einzelne Bestellungen drucken oder löschen.
         </div>
         <div id="admin-orders-list" style="margin-top:10px;"></div>
-        <button class="btn" style="margin-top:10px; background:#c62828;" onclick="clearAllOrders()">
+        <button class="btn" style="margin-top:10px; background:#c62828;" onclick="clearAllOrders()" data-i18n="btnClearAllOrders">
             Alle Bestellungen löschen
         </button>
 
         <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
 
         <!-- PRODUKT-VERWALTUNG -->
-        <h3 class="section-title" style="border-left-color:#00796b;">Produkte bearbeiten</h3>
-        <label for="admin-product-select">Bestehendes Produkt wählen:</label>
+        <h3 class="section-title" style="border-left-color:#00796b;" data-i18n="adminEditProductsTitle">Produkte bearbeiten</h3>
+        <label for="admin-product-select" data-i18n="adminSelectProductLabel">Bestehendes Produkt wählen:</label>
         <select id="admin-product-select"></select>
-        <div class="small">
+        <div class="small" data-i18n="adminProductsInfo">
             Änderungen werden lokal im Browser gespeichert (pro Gerät / Standort).
         </div>
 
-        <label for="admin-prod-name">Name:</label>
+        <label for="admin-prod-name" data-i18n="adminProdNameLabel">Name:</label>
         <input id="admin-prod-name" type="text">
 
-        <label for="admin-prod-price">Preis (€):</label>
+        <label for="admin-prod-price" data-i18n="adminProdPriceLabel">Preis (€):</label>
         <input id="admin-prod-price" type="number" step="0.01">
 
-        <label for="admin-prod-group">Gruppe:</label>
+        <label for="admin-prod-group" data-i18n="adminProdGroupLabel">Gruppe:</label>
         <select id="admin-prod-group">
             <option value="portions">Portionen</option>
             <option value="kids">Kinder</option>
@@ -432,7 +438,7 @@
             <option value="drinks">Getränke</option>
         </select>
 
-        <label for="admin-prod-type">Art:</label>
+        <label for="admin-prod-type" data-i18n="adminProdTypeLabel">Art:</label>
         <select id="admin-prod-type">
             <option value="normal">Normal</option>
             <option value="cup3">Portion (Sortenwahl)</option>
@@ -440,27 +446,27 @@
 
         <label style="margin-top:6px;">
             <input type="checkbox" id="admin-prod-sahne">
-            Sahne-Option (+1,20 €) erlauben
+            <span data-i18n="adminProdSahneLabel">Sahne-Option (+1,20 €) erlauben</span>
         </label>
 
-        <button class="btn" style="margin-top:10px;" onclick="saveExistingProduct()">
+        <button class="btn" style="margin-top:10px;" onclick="saveExistingProduct()" data-i18n="btnSaveProduct">
             Ausgewähltes Produkt speichern
         </button>
-        <button class="btn" style="margin-top:6px; background:#c62828;" onclick="deleteExistingProduct()">
+        <button class="btn" style="margin-top:6px; background:#c62828;" onclick="deleteExistingProduct()" data-i18n="btnDeleteProduct">
             Ausgewähltes Produkt löschen
         </button>
 
-        <h3 class="section-title" style="border-left-color:#0288d1; margin-top:20px;">Neues Produkt hinzufügen</h3>
-        <label for="new-prod-id">Produkt-Nr. (z.B. 701):</label>
+        <h3 class="section-title" style="border-left-color:#0288d1; margin-top:20px;" data-i18n="adminAddProductTitle">Neues Produkt hinzufügen</h3>
+        <label for="new-prod-id" data-i18n="newProdIdLabel">Produkt-Nr. (z.B. 701):</label>
         <input id="new-prod-id" type="number">
 
-        <label for="new-prod-name">Name:</label>
+        <label for="new-prod-name" data-i18n="newProdNameLabel">Name:</label>
         <input id="new-prod-name" type="text">
 
-        <label for="new-prod-price">Preis (€):</label>
+        <label for="new-prod-price" data-i18n="newProdPriceLabel">Preis (€):</label>
         <input id="new-prod-price" type="number" step="0.01">
 
-        <label for="new-prod-group">Gruppe:</label>
+        <label for="new-prod-group" data-i18n="newProdGroupLabel">Gruppe:</label>
         <select id="new-prod-group">
             <option value="portions">Portionen</option>
             <option value="kids">Kinder</option>
@@ -469,7 +475,7 @@
             <option value="drinks">Getränke</option>
         </select>
 
-        <label for="new-prod-type">Art:</label>
+        <label for="new-prod-type" data-i18n="newProdTypeLabel">Art:</label>
         <select id="new-prod-type">
             <option value="normal">Normal</option>
             <option value="cup3">Portion (Sortenwahl)</option>
@@ -477,59 +483,58 @@
 
         <label style="margin-top:6px;">
             <input type="checkbox" id="new-prod-sahne">
-            Sahne-Option (+1,20 €) erlauben
+            <span data-i18n="newProdSahneLabel">Sahne-Option (+1,20 €) erlauben</span>
         </label>
 
-        <button class="btn" style="margin-top:10px;" onclick="addNewProduct()">
+        <button class="btn" style="margin-top:10px;" onclick="addNewProduct()" data-i18n="btnAddNewProduct">
             Neues Produkt anlegen
         </button>
 
         <!-- SORTEN-VERWALTUNG -->
-        <h3 class="section-title" style="border-left-color:#6a1b9a; margin-top:20px;">Eissorten verwalten</h3>
+        <h3 class="section-title" style="border-left-color:#6a1b9a; margin-top:20px;" data-i18n="adminSortenTitle">Eissorten verwalten</h3>
         <div id="sorten-list" class="small" style="margin-bottom:8px;"></div>
 
-        <label for="new-sorte">Neue Sorte:</label>
+        <label for="new-sorte" data-i18n="newSorteLabel">Neue Sorte:</label>
         <input id="new-sorte" type="text" placeholder="z.B. Stracciatella Light">
 
-        <button class="btn" style="margin-top:6px;" onclick="addNewSorte()">
+        <button class="btn" style="margin-top:6px;" onclick="addNewSorte()" data-i18n="btnAddSorte">
             Sorte hinzufügen
         </button>
 
         <!-- RECHTLICHER HINWEIS NUR FÜR CHEF -->
         <div class="legal-box">
             <details>
-                <summary><strong>Rechtlicher Hinweis (anklicken)</strong></summary>
-                <p>
+                <summary><strong data-i18n="legalTitle">Rechtlicher Hinweis (anklicken)</strong></summary>
+                <p data-i18n="legalP1">
                     Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine
                     Registrierkasse oder steuerrechtlich relevante Aufzeichnung.
                 </p>
-                <p>
+                <p data-i18n="legalP2">
                     Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung
                     aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine
                     Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.
                 </p>
-                <p>
+                <p data-i18n="legalP3">
                     Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der
                     Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K
                     und darf nicht als Kassensystem verwendet werden.
                 </p>
-                <p>
+                <p data-i18n="legalP4">
                     Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender
                     dieses Systems.
                 </p>
             </details>
         </div>
 
-    </div>
+    </div> <!-- /admin-panel -->
 
-</div>
-
-<script>
+</div> <!-- /container -->
+    <script>
 const WHATSAPP_NUMMER = "4917672809926";
 const ADMIN_PASSWORD = "1234";
 const SAHNE_AUFSCHLAG = 1.20;
 
-/* Koordinaten deines Cafés (anpassen wenn nötig) */
+/* Koordinaten deines Cafés */
 const CAFE_LAT = 51.051;
 const CAFE_LNG = 8.392;
 const MAX_DIST_KM = 1.5;
@@ -733,7 +738,7 @@ let SORTEN = [
 ];
 
 /* Produkte-Konfiguration aus localStorage laden */
-let PRODUCTS = JSON.parse(JSON.stringify(BASE_PRODUCTS)); // Kopie
+let PRODUCTS = JSON.parse(JSON.stringify(BASE_PRODUCTS));
 
 (function restoreConfig() {
     try {
@@ -770,6 +775,7 @@ for (let i = 1; i <= 33; i++) {
 /* Sorten-Selects füllen */
 function fillSortenSelect(id) {
     const sel = document.getElementById(id);
+    if (!sel) return;
     sel.innerHTML = "<option value=''>Sorte wählen…</option>";
     SORTEN.forEach(s => {
         const opt = document.createElement("option");
@@ -799,9 +805,11 @@ function buildProduktSelect(group) {
     document.getElementById("geschmack-box").style.display = "none";
     document.getElementById("sahne-box").style.display = "none";
     ["geschmack1","geschmack2","geschmack3"].forEach(id=>{
-        document.getElementById(id).value = "";
+        const s = document.getElementById(id);
+        if (s) s.value = "";
     });
-    document.getElementById("sahne").value = "";
+    const sahneSel = document.getElementById("sahne");
+    if (sahneSel) sahneSel.value = "";
     document.getElementById("bemerkung").value = "";
 }
 
@@ -825,7 +833,8 @@ document.getElementById("produkt").addEventListener("change", function() {
     if (!wert || !PRODUCTS[wert]) {
         geschmackBox.style.display = "none";
         sahneBox.style.display = "none";
-        document.getElementById("sahne").value = "";
+        const sahneSel = document.getElementById("sahne");
+        if (sahneSel) sahneSel.value = "";
         return;
     }
 
@@ -845,7 +854,8 @@ document.getElementById("produkt").addEventListener("change", function() {
         sahneBox.style.display = "block";
     } else {
         sahneBox.style.display = "none";
-        document.getElementById("sahne").value = "";
+        const sahneSel = document.getElementById("sahne");
+        if (sahneSel) sahneSel.value = "";
     }
 });
 
@@ -902,11 +912,13 @@ function addToCart() {
     document.getElementById("bemerkung").value = "";
     if (produkt.type === "cup3") {
         ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
-            document.getElementById(id).value = "";
+            const sel = document.getElementById(id);
+            if (sel) sel.value = "";
         });
     }
+    const sahneSel = document.getElementById("sahne");
+    if (sahneSel) sahneSel.value = "";
     document.getElementById("produkt").value = "";
-    document.getElementById("sahne").value = "";
 
     updateCart();
 }
@@ -971,11 +983,11 @@ function removeItem(index) {
 function buildOrderText() {
     const tisch = document.getElementById("tisch").value || "-";
     let total = 0;
-    let text = `Tisch ${tisch} - Bestellung:\n`;
+    let text = Tisch ${tisch} - Bestellung:\n;
 
     warenkorb.forEach(item => {
         total += item.preis;
-        let line = `• ${item.name} (${item.preis.toFixed(2)} €)`;
+        let line = • ${item.name} (${item.preis.toFixed(2)} €);
         if (item.type === "cup3" && item.sorten.length > 0) {
             line += ` – Sorten: ${item.sorten.join(", ")}`;
         }
@@ -992,7 +1004,7 @@ function buildOrderText() {
         text += line + "\n";
     });
 
-    text += `\nGesamtbetrag: ${total.toFixed(2)} €`;
+    text += \nGesamtbetrag: ${total.toFixed(2)} €;
     return text;
 }
 
@@ -1003,6 +1015,23 @@ function storeOrder(channel) {
     const timestamp = new Date().toLocaleString("de-DE");
     adminOrders.push({ tisch, channel, text: textPlain, time: timestamp });
     if (isAdmin) updateAdminList();
+}
+
+/* Nur für Küche speichern (ohne sofort zu drucken) */
+function storeOrderOnly() {
+    if (warenkorb.length === 0) {
+        alert("Der Warenkorb ist leer.");
+        return;
+    }
+    const tisch = document.getElementById("tisch").value;
+    if (!tisch) {
+        alert("Bitte zuerst den Tisch auswählen.");
+        return;
+    }
+    storeOrder("Küche");
+    warenkorb = [];
+    updateCart();
+    alert("Bestellung für die Küche gespeichert.");
 }
 
 /* WhatsApp */
@@ -1024,40 +1053,11 @@ function sendWhatsApp() {
 
     storeOrder("WhatsApp");
     const text = encodeURIComponent(buildOrderText());
-    const url = `https://wa.me/${WHATSAPP_NUMMER}?text=${text}`;
+    const url = https://wa.me/${WHATSAPP_NUMMER}?text=${text};
     window.open(url, "_blank");
 
     warenkorb = [];
     updateCart();
-}
-
-/* Drucker */
-function printOrder() {
-    if (warenkorb.length === 0) {
-        alert("Der Warenkorb ist leer.");
-        return;
-    }
-    const tisch = document.getElementById("tisch").value || "-";
-    const textHtml = buildOrderText().replace(/\n/g, "<br>");
-
-    storeOrder("Drucker");
-
-    const win = window.open("", "_blank");
-    win.document.open();
-    win.document.write(`
-        <html>
-        <head>
-            <title>Bestellung Tisch ${tisch}</title>
-            <meta charset="UTF-8">
-        </head>
-        <body style="font-family:Arial,sans-serif; font-size:14px;">
-            <h2>Bestellung Tisch ${tisch}</h2>
-            <p>${textHtml}</p>
-        </body>
-        </html>
-    `);
-    win.document.close();
-    win.print();
 }
 
 /* Reset */
@@ -1173,10 +1173,35 @@ function updateAdminList() {
             <strong>${o.time}</strong> – Tisch ${o.tisch} (${o.channel})<br>
             ${o.text.replace(/\n/g,"<br>")}
             <br>
-            <button class="btn-small" onclick="deleteOrder(${idx})">Löschen</button>
+            <button class="btn-small" onclick="printStoredOrder(${idx})">Drucken</button>
+            <button class="btn-small" style="background:#757575;margin-left:4px;" onclick="deleteOrder(${idx})">Löschen</button>
         `;
         list.appendChild(div);
     });
+}
+
+function printStoredOrder(index) {
+    const o = adminOrders[index];
+    if (!o) return;
+    const tisch = o.tisch || "-";
+    const textHtml = o.text.replace(/\n/g, "<br>");
+
+    const win = window.open("", "_blank");
+    win.document.open();
+    win.document.write(`
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Bestellung Tisch ${tisch}</title>
+        </head>
+        <body style="font-family:Arial,sans-serif; font-size:14px;">
+            <h2>Bestellung Tisch ${tisch}</h2>
+            <p>${textHtml}</p>
+        </body>
+        </html>
+    `);
+    win.document.close();
+    win.print();
 }
 
 function deleteOrder(index) {
@@ -1332,8 +1357,192 @@ function addNewSorte() {
     ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
 }
 
+/* Einfaches Übersetzungssystem DE / PT / IT */
+const I18N = {
+    de: {
+        headerTitle: "Digitaler QR-Tischservice – Internes Bestellsystem",
+        chooseTable: "Tisch wählen",
+        tableNumberLabel: "Tischnummer auswählen:",
+        tableSelectPlaceholder: "Tisch auswählen…",
+        tableRange: "Verfügbar: Tisch 1 bis 33",
+        chooseProduct: "Produkt wählen",
+        btnAddToCart: "Zum Warenkorb hinzufügen",
+        cartTitle: "🧺 Warenkorb",
+        cartTotalLabel: "Gesamt: 0,00 €",
+        btnSendWhatsApp: "Bestellung per WhatsApp senden 📲",
+        btnStoreForKitchen: "Bestellung für Küche speichern 🧾",
+        btnResetTable: "Tisch löschen / neue Gäste",
+        gpsChecking: "GPS wird geprüft… bitte Standort-Freigabe erlauben.",
+        adminTitle: "Chef-Bereich",
+        adminDescription: "Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert und Produkte / Preise angepasst.",
+        adminPasswordLabel: "Chef-Passwort:",
+        adminPasswordPlaceholder: "Passwort eingeben",
+        btnAdminLogin: "Chef-Login",
+        adminOrdersTitle: "Gespeicherte Bestellungen",
+        btnLogout: "Logout",
+        adminOrdersInfo: "Hier werden alle Bestellungen gespeichert, die per WhatsApp gesendet oder für die Küche gespeichert wurden. Der Chef kann einzelne Bestellungen drucken oder löschen.",
+        btnClearAllOrders: "Alle Bestellungen löschen",
+        adminEditProductsTitle: "Produkte bearbeiten",
+        adminSelectProductLabel: "Bestehendes Produkt wählen:",
+        adminProductsInfo: "Änderungen werden lokal im Browser gespeichert (pro Gerät / Standort).",
+        adminProdNameLabel: "Name:",
+        adminProdPriceLabel: "Preis (€):",
+        adminProdGroupLabel: "Gruppe:",
+        adminProdTypeLabel: "Art:",
+        adminProdSahneLabel: "Sahne-Option (+1,20 €) erlauben",
+        btnSaveProduct: "Ausgewähltes Produkt speichern",
+        btnDeleteProduct: "Ausgewähltes Produkt löschen",
+        adminAddProductTitle: "Neues Produkt hinzufügen",
+        newProdIdLabel: "Produkt-Nr. (z.B. 701):",
+        newProdNameLabel: "Name:",
+        newProdPriceLabel: "Preis (€):",
+        newProdGroupLabel: "Gruppe:",
+        newProdTypeLabel: "Art:",
+        newProdSahneLabel: "Sahne-Option (+1,20 €) erlauben",
+        btnAddNewProduct: "Neues Produkt anlegen",
+        adminSortenTitle: "Eissorten verwalten",
+        newSorteLabel: "Neue Sorte:",
+        btnAddSorte: "Sorte hinzufügen",
+        legalTitle: "Rechtlicher Hinweis (anklicken)",
+        legalP1: "Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine Registrierkasse oder steuerrechtlich relevante Aufzeichnung.",
+        legalP2: "Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.",
+        legalP3: "Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K und darf nicht als Kassensystem verwendet werden.",
+        legalP4: "Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender dieses Systems."
+    },
+    pt: {
+        headerTitle: "Serviço digital de mesa QR – Sistema interno de pedidos",
+        chooseTable: "Escolher mesa",
+        tableNumberLabel: "Número da mesa:",
+        tableSelectPlaceholder: "Selecionar mesa…",
+        tableRange: "Disponível: mesa 1 até 33",
+        chooseProduct: "Escolher produto",
+        btnAddToCart: "Adicionar ao carrinho",
+        cartTitle: "🧺 Carrinho",
+        cartTotalLabel: "Total: 0,00 €",
+        btnSendWhatsApp: "Enviar pedido por WhatsApp 📲",
+        btnStoreForKitchen: "Guardar pedido para cozinha 🧾",
+        btnResetTable: "Apagar mesa / novos clientes",
+        gpsChecking: "A verificar GPS… por favor autorize localização.",
+        adminTitle: "Área do gerente",
+        adminDescription: "Acesso apenas para proprietário / gerente. Aqui ficam guardados todos os pedidos enviados e ajustam-se produtos / preços.",
+        adminPasswordLabel: "Palavra-passe do gerente:",
+        adminPasswordPlaceholder: "Introduzir palavra-passe",
+        btnAdminLogin: "Login gerente",
+        adminOrdersTitle: "Pedidos guardados",
+        btnLogout: "Terminar sessão",
+        adminOrdersInfo: "Aqui ficam todos os pedidos enviados por WhatsApp ou guardados para a cozinha. O gerente pode imprimir ou apagar pedidos.",
+        btnClearAllOrders: "Apagar todos os pedidos",
+        adminEditProductsTitle: "Editar produtos",
+        adminSelectProductLabel: "Escolher produto existente:",
+        adminProductsInfo: "As alterações são guardadas localmente no navegador (por dispositivo / local).",
+        adminProdNameLabel: "Nome:",
+        adminProdPriceLabel: "Preço (€):",
+        adminProdGroupLabel: "Grupo:",
+        adminProdTypeLabel: "Tipo:",
+        adminProdSahneLabel: "Permitir opção natas (+1,20 €)",
+        btnSaveProduct: "Guardar produto selecionado",
+        btnDeleteProduct: "Apagar produto selecionado",
+        adminAddProductTitle: "Adicionar novo produto",
+        newProdIdLabel: "Nº do produto (ex. 701):",
+        newProdNameLabel: "Nome:",
+        newProdPriceLabel: "Preço (€):",
+        newProdGroupLabel: "Grupo:",
+        newProdTypeLabel: "Tipo:",
+        newProdSahneLabel: "Permitir opção natas (+1,20 €)",
+        btnAddNewProduct: "Criar novo produto",
+        adminSortenTitle: "Gerir sabores de gelado",
+        newSorteLabel: "Novo sabor:",
+        btnAddSorte: "Adicionar sabor",
+        legalTitle: "Aviso legal (clicar)",
+        legalP1: "Este sistema de pedidos é uma ferramenta interna não fiscalizada e não substitui uma caixa registadora nem um registo fiscal oficial.",
+        legalP2: "O operador deste sistema é o único responsável pela utilização correta e pelo cumprimento de todas as obrigações legais. Todos os pedidos registados aqui devem ser lançados corretamente na caixa registadora fiscal, caso exista.",
+        legalP3: "Este sistema não está ligado a nenhuma caixa eletrónica, não cumpre os requisitos da KassenSichV, TSE ou DSFinV-K e não pode ser usado como sistema de caixa.",
+        legalP4: "A responsabilidade pela correta escrituração fiscal de todas as vendas é inteiramente do utilizador deste sistema."
+    },
+    it: {
+        headerTitle: "Servizio digitale al tavolo QR – Sistema interno ordini",
+        chooseTable: "Seleziona tavolo",
+        tableNumberLabel: "Numero del tavolo:",
+        tableSelectPlaceholder: "Seleziona tavolo…",
+        tableRange: "Disponibile: tavolo 1 fino a 33",
+        chooseProduct: "Seleziona prodotto",
+        btnAddToCart: "Aggiungi al carrello",
+        cartTitle: "🧺 Carrello",
+        cartTotalLabel: "Totale: 0,00 €",
+        btnSendWhatsApp: "Invia ordine via WhatsApp 📲",
+        btnStoreForKitchen: "Salva ordine per cucina 🧾",
+        btnResetTable: "Cancella tavolo / nuovi ospiti",
+        gpsChecking: "Verifica GPS… autorizza la posizione.",
+        adminTitle: "Area gestione",
+        adminDescription: "Accesso solo per titolare / direttore. Qui vengono salvati tutti gli ordini inviati e si modificano prodotti / prezzi.",
+        adminPasswordLabel: "Password responsabile:",
+        adminPasswordPlaceholder: "Inserisci password",
+        btnAdminLogin: "Login responsabile",
+        adminOrdersTitle: "Ordini salvati",
+        btnLogout: "Logout",
+        adminOrdersInfo: "Qui sono salvati tutti gli ordini inviati via WhatsApp o salvati per la cucina. Il responsabile può stampare o cancellare gli ordini.",
+        btnClearAllOrders: "Cancella tutti gli ordini",
+        adminEditProductsTitle: "Modifica prodotti",
+        adminSelectProductLabel: "Seleziona prodotto esistente:",
+        adminProductsInfo: "Le modifiche vengono salvate localmente nel browser (per dispositivo / posizione).",
+        adminProdNameLabel: "Nome:",
+        adminProdPriceLabel: "Prezzo (€):",
+        adminProdGroupLabel: "Gruppo:",
+        adminProdTypeLabel: "Tipo:",
+        adminProdSahneLabel: "Permetti opzione panna (+1,20 €)",
+        btnSaveProduct: "Salva prodotto selezionato",
+        btnDeleteProduct: "Cancella prodotto selezionato",
+        adminAddProductTitle: "Aggiungi nuovo prodotto",
+        newProdIdLabel: "N. prodotto (es. 701):",
+        newProdNameLabel: "Nome:",
+        newProdPriceLabel: "Prezzo (€):",
+        newProdGroupLabel: "Gruppo:",
+        newProdTypeLabel: "Tipo:",
+        newProdSahneLabel: "Permetti opzione panna (+1,20 €)",
+        btnAddNewProduct: "Crea nuovo prodotto",
+        adminSortenTitle: "Gestisci gusti gelato",
+        newSorteLabel: "Nuovo gusto:",
+        btnAddSorte: "Aggiungi gusto",
+        legalTitle: "Avviso legale (cliccare)",
+        legalP1: "Questo sistema di ordini è uno strumento interno non fiscalizzato e non sostituisce un registratore di cassa né una registrazione fiscalmente rilevante.",
+        legalP2: "Il gestore di questo sistema è l’unico responsabile per il corretto utilizzo e il rispetto di tutte le norme di legge. Tutti gli ordini registrati tramite questo sistema devono essere correttamente inseriti nel registratore di cassa fiscale, se presente.",
+        legalP3: "Questo sistema non è collegato a nessun registratore elettronico, non soddisfa i requisiti della KassenSichV, TSE o DSFinV-K e non può essere usato come sistema di cassa.",
+        legalP4: "La responsabilità per la corretta contabilizzazione fiscale di tutti i ricavi è completamente a carico dell’utilizzatore di questo sistema."
+    }
+};
+
+let currentLang = "de";
+
+function applyLang(lang) {
+    currentLang = I18N[lang] ? lang : "de";
+    const dict = I18N[currentLang];
+
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+    });
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (dict[key]) el.placeholder = dict[key];
+    });
+
+    const opt = document.querySelector("option[data-i18n='tableSelectPlaceholder']");
+    if (opt && dict.tableSelectPlaceholder) {
+        opt.textContent = dict.tableSelectPlaceholder;
+    }
+}
+
 /* Init */
 window.addEventListener("load", initLocation);
+
+document.addEventListener("DOMContentLoaded", () => {
+    const langSel = document.getElementById("lang-select");
+    if (langSel) {
+        langSel.addEventListener("change", () => applyLang(langSel.value));
+    }
+    applyLang("de");
+});
 </script>
 
 </body>
