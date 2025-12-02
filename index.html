@@ -1,1340 +1,967 @@
+
+
 <!DOCTYPE html>
-<html lang="de">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Food & Drinks – QR Tischbestellung</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Pedidos - Restaurante</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #e53935;
-            --primary-dark: #b71c1c;
-            --bg: #fff8f2;
-            --card-bg: #ffffff;
-
-            --tab-portions: #ffb300;
-            --tab-kids: #ff4081;
-            --tab-eis: #29b6f6;
-            --tab-food: #66bb6a;
-            --tab-drinks: #ab47bc;
-        }
-        * { box-sizing: border-box; }
-        body {
-            font-family: Arial, sans-serif;
-            background: radial-gradient(circle at top, #fffdf8 0%, #fff3e0 35%, #ffe0b2 100%);
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            color: #222;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        /* HEADER */
-        .header {
-            width: 100%;
-            background: linear-gradient(135deg, #000000 0%, #111111 40%, #000000 100%);
-            padding: 12px 0 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
-        .header-inner {
-            max-width: 900px;
+        
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            position: relative;
+        }
+        
+        /* Seletor de idioma no topo */
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .lang-btn {
+            padding: 8px 15px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .lang-btn.active {
+            background-color: #4a6fa5;
+            color: white;
+            border-color: #4a6fa5;
+        }
+        
+        /* Cabeçalho */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        /* Área principal com duas colunas */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .menu-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .order-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 1.5rem;
+        }
+        
+        /* Cards do menu */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .menu-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-name {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .item-description {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-price {
+            font-weight: 700;
+            color: #27ae60;
+            font-size: 1.2rem;
+        }
+        
+        .add-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .add-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Área do pedido */
+        .order-items {
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #eee;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #ddd;
+        }
+        
+        .item-quantity {
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .remove-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Resumo do pedido */
+        .order-summary {
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px dashed #3498db;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .total-row {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            border-top: 2px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        /* Botões de ação */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 0 10px;
+            transition: all 0.3s;
         }
-        .header-logo {
-            max-width: 100%;
-            max-height: 80px;
-            height: auto;
-            width: auto;
-            object-fit: contain;
+        
+        .primary-btn {
+            background-color: #2ecc71;
+            color: white;
         }
-        .header-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #fdd835;
-            letter-spacing: 0.5px;
-            text-align: center;
+        
+        .primary-btn:hover {
+            background-color: #27ae60;
         }
-        @media (max-width: 600px) {
-            .header-inner {
-                flex-direction: column;
-                gap: 6px;
-            }
-            .header-title {
-                font-size: 17px;
-            }
+        
+        .secondary-btn {
+            background-color: #f39c12;
+            color: white;
         }
-
-        .container {
+        
+        .secondary-btn:hover {
+            background-color: #d68910;
+        }
+        
+        .tertiary-btn {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .tertiary-btn:hover {
+            background-color: #8e44ad;
+        }
+        
+        .danger-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .danger-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Modal para impressão na cozinha */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-title {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .modal-option {
             padding: 15px;
-            max-width: 960px;
-            margin: 0 auto 25px auto;
-        }
-        .section-title {
-            font-size: 18px;
-            margin-top: 18px;
-            margin-bottom: 8px;
-            border-left: 4px solid var(--primary);
-            padding-left: 8px;
-        }
-        .card {
-            background: var(--card-bg);
-            padding: 14px;
-            border-radius: 14px;
-            margin-bottom: 14px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-            border: 1px solid rgba(255,255,255,0.8);
-        }
-        label {
-            font-size: 14px;
-            display: block;
-            margin-top: 5px;
-            margin-bottom: 3px;
-        }
-        select, input {
-            width: 100%;
-            padding: 9px 10px;
-            font-size: 14px;
-            border-radius: 10px;
-            border: 1px solid #d0d0d0;
-            background: #fff;
-        }
-        select:focus, input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(229,57,53,0.2);
-        }
-        .btn {
-            background: var(--primary);
-            color: #fff;
-            padding: 10px;
-            display: inline-block;
-            text-align: center;
-            border-radius: 999px;
-            text-decoration: none;
-            margin-top: 12px;
-            font-size: 16px;
-            border: none;
+            border: 2px solid #eee;
+            border-radius: 8px;
             cursor: pointer;
-            width: 100%;
-            transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s ease;
+            transition: all 0.3s;
         }
-        .btn:hover {
-            background: var(--primary-dark);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.18);
-            transform: translateY(-1px);
+        
+        .modal-option:hover {
+            border-color: #3498db;
+            background-color: #f0f7ff;
         }
-        .btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        
+        .modal-option.selected {
+            border-color: #3498db;
+            background-color: #f0f7ff;
         }
-        .btn:disabled {
-            background: #c5c5c5;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-
-        #warenkorb {
-            background: rgba(255,255,255,0.98);
-            padding: 14px;
-            border-radius: 16px;
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
             margin-top: 20px;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
-            border: 1px solid rgba(255,255,255,0.9);
         }
-        #liste-items div {
-            padding: 6px 0;
-            border-bottom: 1px dashed #e0e0e0;
-            font-size: 14px;
+        
+        /* Aviso legal */
+        .legal-notice {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            border-radius: 0 5px 5px 0;
         }
-        .line-item {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            align-items: center;
-        }
-        .item-info {
-            flex: 1;
-        }
-        .btn-remove {
-            background: #ff7043;
-            border: none;
-            color: #fff;
-            padding: 4px 9px;
-            border-radius: 999px;
-            font-size: 11px;
-            cursor: pointer;
-        }
-        .btn-remove:hover {
-            background: #f4511e;
-        }
-        .total {
-            font-weight: bold;
-            font-size: 16px;
-            margin-top: 10px;
-            text-align: right;
-        }
-        .small {
-            font-size: 12px;
-            color: #666;
-            margin-top: 3px;
-        }
-
-        /* TABS */
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
+        
+        .legal-title {
+            font-weight: 600;
             margin-bottom: 8px;
+            color: #ff9800;
         }
-        .tab-btn {
-            flex: 1 1 auto;
-            padding: 7px 8px;
-            font-size: 13px;
-            border-radius: 999px;
-            border: 1px solid #ddd;
-            background: #ffffff;
-            cursor: pointer;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #444;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .tab-btn.active {
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 3px 9px rgba(0,0,0,0.15);
-        }
-        .tab-portions.active { background: var(--tab-portions); }
-        .tab-kids.active     { background: var(--tab-kids); }
-        .tab-eis.active      { background: var(--tab-eis); }
-        .tab-food.active     { background: var(--tab-food); }
-        .tab-drinks.active   { background: var(--tab-drinks); }
-
-        .tab-portions { border-color: rgba(255,179,0,0.6); }
-        .tab-kids     { border-color: rgba(255,64,129,0.5); }
-        .tab-eis      { border-color: rgba(41,182,246,0.5); }
-        .tab-food     { border-color: rgba(102,187,106,0.6); }
-        .tab-drinks   { border-color: rgba(171,71,188,0.6); }
-
-        @media (max-width: 600px) {
-            .tab-btn {
-                font-size: 11px;
-                padding: 6px 6px;
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
             }
-        }
-
-        /* Chef-Bereich */
-        .admin-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .btn-logout {
-            background: #757575;
-            border: none;
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .btn-logout:hover {
-            background: #616161;
-        }
-        .admin-order {
-            border-bottom: 1px dashed #ddd;
-            padding: 6px 0;
-            font-size: 12px;
-        }
-        .btn-small {
-            background: #c62828;
-            border: none;
-            color: #fff;
-            padding: 3px 7px;
-            border-radius: 999px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-top: 3px;
-        }
-        .btn-small:hover {
-            background: #b71c1c;
-        }
-
-        /* Rechtlicher Hinweis */
-        .legal-box {
-            font-size: 11px;
-            color: #777;
-            margin: 10px auto 0 auto;
-            max-width: 960px;
-            text-align: left;
-            line-height: 1.5;
-            padding: 0 12px 18px 12px;
-        }
-        .legal-box details {
-            background: rgba(255,255,255,0.9);
-            border-radius: 10px;
-            padding: 8px 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .legal-box summary {
-            cursor: pointer;
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .language-selector {
+                position: static;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
-
 <body>
-
-<header class="header">
-    <div class="header-inner">
-        <!-- mete o ficheiro do logo horizontal na mesma pasta -->
-        <img src="sanremo-digital-systems-horizontal.png" alt="Sanremo Digital Systems Logo" class="header-logo">
-        <div class="header-title">Digitaler QR-Tischservice – Internes Bestellsystem</div>
-    </div>
-</header>
-
-<div class="container">
-
-    <!-- TISCHWAHL -->
-    <div class="card">
-        <h2 class="section-title">Tisch wählen</h2>
-        <label for="tisch">Tischnummer auswählen:</label>
-        <select id="tisch">
-            <option value="">Tisch auswählen…</option>
-        </select>
-        <div class="small">Verfügbar: Tisch 1 bis 33</div>
-    </div>
-
-    <!-- PRODUKTWAHL -->
-    <div class="card">
-        <h2 class="section-title">Produkt wählen</h2>
-
-        <div class="tabs">
-            <button class="tab-btn tab-portions active" data-group="portions">Portionen</button>
-            <button class="tab-btn tab-kids" data-group="kids">Kinder</button>
-            <button class="tab-btn tab-eis" data-group="eis">Eisbecher & Spaghetti</button>
-            <button class="tab-btn tab-food" data-group="food">Snacks & Waffeln</button>
-            <button class="tab-btn tab-drinks" data-group="drinks">Getränke</button>
+    <div class="container">
+        <!-- Seletor de idioma no topo -->
+        <div class="language-selector">
+            <button class="lang-btn active" data-lang="pt">🇵🇹 Português</button>
+            <button class="lang-btn" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-btn" data-lang="it">🇮🇹 Italiano</button>
         </div>
-
-        <label for="produkt">Produkt:</label>
-        <select id="produkt"></select>
-
-        <!-- Sortenwahl nur für Portionen (optional) -->
-        <div id="geschmack-box" style="margin-top:12px; display:none;">
-            <label>Sorten (optional, bis zu 3 wählen):</label>
-            <select id="geschmack1"></select>
-            <select id="geschmack2" style="margin-top:6px;"></select>
-            <select id="geschmack3" style="margin-top:6px;"></select>
-            <div class="small">
-                Wenn keine Sorten gewählt werden, kommt die Portion in unserer Standardmischung.
+        
+        <header>
+            <h1 id="main-title">Sistema de Pedidos do Restaurante</h1>
+            <p class="subtitle" id="subtitle">Faça seu pedido de forma rápida e fácil</p>
+        </header>
+        
+        <div class="main-content">
+            <!-- Menu de produtos -->
+            <section class="menu-section">
+                <h2 id="menu-title">Cardápio</h2>
+                <div class="menu-grid" id="menu-grid">
+                    <!-- Itens do menu serão adicionados via JavaScript -->
+                </div>
+            </section>
+            
+            <!-- Pedido atual -->
+            <section class="order-section">
+                <h2 id="order-title">Seu Pedido</h2>
+                <div class="order-items" id="order-items">
+                    <!-- Itens do pedido serão adicionados via JavaScript -->
+                    <div class="empty-order" id="empty-order">Seu pedido está vazio. Adicione itens do cardápio.</div>
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span id="subtotal-label">Subtotal:</span>
+                        <span id="subtotal-value">€0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span id="tax-label">IVA (10%):</span>
+                        <span id="tax-value">€0.00</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span id="total-label">Total:</span>
+                        <span id="total-value">€0.00</span>
+                    </div>
+                </div>
+                
+                <!-- Botões de ação -->
+                <div class="action-buttons">
+                    <button class="action-btn primary-btn" id="save-order-btn">
+                        <i class="fas fa-save"></i>
+                        <span class="btn-text">Guardar Pedido</span>
+                    </button>
+                    <button class="action-btn secondary-btn" id="print-kitchen-btn">
+                        <i class="fas fa-print"></i>
+                        <span class="btn-text">Imprimir na Cozinha</span>
+                    </button>
+                    <button class="action-btn tertiary-btn" id="send-whatsapp-btn">
+                        <i class="fab fa-whatsapp"></i>
+                        <span class="btn-text">Enviar por WhatsApp</span>
+                    </button>
+                    <button class="action-btn danger-btn" id="clear-order-btn">
+                        <i class="fas fa-trash"></i>
+                        <span class="btn-text">Limpar Pedido</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Aviso legal -->
+        <div class="legal-notice">
+            <div class="legal-title" id="legal-title">ℹ Aviso Legal:</div>
+            <p id="legal-text">
+                Os preços incluem IVA à taxa legal. O restaurante reserva-se o direito de alterar os preços sem aviso prévio. 
+                Para reclamações ou informações adicionais, contacte o nosso serviço de atendimento ao cliente.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Modal para impressão na cozinha -->
+    <div class="modal" id="print-modal">
+        <div class="modal-content">
+            <h2 class="modal-title" id="modal-title">Imprimir na Cozinha</h2>
+            <p id="modal-description">Escolha como deseja processar o pedido:</p>
+            
+            <div class="modal-options">
+                <div class="modal-option" id="print-now-option">
+                    <h3 id="print-now-title">Imprimir Agora</h3>
+                    <p id="print-now-desc">O pedido será enviado para impressão imediatamente na cozinha.</p>
+                </div>
+                <div class="modal-option" id="save-print-later-option">
+                    <h3 id="save-print-later-title">Guardar e Imprimir Mais Tarde</h3>
+                    <p id="save-print-later-desc">O pedido será guardado no sistema e poderá ser impresso posteriormente.</p>
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="action-btn danger-btn" id="cancel-print-btn">
+                    <i class="fas fa-times"></i>
+                    <span class="btn-text">Cancelar</span>
+                </button>
+                <button class="action-btn primary-btn" id="confirm-print-btn">
+                    <i class="fas fa-check"></i>
+                    <span class="btn-text">Confirmar</span>
+                </button>
             </div>
         </div>
-
-        <!-- Sahne-Option -->
-        <div id="sahne-box" style="margin-top:8px; display:none;">
-            <label for="sahne">Sahne (+1,20 €):</label>
-            <select id="sahne">
-                <option value="">Bitte auswählen (optional)</option>
-                <option value="mit Sahne">mit Sahne (+1,20 €)</option>
-                <option value="ohne Sahne">ohne Sahne</option>
-            </select>
-            <div class="small">
-                Wenn nichts gewählt wird, bereiten wir es wie auf der Karte zu.
-            </div>
-        </div>
-
-        <label for="bemerkung" style="margin-top:8px;">Bemerkung (optional):</label>
-        <input id="bemerkung" type="text" placeholder="z.B. ohne Sahne, wenig Soße …">
-
-        <button class="btn" onclick="addToCart()">Zum Warenkorb hinzufügen</button>
     </div>
 
-    <!-- WARENKORB -->
-    <div id="warenkorb">
-        <h2 class="section-title">🧺 Warenkorb</h2>
-        <div id="liste-items"></div>
-        <div class="total" id="gesamt">Gesamt: 0,00 €</div>
+    <script>
+        // Dados de tradução
+        const translations = {
+            pt: {
+                // Títulos
+                "main-title": "Sistema de Pedidos do Restaurante",
+                "subtitle": "Faça seu pedido de forma rápida e fácil",
+                "menu-title": "Cardápio",
+                "order-title": "Seu Pedido",
+                "legal-title": "ℹ Aviso Legal:",
+                "legal-text": "Os preços incluem IVA à taxa legal. O restaurante reserva-se o direito de alterar os preços sem aviso prévio. Para reclamações ou informações adicionais, contacte o nosso serviço de atendimento ao cliente.",
+                
+                // Botões
+                "save-order": "Guardar Pedido",
+                "print-kitchen": "Imprimir na Cozinha",
+                "send-whatsapp": "Enviar por WhatsApp",
+                "clear-order": "Limpar Pedido",
+                "add-to-order": "Adicionar ao Pedido",
+                "remove": "Remover",
+                "cancel": "Cancelar",
+                "confirm": "Confirmar",
+                
+                // Labels
+                "subtotal": "Subtotal:",
+                "tax": "IVA (10%):",
+                "total": "Total:",
+                "empty-order": "Seu pedido está vazio. Adicione itens do cardápio.",
+                
+                // Modal
+                "modal-title": "Imprimir na Cozinha",
+                "modal-description": "Escolha como deseja processar o pedido:",
+                "print-now-title": "Imprimir Agora",
+                "print-now-desc": "O pedido será enviado para impressão imediatamente na cozinha.",
+                "save-print-later-title": "Guardar e Imprimir Mais Tarde",
+                "save-print-later-desc": "O pedido será guardado no sistema e poderá ser impresso posteriormente."
+            },
+            de: {
+                // Títulos
+                "main-title": "Bestellsystem Restaurant",
+                "subtitle": "Bestellen Sie schnell und einfach",
+                "menu-title": "Speisekarte",
+                "order-title": "Ihre Bestellung",
+                "legal-title": "ℹ Rechtlicher Hinweis:",
+                "legal-text": "Preise inklusive gesetzlicher Mehrwertsteuer. Das Restaurant behält sich das Recht vor, Preise ohne vorherige Ankündigung zu ändern. Für Beschwerden oder weitere Informationen kontaktieren Sie bitte unseren Kundendienst.",
+                
+                // Botões
+                "save-order": "Bestellung Speichern",
+                "print-kitchen": "In Küche Drucken",
+                "send-whatsapp": "Per WhatsApp Senden",
+                "clear-order": "Bestellung Löschen",
+                "add-to-order": "Zur Bestellung Hinzufügen",
+                "remove": "Entfernen",
+                "cancel": "Abbrechen",
+                "confirm": "Bestätigen",
+                
+                // Labels
+                "subtotal": "Zwischensumme:",
+                "tax": "MwSt (10%):",
+                "total": "Gesamt:",
+                "empty-order": "Ihr Warenkorb ist leer. Fügen Sie Artikel von der Speisekarte hinzu.",
+                
+                // Modal
+                "modal-title": "In Küche Drucken",
+                "modal-description": "Wählen Sie, wie die Bestellung verarbeitet werden soll:",
+                "print-now-title": "Jetzt Drucken",
+                "print-now-desc": "Die Bestellung wird sofort in der Küche gedruckt.",
+                "save-print-later-title": "Speichern und Später Drucken",
+                "save-print-later-desc": "Die Bestellung wird im System gespeichert und kann später gedruckt werden."
+            },
+            it: {
+                // Títulos
+                "main-title": "Sistema Ordini Ristorante",
+                "subtitle": "Ordina in modo rapido e semplice",
+                "menu-title": "Menù",
+                "order-title": "Il Tuo Ordine",
+                "legal-title": "ℹ Avviso Legale:",
+                "legal-text": "I prezzi includono IVA al tasso legale. Il ristorante si riserva il diritto di modificare i prezzi senza preavviso. Per reclami o informazioni aggiuntive, contattare il nostro servizio clienti.",
+                
+                // Botões
+                "save-order": "Salva Ordine",
+                "print-kitchen": "Stampa in Cucina",
+                "send-whatsapp": "Invia tramite WhatsApp",
+                "clear-order": "Cancella Ordine",
+                "add-to-order": "Aggiungi all'Ordine",
+                "remove": "Rimuovi",
+                "cancel": "Annulla",
+                "confirm": "Conferma",
+                
+                // Labels
+                "subtotal": "Subtotale:",
+                "tax": "IVA (10%):",
+                "total": "Totale:",
+                "empty-order": "Il tuo ordine è vuoto. Aggiungi articoli dal menù.",
+                
+                // Modal
+                "modal-title": "Stampa in Cucina",
+                "modal-description": "Scegli come elaborare l'ordine:",
+                "print-now-title": "Stampa Ora",
+                "print-now-desc": "L'ordine verrà inviato alla stampante in cucina immediatamente.",
+                "save-print-later-title": "Salva e Stampa più Tardi",
+                "save-print-later-desc": "L'ordine verrà salvato nel sistema e potrà essere stampato successivamente."
+            }
+        };
 
-        <button id="btn-whatsapp" class="btn" onclick="sendWhatsApp()" disabled>
-            Bestellung per WhatsApp senden 📲
-        </button>
+        // Estado do aplicativo
+        const state = {
+            currentLang: 'pt',
+            order: [],
+            menuItems: [
+                { id: 1, name: 'Pizza Margherita', description: 'Molho de tomate, mussarela, manjericão fresco', price: 9.90 },
+                { id: 2, name: 'Hambúrguer Clássico', description: 'Carne bovina, queijo, alface, tomate', price: 12.50 },
+                { id: 3, name: 'Salada César', description: 'Alface, frango grelhado, croutons, molho César', price: 8.90 },
+                { id: 4, name: 'Espaguete Carbonara', description: 'Espaguete, bacon, ovos, queijo parmesão', price: 11.90 },
+                { id: 5, name: 'Salmão Grelhado', description: 'Salmão grelhado com legumes e arroz', price: 16.90 },
+                { id: 6, name: 'Sopa do Dia', description: 'Sopa fresca preparada diariamente', price: 5.50 },
+                { id: 7, name: 'Água Mineral', description: 'Garrafa de 500ml', price: 1.50 },
+                { id: 8, name: 'Refrigerante', description: 'Lata 330ml', price: 2.00 },
+                { id: 9, name: 'Cerveja Artesanal', description: 'Copo 500ml', price: 4.50 },
+                { id: 10, name: 'Tiramisu', description: 'Sobremesa italiana clássica', price: 6.50 }
+            ],
+            printOption: 'print-now'
+        };
 
-        <button id="btn-print" class="btn" style="margin-top:8px; background:#007b83;" onclick="printOrder()" disabled>
-            Bestellung drucken 🖨️
-        </button>
-
-        <button class="btn" style="margin-top:8px; background:#555;" onclick="resetTable()">
-            Tisch löschen / neue Gäste
-        </button>
-
-        <div class="small" style="margin-top:6px;" id="gps-info">
-            GPS wird geprüft… bitte Standort-Freigabe erlauben.
-        </div>
-    </div>
-
-    <!-- CHEF LOGIN -->
-    <div class="card" id="admin-login-card">
-        <h2 class="section-title">Chef-Bereich</h2>
-        <p class="small">
-            Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert
-            und Produkte / Preise angepasst.
-        </p>
-        <label for="admin-password">Chef-Passwort:</label>
-        <input id="admin-password" type="password" placeholder="Passwort eingeben">
-        <button class="btn" onclick="adminLogin()">Chef-Login</button>
-    </div>
-
-    <!-- CHEF PANEL -->
-    <div class="card" id="admin-panel" style="display:none;">
-        <div class="admin-header">
-            <h2 class="section-title" style="margin-bottom:0;">Gespeicherte Bestellungen</h2>
-            <button class="btn-logout" onclick="adminLogout()">Logout</button>
-        </div>
-        <div class="small" style="margin-top:4px;">
-            Hier werden alle Bestellungen gespeichert, die per WhatsApp gesendet oder gedruckt wurden.
-            Der Chef kann einzelne Bestellungen oder alle Einträge löschen.
-        </div>
-        <div id="admin-orders-list" style="margin-top:10px;"></div>
-        <button class="btn" style="margin-top:10px; background:#c62828;" onclick="clearAllOrders()">
-            Alle Bestellungen löschen
-        </button>
-
-        <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
-
-        <!-- PRODUKT-VERWALTUNG -->
-        <h3 class="section-title" style="border-left-color:#00796b;">Produkte bearbeiten</h3>
-        <label for="admin-product-select">Bestehendes Produkt wählen:</label>
-        <select id="admin-product-select"></select>
-        <div class="small">
-            Änderungen werden lokal im Browser gespeichert (pro Gerät / Standort).
-        </div>
-
-        <label for="admin-prod-name">Name:</label>
-        <input id="admin-prod-name" type="text">
-
-        <label for="admin-prod-price">Preis (€):</label>
-        <input id="admin-prod-price" type="number" step="0.01">
-
-        <label for="admin-prod-group">Gruppe:</label>
-        <select id="admin-prod-group">
-            <option value="portions">Portionen</option>
-            <option value="kids">Kinder</option>
-            <option value="eis">Eisbecher & Spaghetti</option>
-            <option value="food">Snacks & Waffeln</option>
-            <option value="drinks">Getränke</option>
-        </select>
-
-        <label for="admin-prod-type">Art:</label>
-        <select id="admin-prod-type">
-            <option value="normal">Normal</option>
-            <option value="cup3">Portion (Sortenwahl)</option>
-        </select>
-
-        <label style="margin-top:6px;">
-            <input type="checkbox" id="admin-prod-sahne">
-            Sahne-Option (+1,20 €) erlauben
-        </label>
-
-        <button class="btn" style="margin-top:10px;" onclick="saveExistingProduct()">
-            Ausgewähltes Produkt speichern
-        </button>
-        <button class="btn" style="margin-top:6px; background:#c62828;" onclick="deleteExistingProduct()">
-            Ausgewähltes Produkt löschen
-        </button>
-
-        <h3 class="section-title" style="border-left-color:#0288d1; margin-top:20px;">Neues Produkt hinzufügen</h3>
-        <label for="new-prod-id">Produkt-Nr. (z.B. 701):</label>
-        <input id="new-prod-id" type="number">
-
-        <label for="new-prod-name">Name:</label>
-        <input id="new-prod-name" type="text">
-
-        <label for="new-prod-price">Preis (€):</label>
-        <input id="new-prod-price" type="number" step="0.01">
-
-        <label for="new-prod-group">Gruppe:</label>
-        <select id="new-prod-group">
-            <option value="portions">Portionen</option>
-            <option value="kids">Kinder</option>
-            <option value="eis">Eisbecher & Spaghetti</option>
-            <option value="food">Snacks & Waffeln</option>
-            <option value="drinks">Getränke</option>
-        </select>
-
-        <label for="new-prod-type">Art:</label>
-        <select id="new-prod-type">
-            <option value="normal">Normal</option>
-            <option value="cup3">Portion (Sortenwahl)</option>
-        </select>
-
-        <label style="margin-top:6px;">
-            <input type="checkbox" id="new-prod-sahne">
-            Sahne-Option (+1,20 €) erlauben
-        </label>
-
-        <button class="btn" style="margin-top:10px;" onclick="addNewProduct()">
-            Neues Produkt anlegen
-        </button>
-
-        <!-- SORTEN-VERWALTUNG -->
-        <h3 class="section-title" style="border-left-color:#6a1b9a; margin-top:20px;">Eissorten verwalten</h3>
-        <div id="sorten-list" class="small" style="margin-bottom:8px;"></div>
-
-        <label for="new-sorte">Neue Sorte:</label>
-        <input id="new-sorte" type="text" placeholder="z.B. Stracciatella Light">
-
-        <button class="btn" style="margin-top:6px;" onclick="addNewSorte()">
-            Sorte hinzufügen
-        </button>
-
-        <!-- RECHTLICHER HINWEIS NUR FÜR CHEF -->
-        <div class="legal-box">
-            <details>
-                <summary><strong>Rechtlicher Hinweis (anklicken)</strong></summary>
-                <p>
-                    Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine
-                    Registrierkasse oder steuerrechtlich relevante Aufzeichnung.
-                </p>
-                <p>
-                    Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung
-                    aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine
-                    Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.
-                </p>
-                <p>
-                    Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der
-                    Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K
-                    und darf nicht als Kassensystem verwendet werden.
-                </p>
-                <p>
-                    Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender
-                    dieses Systems.
-                </p>
-            </details>
-        </div>
-
-    </div>
-
-</div>
-
-<script>
-const WHATSAPP_NUMMER = "4917672809926";
-const ADMIN_PASSWORD = "1234";
-const SAHNE_AUFSCHLAG = 1.20;
-
-/* Koordinaten deines Cafés (anpassen wenn nötig) */
-const CAFE_LAT = 51.051;
-const CAFE_LNG = 8.392;
-const MAX_DIST_KM = 1.5;
-
-let gpsOk = false;
-let adminOrders = [];
-let isAdmin = false;
-
-/* BASIS-PRODUKTE (Standard) */
-const BASE_PRODUCTS = {
-    23: { id:23,  name:"23. Kinder Portion (2 Kugeln)",      preis:3.50, type:"cup3",  group:"portions", sahne:true },
-    24: { id:24,  name:"24. Kleine Portion (3 Kugeln)",      preis:5.00, type:"cup3",  group:"portions", sahne:true },
-    25: { id:25,  name:"25. Normale Portion (4 Kugeln)",     preis:6.50, type:"cup3",  group:"portions", sahne:true },
-    26: { id:26,  name:"26. Große Portion (6 Kugeln)",       preis:9.50, type:"cup3",  group:"portions", sahne:true },
-
-    30: { id:30,  name:"30. Amarena Becher",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    31: { id:31,  name:"31. Erdbeer Becher",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    32: { id:32,  name:"32. Banana Cup",                      preis:9.00, type:"normal", group:"eis", sahne:true },
-    33: { id:33,  name:"33. Liebes Traum",                    preis:13.50,type:"normal", group:"eis", sahne:true },
-    34: { id:34,  name:"34. Kiwi Becher",                     preis:8.50, type:"normal", group:"eis", sahne:true },
-    35: { id:35,  name:"35. Frucht Becher",                   preis:8.50, type:"normal", group:"eis", sahne:true },
-    36: { id:36,  name:"36. Großer Frucht Becher",            preis:11.90,type:"normal", group:"eis", sahne:true },
-    37: { id:37,  name:"37. Großer Amarena Becher",           preis:12.50,type:"normal", group:"eis", sahne:true },
-    38: { id:38,  name:"38. Großer Erdbeer Becher",           preis:12.50,type:"normal", group:"eis", sahne:true },
-    39: { id:39,  name:"39. Erdbeer-Banane Becher",           preis:10.90,type:"normal", group:"eis", sahne:true },
-    40: { id:40,  name:"40. Exotischer Becher",               preis:12.00,type:"normal", group:"eis", sahne:true },
-    41: { id:41,  name:"41. Wald Becher",                     preis:10.50,type:"normal", group:"eis", sahne:true },
-    42: { id:42,  name:"42. Bella Italia",                    preis:11.00,type:"normal", group:"eis", sahne:true },
-    43: { id:43,  name:"43. Mango Becher",                    preis:9.00, type:"normal", group:"eis", sahne:true },
-    44: { id:44,  name:"44. Banana Split",                    preis:10.00,type:"normal", group:"eis", sahne:true },
-    45: { id:45,  name:"45. Sommer Becher",                   preis:13.00,type:"normal", group:"eis", sahne:true },
-    46: { id:46,  name:"46. Coppa Melone",                    preis:9.50, type:"normal", group:"eis", sahne:true },
-    47: { id:47,  name:"47. Heidelbeer Becher",               preis:9.50, type:"normal", group:"eis", sahne:true },
-    48: { id:48,  name:"48. Himbeer Becher",                  preis:9.50, type:"normal", group:"eis", sahne:true },
-
-    50: { id:50,  name:"50. Spaghetti Eis",                   preis:6.50, type:"normal", group:"eis", sahne:true },
-    51: { id:51,  name:"51. Spaghetti Eis groß",              preis:9.50, type:"normal", group:"eis", sahne:true },
-    52: { id:52,  name:"52. Spaghetti Vanille",               preis:7.40, type:"normal", group:"eis", sahne:true },
-    53: { id:53,  name:"53. Spaghetti Erdbeere",              preis:8.90, type:"normal", group:"eis", sahne:true },
-    54: { id:54,  name:"54. Spaghetti Kiwi",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    55: { id:55,  name:"55. Spaghetti Vanille-Schoko",        preis:7.50, type:"normal", group:"eis", sahne:true },
-    56: { id:56,  name:"56. Spaghetti Carbonara",             preis:9.50, type:"normal", group:"eis", sahne:true },
-    57: { id:57,  name:"57. Spaghetti Nussknacker",           preis:9.50, type:"normal", group:"eis", sahne:true },
-    58: { id:58,  name:"58. Spaghetti Amarena",               preis:8.90, type:"normal", group:"eis", sahne:true },
-    59: { id:59,  name:"59. Spaghetti Waldfrüchte",           preis:8.90, type:"normal", group:"eis", sahne:true },
-    60: { id:60,  name:"60. Spaghetti Melone",                preis:8.90, type:"normal", group:"eis", sahne:true },
-    61: { id:61,  name:"61. Spaghetti Tutti Frutti",          preis:8.90, type:"normal", group:"eis", sahne:true },
-    62: { id:62,  name:"62. Lasagne Eis",                     preis:8.90, type:"normal", group:"eis", sahne:true },
-
-    63: { id:63,  name:"63. Pizza Margherita",                preis:9.00, type:"normal", group:"food", sahne:false },
-    64: { id:64,  name:"64. Pizza Grandiosa",                 preis:12.00,type:"normal", group:"food", sahne:false },
-
-    70: { id:70,  name:"70. Mixgetränk Spezial",              preis:6.50, type:"normal", group:"eis", sahne:true },
-    71: { id:71,  name:"71. Joghurrette Becher",              preis:9.50, type:"normal", group:"eis", sahne:true },
-    72: { id:72,  name:"72. Joghurt Cocktail",                preis:9.50, type:"normal", group:"eis", sahne:true },
-    73: { id:73,  name:"73. Joghurt Kiwi",                    preis:9.00, type:"normal", group:"eis", sahne:true },
-    74: { id:74,  name:"74. Joghurt Erdbeere",                preis:9.00, type:"normal", group:"eis", sahne:true },
-    75: { id:75,  name:"75. Joghurt Ananas",                  preis:9.00, type:"normal", group:"eis", sahne:true },
-    76: { id:76,  name:"76. Müsli Joghurt Becher",            preis:9.00, type:"normal", group:"eis", sahne:true },
-    77: { id:77,  name:"77. Joghurt Heidelbeere",             preis:9.00, type:"normal", group:"eis", sahne:true },
-    78: { id:78,  name:"78. Joghurt Banane",                  preis:9.00, type:"normal", group:"eis", sahne:true },
-    79: { id:79,  name:"79. Joghurt Amarena",                 preis:9.00, type:"normal", group:"eis", sahne:true },
-    80: { id:80,  name:"80. Joghurt Himbeere",                preis:9.00, type:"normal", group:"eis", sahne:true },
-
-    81: { id:81,  name:"81. Heiße Kirschen",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    82: { id:82,  name:"82. Heiße Himbeeren",                 preis:9.00, type:"normal", group:"eis", sahne:true },
-    83: { id:83,  name:"83. Zimt Becher",                     preis:8.50, type:"normal", group:"eis", sahne:true },
-    84: { id:84,  name:"84. Cup Dänemark",                    preis:8.50, type:"normal", group:"eis", sahne:true },
-    85: { id:85,  name:"85. Wiener Mokka",                    preis:8.50, type:"normal", group:"eis", sahne:true },
-
-    90: { id:90,  name:"90. Amaretto Becher",                 preis:8.50, type:"normal", group:"eis", sahne:true },
-    91: { id:91,  name:"91. Schwarzwald Becher",              preis:9.00, type:"normal", group:"eis", sahne:true },
-    92: { id:92,  name:"92. Malaga Becher",                   preis:9.00, type:"normal", group:"eis", sahne:true },
-    93: { id:93,  name:"93. Mon Chéri Becher",                preis:9.50, type:"normal", group:"eis", sahne:true },
-    94: { id:94,  name:"94. Raffaello Becher",                preis:9.50, type:"normal", group:"eis", sahne:true },
-    96: { id:96,  name:"96. Eierlikör Becher",                preis:8.50, type:"normal", group:"eis", sahne:true },
-    98: { id:98,  name:"98. Nuss Becher",                     preis:9.50, type:"normal", group:"eis", sahne:true },
-    99: { id:99,  name:"99. Rocher Becher",                   preis:9.50, type:"normal", group:"eis", sahne:true },
-    100:{ id:100, name:"100. Giotto Becher",                  preis:9.00, type:"normal", group:"eis", sahne:true },
-    101:{ id:101, name:"101. Berg Becher",                    preis:10.50,type:"normal", group:"eis", sahne:true },
-    102:{ id:102, name:"102. Walnuss Becher",                 preis:9.50, type:"normal", group:"eis", sahne:true },
-    103:{ id:103, name:"103. Coppa Delizia",                  preis:10.90,type:"normal", group:"eis", sahne:true },
-
-    110:{ id:110, name:"110. After Eight Becher",             preis:8.90, type:"normal", group:"eis", sahne:true },
-    111:{ id:111, name:"111. Stracciatella Becher",           preis:7.90, type:"normal", group:"eis", sahne:true },
-    112:{ id:112, name:"112. Tartufo Nero",                   preis:9.50, type:"normal", group:"eis", sahne:true },
-    113:{ id:113, name:"113. Tartufo Bianco",                 preis:9.50, type:"normal", group:"eis", sahne:true },
-    114:{ id:114, name:"114. Hausbecher",                     preis:20.00,type:"normal", group:"eis", sahne:true },
-    116:{ id:116, name:"116. Krokant Becher",                 preis:8.50, type:"normal", group:"eis", sahne:true },
-    117:{ id:117, name:"117. Schoko Becher",                  preis:8.50, type:"normal", group:"eis", sahne:true },
-    118:{ id:118, name:"118. Schoko Becher groß",             preis:12.00,type:"normal", group:"eis", sahne:true },
-    122:{ id:122, name:"122. Pistazien Becher",               preis:11.50,type:"normal", group:"eis", sahne:true },
-
-    130:{ id:130, name:"130. Flipper",                        preis:5.00, type:"normal", group:"kids", sahne:true },
-    131:{ id:131, name:"131. Bellini",                        preis:6.00, type:"normal", group:"drinks", sahne:false },
-    132:{ id:132, name:"132. Mimosa",                         preis:6.00, type:"normal", group:"drinks", sahne:false },
-    133:{ id:133, name:"133. Formula 1",                      preis:6.00, type:"normal", group:"kids", sahne:false },
-    134:{ id:134, name:"134. Formula 2",                      preis:6.00, type:"normal", group:"kids", sahne:false },
-
-    140:{ id:140, name:"140. Eiskaffee",                      preis:5.50, type:"normal", group:"drinks", sahne:true },
-    141:{ id:141, name:"141. Eisschokolade",                  preis:5.50, type:"normal", group:"drinks", sahne:true },
-    142:{ id:142, name:"142. Eis-Cappuccino",                 preis:5.50, type:"normal", group:"drinks", sahne:true },
-
-    150:{ id:150, name:"150. Milch-Mix 0,3 l",                preis:4.00, type:"normal", group:"kids",   sahne:true },
-    151:{ id:151, name:"151. Milchshake 0,3 l",               preis:4.60, type:"normal", group:"kids",   sahne:true },
-    152:{ id:152, name:"152. Riesen Milch-Mix 0,5 l",         preis:5.00, type:"normal", group:"kids",   sahne:true },
-    153:{ id:153, name:"153. Riesen Milchshake 0,5 l",        preis:5.50, type:"normal", group:"kids",   sahne:true },
-    154:{ id:154, name:"154. Vulcano",                        preis:3.70, type:"normal", group:"kids",   sahne:true },
-    155:{ id:155, name:"155. Orangensaft (frisch)",           preis:4.50, type:"normal", group:"drinks", sahne:false },
-    156:{ id:156, name:"156. Kalte Zitrone",                  preis:3.50, type:"normal", group:"drinks", sahne:false },
-
-    160:{ id:160, name:"Erdbeer Donut",                       preis:6.90, type:"normal", group:"kids", sahne:true },
-    161:{ id:161, name:"Schoko Donut",                        preis:6.90, type:"normal", group:"kids", sahne:true },
-    162:{ id:162, name:"Caramel Donut",                       preis:6.90, type:"normal", group:"kids", sahne:true },
-    163:{ id:163, name:"Pistazien Donut",                     preis:7.20, type:"normal", group:"kids", sahne:true },
-    164:{ id:164, name:"Kinder Donut",                        preis:6.50, type:"normal", group:"kids", sahne:true },
-
-    200:{ id:200, name:"Espresso",                            preis:2.00, type:"normal", group:"drinks", sahne:false },
-    201:{ id:201, name:"Espresso Macchiato",                  preis:2.30, type:"normal", group:"drinks", sahne:false },
-    202:{ id:202, name:"Espresso Corretto",                   preis:3.40, type:"normal", group:"drinks", sahne:false },
-    203:{ id:203, name:"Doppelter Espresso",                  preis:3.60, type:"normal", group:"drinks", sahne:false },
-    204:{ id:204, name:"Doppelter Espresso Macchiato",        preis:3.80, type:"normal", group:"drinks", sahne:false },
-    210:{ id:210, name:"Kaffee",                              preis:2.20, type:"normal", group:"drinks", sahne:false },
-    220:{ id:220, name:"Milchkaffee",                         preis:3.00, type:"normal", group:"drinks", sahne:true },
-    221:{ id:221, name:"Milchkaffee mit Baileys",             preis:4.00, type:"normal", group:"drinks", sahne:true },
-    230:{ id:230, name:"Latte Macchiato",                     preis:3.60, type:"normal", group:"drinks", sahne:true },
-    231:{ id:231, name:"Latte Macchiato mit Sirup",           preis:3.20, type:"normal", group:"drinks", sahne:true },
-    240:{ id:240, name:"Cappuccino",                          preis:2.60, type:"normal", group:"drinks", sahne:true },
-    241:{ id:241, name:"Cappuccino groß",                     preis:3.00, type:"normal", group:"drinks", sahne:true },
-    244:{ id:244, name:"Cappuccino mit Amaretto",             preis:4.00, type:"normal", group:"drinks", sahne:true },
-    245:{ id:245, name:"Cappuccino mit Eierlikör",            preis:4.00, type:"normal", group:"drinks", sahne:true },
-    246:{ id:246, name:"Cappuccino mit Baileys",              preis:4.00, type:"normal", group:"drinks", sahne:true },
-
-    300:{ id:300, name:"Coca-Cola 0,2 l",                     preis:2.70, type:"normal", group:"drinks", sahne:false },
-    301:{ id:301, name:"Coca-Cola Light 0,2 l",               preis:2.70, type:"normal", group:"drinks", sahne:false },
-    302:{ id:302, name:"Coca-Cola Zero 0,2 l",                preis:2.70, type:"normal", group:"drinks", sahne:false },
-    303:{ id:303, name:"Fanta 0,2 l",                         preis:2.70, type:"normal", group:"drinks", sahne:false },
-    304:{ id:304, name:"Mezzo Mix 0,2 l",                     preis:2.70, type:"normal", group:"drinks", sahne:false },
-    305:{ id:305, name:"Sprite 0,2 l",                        preis:2.70, type:"normal", group:"drinks", sahne:false },
-    306:{ id:306, name:"Bitter Lemon 0,2 l",                  preis:2.70, type:"normal", group:"drinks", sahne:false },
-    307:{ id:307, name:"Apfelschorle",                        preis:1.90, type:"normal", group:"drinks", sahne:false },
-    308:{ id:308, name:"Eistee",                              preis:1.90, type:"normal", group:"drinks", sahne:false },
-    309:{ id:309, name:"Wild Berry",                          preis:2.20, type:"normal", group:"drinks", sahne:false },
-    310:{ id:310, name:"Tonic Water",                         preis:2.20, type:"normal", group:"drinks", sahne:false },
-    311:{ id:311, name:"S.Pellegrino 0,25 l",                 preis:2.40, type:"normal", group:"drinks", sahne:false },
-    312:{ id:312, name:"S.Pellegrino 0,75 l",                 preis:5.90, type:"normal", group:"drinks", sahne:false },
-
-    350:{ id:350, name:"Krombacher Pils 0,33 l",              preis:2.80, type:"normal", group:"drinks", sahne:false },
-    351:{ id:351, name:"Krombacher Radler 0,33 l",            preis:2.80, type:"normal", group:"drinks", sahne:false },
-    352:{ id:352, name:"Erdinger Weißbier 0,5 l",             preis:4.50, type:"normal", group:"drinks", sahne:false },
-    353:{ id:353, name:"Erdinger Alkoholfrei 0,33 l",         preis:2.80, type:"normal", group:"drinks", sahne:false },
-    354:{ id:354, name:"Erdinger Alkoholfrei 0,5 l",          preis:4.50, type:"normal", group:"drinks", sahne:false },
-
-    400:{ id:400, name:"Rotwein trocken 0,2 l",               preis:4.90, type:"normal", group:"drinks", sahne:false },
-    401:{ id:401, name:"Weißwein trocken 0,2 l",              preis:4.90, type:"normal", group:"drinks", sahne:false },
-    402:{ id:402, name:"Glas Sekt",                           preis:3.90, type:"normal", group:"drinks", sahne:false },
-    403:{ id:403, name:"Campari Sekt",                        preis:3.90, type:"normal", group:"drinks", sahne:false },
-    410:{ id:410, name:"Aperitif Rosato",                     preis:5.90, type:"normal", group:"drinks", sahne:false },
-    430:{ id:430, name:"Grappa",                              preis:4.70, type:"normal", group:"drinks", sahne:false },
-    431:{ id:431, name:"Asbach",                              preis:3.20, type:"normal", group:"drinks", sahne:false },
-    432:{ id:432, name:"Ramazzotti",                          preis:3.20, type:"normal", group:"drinks", sahne:false },
-    433:{ id:433, name:"Aperol",                              preis:6.10, type:"normal", group:"drinks", sahne:false },
-    434:{ id:434, name:"Hugo",                                preis:6.10, type:"normal", group:"drinks", sahne:false },
-
-    500:{ id:500, name:"Flammkuchen Elsässer Art",            preis:8.90, type:"normal", group:"food", sahne:false },
-    501:{ id:501, name:"Flammkuchen Wildlachs & Shrimps",     preis:8.90, type:"normal", group:"food", sahne:false },
-    502:{ id:502, name:"Flammkuchen Griechische Art",         preis:8.90, type:"normal", group:"food", sahne:false },
-    510:{ id:510, name:"Toast mit Käse",                      preis:3.70, type:"normal", group:"food", sahne:false },
-    511:{ id:511, name:"Toast mit Käse & Schinken",           preis:4.30, type:"normal", group:"food", sahne:false },
-    512:{ id:512, name:"Toast mit Salami & Käse",             preis:4.30, type:"normal", group:"food", sahne:false },
-    513:{ id:513, name:"Toast Hawaii",                        preis:5.60, type:"normal", group:"food", sahne:false },
-    520:{ id:520, name:"Baguette XXL",                        preis:6.90, type:"normal", group:"food", sahne:false },
-
-    600:{ id:600, name:"Apfelstrudel",                        preis:3.70, type:"normal", group:"food", sahne:true },
-    601:{ id:601, name:"Apfelstrudel mit Vanillesoße",        preis:4.00, type:"normal", group:"food", sahne:true },
-    602:{ id:602, name:"Apfelstrudel mit Sahne",              preis:4.70, type:"normal", group:"food", sahne:true },
-    603:{ id:603, name:"Apfelstrudel mit Eis",                preis:6.10, type:"normal", group:"food", sahne:true },
-    610:{ id:610, name:"Hausgemachtes Tiramisu",              preis:4.20, type:"normal", group:"food", sahne:true },
-    620:{ id:620, name:"Waffel mit Puderzucker",              preis:4.00, type:"normal", group:"food", sahne:false },
-    621:{ id:621, name:"Waffel mit Sahne",                    preis:5.00, type:"normal", group:"food", sahne:true },
-    622:{ id:622, name:"Waffel mit Eis",                      preis:5.30, type:"normal", group:"food", sahne:true },
-    623:{ id:623, name:"Waffel mit Eis & Sahne",              preis:6.30, type:"normal", group:"food", sahne:true },
-    624:{ id:624, name:"Waffel mit Nutella",                  preis:5.00, type:"normal", group:"food", sahne:true },
-
-    631:{ id:631, name:"630a. Waffel Zimt & Banane",          preis:6.80, type:"normal", group:"food", sahne:true },
-    632:{ id:632, name:"630b. Waffel Obstsalat",              preis:7.90, type:"normal", group:"food", sahne:true },
-    633:{ id:633, name:"630c. Waffel Erdbeeren",              preis:7.50, type:"normal", group:"food", sahne:true },
-    634:{ id:634, name:"630d. Waffel Waldbeeren",             preis:7.20, type:"normal", group:"food", sahne:true },
-    635:{ id:635, name:"630e. Waffel Schoko-Banane",          preis:7.90, type:"normal", group:"food", sahne:true },
-    636:{ id:636, name:"630f. Waffel Heiße Kirschen",         preis:7.00, type:"normal", group:"food", sahne:true },
-    637:{ id:637, name:"630g. Waffel Schoko",                 preis:6.80, type:"normal", group:"food", sahne:true },
-    638:{ id:638, name:"630h. Waffel Tutti Frutti",           preis:7.50, type:"normal", group:"food", sahne:true }
-};
-
-/* Standard-Sorten */
-let SORTEN = [
-    "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
-    "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
-    "Erdbeere","Mango","Banane","Himbeere","Limette",
-    "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien"
-];
-
-/* Produkte-Konfiguration aus localStorage laden */
-let PRODUCTS = JSON.parse(JSON.stringify(BASE_PRODUCTS)); // Kopie
-
-(function restoreConfig() {
-    try {
-        const p = localStorage.getItem("sanremo_products");
-        if (p) PRODUCTS = JSON.parse(p);
-        const s = localStorage.getItem("sanremo_sorten");
-        if (s) SORTEN = JSON.parse(s);
-    } catch(e) {
-        console.warn("Konfiguration konnte nicht geladen werden:", e);
-    }
-})();
-
-function saveConfig() {
-    try {
-        localStorage.setItem("sanremo_products", JSON.stringify(PRODUCTS));
-        localStorage.setItem("sanremo_sorten", JSON.stringify(SORTEN));
-    } catch(e) {
-        console.warn("Konfiguration konnte nicht gespeichert werden:", e);
-    }
-}
-
-let warenkorb = [];
-let currentGroup = "portions";
-
-/* Tische */
-const tischSelect = document.getElementById("tisch");
-for (let i = 1; i <= 33; i++) {
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = "Tisch " + i;
-    tischSelect.appendChild(opt);
-}
-
-/* Sorten-Selects füllen */
-function fillSortenSelect(id) {
-    const sel = document.getElementById(id);
-    sel.innerHTML = "<option value=''>Sorte wählen…</option>";
-    SORTEN.forEach(s => {
-        const opt = document.createElement("option");
-        opt.value = s;
-        opt.textContent = s;
-        sel.appendChild(opt);
-    });
-}
-["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
-
-/* Produkte nach Gruppe */
-function buildProduktSelect(group) {
-    const select = document.getElementById("produkt");
-    select.innerHTML = "<option value=''>Bitte wählen…</option>";
-
-    Object.keys(PRODUCTS)
-        .map(id => PRODUCTS[id])
-        .filter(p => p.group === group)
-        .sort((a,b) => a.id - b.id)
-        .forEach(p => {
-            const opt = document.createElement("option");
-            opt.value = p.id;
-            opt.textContent = p.name + " – " + p.preis.toFixed(2).replace(".", ",") + " €";
-            select.appendChild(opt);
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            initLanguageSelector();
+            renderMenu();
+            loadOrderFromStorage();
+            updateOrderDisplay();
+            setupEventListeners();
         });
 
-    document.getElementById("geschmack-box").style.display = "none";
-    document.getElementById("sahne-box").style.display = "none";
-    ["geschmack1","geschmack2","geschmack3"].forEach(id=>{
-        document.getElementById(id).value = "";
-    });
-    document.getElementById("sahne").value = "";
-    document.getElementById("bemerkung").value = "";
-}
-
-/* Tabs */
-document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        currentGroup = btn.dataset.group;
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        buildProduktSelect(currentGroup);
-    });
-});
-buildProduktSelect(currentGroup);
-
-/* Produktwechsel */
-document.getElementById("produkt").addEventListener("change", function() {
-    const wert = this.value;
-    const geschmackBox = document.getElementById("geschmack-box");
-    const sahneBox = document.getElementById("sahne-box");
-
-    if (!wert || !PRODUCTS[wert]) {
-        geschmackBox.style.display = "none";
-        sahneBox.style.display = "none";
-        document.getElementById("sahne").value = "";
-        return;
-    }
-
-    const produkt = PRODUCTS[wert];
-
-    if (produkt.type === "cup3") {
-        geschmackBox.style.display = "block";
-    } else {
-        geschmackBox.style.display = "none";
-        ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
-            const sel = document.getElementById(id);
-            if (sel) sel.value = "";
-        });
-    }
-
-    if (produkt.sahne) {
-        sahneBox.style.display = "block";
-    } else {
-        sahneBox.style.display = "none";
-        document.getElementById("sahne").value = "";
-    }
-});
-
-/* Warenkorb */
-function addToCart() {
-    const tisch = document.getElementById("tisch").value;
-    if (!tisch) {
-        alert("Bitte zuerst den Tisch auswählen.");
-        return;
-    }
-
-    const produktId = document.getElementById("produkt").value;
-    if (!produktId || !PRODUCTS[produktId]) {
-        alert("Bitte ein Produkt auswählen.");
-        return;
-    }
-
-    const produkt = PRODUCTS[produktId];
-    let sorten = [];
-    const bemerkung = document.getElementById("bemerkung").value.trim();
-
-    if (produkt.type === "cup3") {
-        const s1 = document.getElementById("geschmack1").value;
-        const s2 = document.getElementById("geschmack2").value;
-        const s3 = document.getElementById("geschmack3").value;
-        if (s1) sorten.push(s1);
-        if (s2) sorten.push(s2);
-        if (s3) sorten.push(s3);
-    }
-
-    let sahne = "";
-    let sahneZuschlag = 0;
-    if (produkt.sahne) {
-        sahne = document.getElementById("sahne").value;
-        if (sahne === "mit Sahne") {
-            sahneZuschlag = SAHNE_AUFSCHLAG;
+        // Seletor de idioma
+        function initLanguageSelector() {
+            const langButtons = document.querySelectorAll('.lang-btn');
+            
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    setLanguage(lang);
+                    
+                    // Atualizar botões ativos
+                    langButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
         }
-    }
 
-    const endPreis = produkt.preis + sahneZuschlag;
-
-    warenkorb.push({
-        id: produkt.id,
-        name: produkt.name,
-        preis: endPreis,
-        grundpreis: produkt.preis,
-        type: produkt.type,
-        sorten: sorten,
-        bemerkung: bemerkung,
-        sahne: sahne,
-        sahneZuschlag: sahneZuschlag
-    });
-
-    document.getElementById("bemerkung").value = "";
-    if (produkt.type === "cup3") {
-        ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
-            document.getElementById(id).value = "";
-        });
-    }
-    document.getElementById("produkt").value = "";
-    document.getElementById("sahne").value = "";
-
-    updateCart();
-}
-
-function updateCart() {
-    const liste = document.getElementById("liste-items");
-    const totalDiv = document.getElementById("gesamt");
-    const btnWpp = document.getElementById("btn-whatsapp");
-    const btnPrint = document.getElementById("btn-print");
-
-    liste.innerHTML = "";
-    let total = 0;
-
-    warenkorb.forEach((item, index) => {
-        total += item.preis;
-
-        const line = document.createElement("div");
-        line.className = "line-item";
-
-        const info = document.createElement("div");
-        info.className = "item-info";
-
-        let text = item.name + " – " + item.preis.toFixed(2).replace(".", ",") + " €";
-        if (item.type === "cup3" && item.sorten.length > 0) {
-            text += "<br><span class='small'>Sorten: " + item.sorten.join(", ") + "</span>";
+        // Alterar idioma
+        function setLanguage(lang) {
+            state.currentLang = lang;
+            applyTranslations();
+            updateOrderDisplay(); // Atualizar para traduzir os nomes dos itens
         }
-        if (item.bemerkung) {
-            text += "<br><span class='small'>Bemerkung: " + item.bemerkung + "</span>";
+
+        // Aplicar traduções
+        function applyTranslations() {
+            const langData = translations[state.currentLang];
+            
+            // Traduzir elementos com IDs específicos
+            document.getElementById('main-title').textContent = langData['main-title'];
+            document.getElementById('subtitle').textContent = langData['subtitle'];
+            document.getElementById('menu-title').textContent = langData['menu-title'];
+            document.getElementById('order-title').textContent = langData['order-title'];
+            document.getElementById('legal-title').textContent = langData['legal-title'];
+            document.getElementById('legal-text').textContent = langData['legal-text'];
+            document.getElementById('subtotal-label').textContent = langData['subtotal'];
+            document.getElementById('tax-label').textContent = langData['tax'];
+            document.getElementById('total-label').textContent = langData['total'];
+            document.getElementById('empty-order').textContent = langData['empty-order'];
+            document.getElementById('modal-title').textContent = langData['modal-title'];
+            document.getElementById('modal-description').textContent = langData['modal-description'];
+            document.getElementById('print-now-title').textContent = langData['print-now-title'];
+            document.getElementById('print-now-desc').textContent = langData['print-now-desc'];
+            document.getElementById('save-print-later-title').textContent = langData['save-print-later-title'];
+            document.getElementById('save-print-later-desc').textContent = langData['save-print-later-desc'];
+            
+            // Traduzir botões
+            document.querySelectorAll('.btn-text').forEach(btnText => {
+                const parentBtn = btnText.closest('button');
+                if (parentBtn) {
+                    const btnId = parentBtn.id;
+                    if (btnId === 'save-order-btn') btnText.textContent = langData['save-order'];
+                    else if (btnId === 'print-kitchen-btn') btnText.textContent = langData['print-kitchen'];
+                    else if (btnId === 'send-whatsapp-btn') btnText.textContent = langData['send-whatsapp'];
+                    else if (btnId === 'clear-order-btn') btnText.textContent = langData['clear-order'];
+                    else if (btnId === 'cancel-print-btn') btnText.textContent = langData['cancel'];
+                    else if (btnId === 'confirm-print-btn') btnText.textContent = langData['confirm'];
+                }
+            });
+            
+            // Traduzir botões de adicionar ao pedido
+            document.querySelectorAll('.add-btn').forEach(btn => {
+                btn.textContent = langData['add-to-order'];
+            });
         }
-        if (item.sahne) {
-            if (item.sahne === "mit Sahne" && item.sahneZuschlag > 0) {
-                text += "<br><span class='small'>Sahne: mit Sahne (+ "
-                    + item.sahneZuschlag.toFixed(2).replace(".", ",") + " €)</span>";
+
+        // Renderizar menu
+        function renderMenu() {
+            const menuGrid = document.getElementById('menu-grid');
+            menuGrid.innerHTML = '';
+            
+            state.menuItems.forEach(item => {
+                const menuItem = document.createElement('div');
+                menuItem.className = 'menu-item';
+                menuItem.innerHTML = `
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-footer">
+                        <div class="item-price">€${item.price.toFixed(2)}</div>
+                        <button class="add-btn" data-id="${item.id}">
+                            ${translations[state.currentLang]['add-to-order']}
+                        </button>
+                    </div>
+                `;
+                menuGrid.appendChild(menuItem);
+            });
+            
+            // Adicionar event listeners aos botões do menu
+            document.querySelectorAll('.add-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const itemId = parseInt(this.getAttribute('data-id'));
+                    addToOrder(itemId);
+                });
+            });
+        }
+
+        // Adicionar item ao pedido
+        function addToOrder(itemId) {
+            const menuItem = state.menuItems.find(item => item.id === itemId);
+            if (!menuItem) return;
+            
+            const existingItem = state.order.find(item => item.id === itemId);
+            
+            if (existingItem) {
+                existingItem.quantity++;
             } else {
-                text += "<br><span class='small'>Sahne: " + item.sahne + "</span>";
+                state.order.push({
+                    id: menuItem.id,
+                    name: menuItem.name,
+                    price: menuItem.price,
+                    quantity: 1
+                });
+            }
+            
+            updateOrderDisplay();
+            saveOrderToStorage();
+        }
+
+        // Atualizar exibição do pedido
+        function updateOrderDisplay() {
+            const orderItemsContainer = document.getElementById('order-items');
+            const emptyOrderMsg = document.getElementById('empty-order');
+            const langData = translations[state.currentLang];
+            
+            // Mostrar/ocultar mensagem de pedido vazio
+            if (state.order.length === 0) {
+                emptyOrderMsg.style.display = 'block';
+                orderItemsContainer.innerHTML = '<div class="empty-order" id="empty-order">' + langData['empty-order'] + '</div>';
+            } else {
+                emptyOrderMsg.style.display = 'none';
+                
+                let orderHTML = '';
+                state.order.forEach(item => {
+                    orderHTML += `
+                        <div class="order-item">
+                            <div class="item-info">
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-price">€${(item.price * item.quantity).toFixed(2)}</div>
+                            </div>
+                            <div class="item-controls">
+                                <button class="quantity-btn minus-btn" data-id="${item.id}">-</button>
+                                <div class="item-quantity">${item.quantity}</div>
+                                <button class="quantity-btn plus-btn" data-id="${item.id}">+</button>
+                                <button class="remove-btn" data-id="${item.id}">${langData['remove']}</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                orderItemsContainer.innerHTML = orderHTML;
+                
+                // Adicionar event listeners aos botões de controle
+                document.querySelectorAll('.minus-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = parseInt(this.getAttribute('data-id'));
+                        updateQuantity(itemId, -1);
+                    });
+                });
+                
+                document.querySelectorAll('.plus-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = parseInt(this.getAttribute('data-id'));
+                        updateQuantity(itemId, 1);
+                    });
+                });
+                
+                document.querySelectorAll('.remove-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = parseInt(this.getAttribute('data-id'));
+                        removeFromOrder(itemId);
+                    });
+                });
+            }
+            
+            // Atualizar resumo
+            updateOrderSummary();
+        }
+
+        // Atualizar quantidade do item
+        function updateQuantity(itemId, change) {
+            const itemIndex = state.order.findIndex(item => item.id === itemId);
+            if (itemIndex === -1) return;
+            
+            state.order[itemIndex].quantity += change;
+            
+            if (state.order[itemIndex].quantity <= 0) {
+                state.order.splice(itemIndex, 1);
+            }
+            
+            updateOrderDisplay();
+            saveOrderToStorage();
+        }
+
+        // Remover item do pedido
+        function removeFromOrder(itemId) {
+            state.order = state.order.filter(item => item.id !== itemId);
+            updateOrderDisplay();
+            saveOrderToStorage();
+        }
+
+        // Atualizar resumo do pedido
+        function updateOrderSummary() {
+            const subtotal = state.order.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.10;
+            const total = subtotal + tax;
+            
+            document.getElementById('subtotal-value').textContent = €${subtotal.toFixed(2)};
+            document.getElementById('tax-value').textContent = €${tax.toFixed(2)};
+            document.getElementById('total-value').textContent = €${total.toFixed(2)};
+        }
+
+        // Guardar pedido no localStorage
+        function saveOrderToStorage() {
+            localStorage.setItem('restaurantOrder', JSON.stringify(state.order));
+        }
+
+        // Carregar pedido do localStorage
+        function loadOrderFromStorage() {
+            const savedOrder = localStorage.getItem('restaurantOrder');
+            if (savedOrder) {
+                state.order = JSON.parse(savedOrder);
             }
         }
-        info.innerHTML = text;
 
-        const btnRemove = document.createElement("button");
-        btnRemove.className = "btn-remove";
-        btnRemove.textContent = "X";
-        btnRemove.onclick = () => removeItem(index);
-
-        line.appendChild(info);
-        line.appendChild(btnRemove);
-        liste.appendChild(line);
-    });
-
-    totalDiv.textContent = "Gesamt: " + total.toFixed(2).replace(".", ",") + " €";
-    const hasItems = warenkorb.length > 0;
-    btnWpp.disabled = !hasItems || !gpsOk;
-    btnPrint.disabled = !hasItems;
-}
-
-function removeItem(index) {
-    warenkorb.splice(index, 1);
-    updateCart();
-}
-
-/* Bestellungstext */
-function buildOrderText() {
-    const tisch = document.getElementById("tisch").value || "-";
-    let total = 0;
-    let text = `Tisch ${tisch} - Bestellung:\n`;
-
-    warenkorb.forEach(item => {
-        total += item.preis;
-        let line = `• ${item.name} (${item.preis.toFixed(2)} €)`;
-        if (item.type === "cup3" && item.sorten.length > 0) {
-            line += ` – Sorten: ${item.sorten.join(", ")}`;
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Botão Guardar Pedido
+            document.getElementById('save-order-btn').addEventListener('click', function() {
+                saveOrderToStorage();
+                alert(translations[state.currentLang]['save-order'] + ' - ' + 'Pedido guardado com sucesso!');
+            });
+            
+            // Botão Imprimir na Cozinha
+            document.getElementById('print-kitchen-btn').addEventListener('click', function() {
+                if (state.order.length === 0) {
+                    alert('Adicione itens ao pedido antes de imprimir.');
+                    return;
+                }
+                openPrintModal();
+            });
+            
+            // Botão Enviar por WhatsApp
+            document.getElementById('send-whatsapp-btn').addEventListener('click', function() {
+                if (state.order.length === 0) {
+                    alert('Adicione itens ao pedido antes de enviar.');
+                    return;
+                }
+                sendViaWhatsApp();
+            });
+            
+            // Botão Limpar Pedido
+            document.getElementById('clear-order-btn').addEventListener('click', function() {
+                if (confirm('Tem certeza de que deseja limpar o pedido?')) {
+                    state.order = [];
+                    updateOrderDisplay();
+                    localStorage.removeItem('restaurantOrder');
+                }
+            });
+            
+            // Opções do modal de impressão
+            document.getElementById('print-now-option').addEventListener('click', function() {
+                document.querySelectorAll('.modal-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                state.printOption = 'print-now';
+            });
+            
+            document.getElementById('save-print-later-option').addEventListener('click', function() {
+                document.querySelectorAll('.modal-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                state.printOption = 'save-print-later';
+            });
+            
+            // Botão Cancelar no modal
+            document.getElementById('cancel-print-btn').addEventListener('click', function() {
+                closePrintModal();
+            });
+            
+            // Botão Confirmar no modal
+            document.getElementById('confirm-print-btn').addEventListener('click', function() {
+                processPrintOrder();
+            });
+            
+            // Fechar modal ao clicar fora
+            document.getElementById('print-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePrintModal();
+                }
+            });
         }
-        if (item.bemerkung) {
-            line += ` – Bemerkung: ${item.bemerkung}`;
+
+        // Abrir modal de impressão
+        function openPrintModal() {
+            // Selecionar a primeira opção por padrão
+            document.querySelectorAll('.modal-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('print-now-option').classList.add('selected');
+            state.printOption = 'print-now';
+            
+            document.getElementById('print-modal').style.display = 'flex';
         }
-        if (item.sahne) {
-            if (item.sahne === "mit Sahne" && item.sahneZuschlag > 0) {
-                line += ` – Sahne: mit Sahne (+ ${item.sahneZuschlag.toFixed(2)} €)`;
+
+        // Fechar modal de impressão
+        function closePrintModal() {
+            document.getElementById('print-modal').style.display = 'none';
+        }
+
+        // Processar pedido de impressão
+        function processPrintOrder() {
+            if (state.printOption === 'print-now') {
+                // Simular impressão imediata
+                alert('Pedido enviado para impressão na cozinha!');
             } else {
-                line += ` – Sahne: ${item.sahne}`;
+                // Simular guardar para imprimir mais tarde
+                alert('Pedido guardado no sistema para impressão posterior!');
             }
-        }
-        text += line + "\n";
-    });
-
-    text += `\nGesamtbetrag: ${total.toFixed(2)} €`;
-    return text;
-}
-
-/* Bestellungen für Chef speichern */
-function storeOrder(channel) {
-    const tisch = document.getElementById("tisch").value || "-";
-    const textPlain = buildOrderText();
-    const timestamp = new Date().toLocaleString("de-DE");
-    adminOrders.push({ tisch, channel, text: textPlain, time: timestamp });
-    if (isAdmin) updateAdminList();
-}
-
-/* WhatsApp */
-function sendWhatsApp() {
-    if (!gpsOk) {
-        alert("Bestellung nur vor Ort möglich. Bitte Standort-Freigabe erlauben.");
-        return;
-    }
-
-    const tisch = document.getElementById("tisch").value;
-    if (!tisch) {
-        alert("Bitte zuerst den Tisch auswählen.");
-        return;
-    }
-    if (warenkorb.length === 0) {
-        alert("Der Warenkorb ist leer.");
-        return;
-    }
-
-    storeOrder("WhatsApp");
-    const text = encodeURIComponent(buildOrderText());
-    const url = `https://wa.me/${WHATSAPP_NUMMER}?text=${text}`;
-    window.open(url, "_blank");
-
-    warenkorb = [];
-    updateCart();
-}
-
-/* Drucker */
-function printOrder() {
-    if (warenkorb.length === 0) {
-        alert("Der Warenkorb ist leer.");
-        return;
-    }
-    const tisch = document.getElementById("tisch").value || "-";
-    const textHtml = buildOrderText().replace(/\n/g, "<br>");
-
-    storeOrder("Drucker");
-
-    const win = window.open("", "_blank");
-    win.document.open();
-    win.document.write(`
-        <html>
-        <head>
-            <title>Bestellung Tisch ${tisch}</title>
-            <meta charset="UTF-8">
-        </head>
-        <body style="font-family:Arial,sans-serif; font-size:14px;">
-            <h2>Bestellung Tisch ${tisch}</h2>
-            <p>${textHtml}</p>
-        </body>
-        </html>
-    `);
-    win.document.close();
-    win.print();
-}
-
-/* Reset */
-function resetTable() {
-    if (!confirm("Möchten Sie den Tisch wirklich zurücksetzen? Alle Bestellungen werden gelöscht.")) {
-        return;
-    }
-
-    warenkorb = [];
-    updateCart();
-
-    const tischSel = document.getElementById("tisch");
-    if (tischSel) tischSel.value = "";
-
-    const produktSel = document.getElementById("produkt");
-    if (produktSel) produktSel.value = "";
-
-    ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
-        const sel = document.getElementById(id);
-        if (sel) sel.value = "";
-    });
-
-    const sahneSel = document.getElementById("sahne");
-    if (sahneSel) sahneSel.value = "";
-
-    document.getElementById("bemerkung").value = "";
-}
-
-/* GPS */
-function deg2rad(deg) { return deg * (Math.PI / 180); }
-
-function distanceKm(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = deg2rad(lat2 - lat1);
-    const dLon = deg2rad(lon2 - lon1);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-}
-
-function initLocation() {
-    const info = document.getElementById("gps-info");
-    const btnWpp = document.getElementById("btn-whatsapp");
-
-    if (!navigator.geolocation) {
-        info.textContent = "GPS nicht verfügbar – Bestellung per WhatsApp ist deaktiviert.";
-        gpsOk = false;
-        btnWpp.disabled = true;
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            const dist = distanceKm(lat, lng, CAFE_LAT, CAFE_LNG);
-
-            if (dist <= MAX_DIST_KM) {
-                gpsOk = true;
-                info.textContent = "Standort OK – Bestellung per WhatsApp ist möglich.";
-            } else {
-                gpsOk = false;
-                info.textContent = "Sie sind zu weit vom Standort entfernt – Bestellung per WhatsApp nicht möglich.";
-            }
-            updateCart();
-        },
-        (err) => {
-            gpsOk = false;
-            info.textContent = "Standort konnte nicht bestimmt werden – bitte GPS erlauben.";
-            btnWpp.disabled = true;
-        }
-    );
-}
-
-/* Chef-Login & Admin-Panel */
-function adminLogin() {
-    const pw = document.getElementById("admin-password").value;
-    if (pw === ADMIN_PASSWORD) {
-        isAdmin = true;
-        document.getElementById("admin-login-card").style.display = "none";
-        document.getElementById("admin-panel").style.display = "block";
-        updateAdminList();
-        populateAdminProducts();
-        renderSortenList();
-    } else {
-        alert("Falsches Passwort.");
-    }
-}
-
-function adminLogout() {
-    isAdmin = false;
-    document.getElementById("admin-panel").style.display = "none";
-    document.getElementById("admin-login-card").style.display = "block";
-    document.getElementById("admin-password").value = "";
-}
-
-/* Admin: Bestell-Liste */
-function updateAdminList() {
-    const list = document.getElementById("admin-orders-list");
-    list.innerHTML = "";
-    if (adminOrders.length === 0) {
-        list.innerHTML = "<div class='small'>Noch keine Bestellungen gespeichert.</div>";
-        return;
-    }
-
-    adminOrders.forEach((o, idx) => {
-        const div = document.createElement("div");
-        div.className = "admin-order";
-        div.innerHTML = `
-            <strong>${o.time}</strong> – Tisch ${o.tisch} (${o.channel})<br>
-            ${o.text.replace(/\n/g,"<br>")}
-            <br>
-            <button class="btn-small" onclick="deleteOrder(${idx})">Löschen</button>
-        `;
-        list.appendChild(div);
-    });
-}
-
-function deleteOrder(index) {
-    adminOrders.splice(index, 1);
-    updateAdminList();
-}
-
-function clearAllOrders() {
-    if (!confirm("Alle gespeicherten Bestellungen wirklich löschen?")) return;
-    adminOrders = [];
-    updateAdminList();
-}
-
-/* Admin: Produkte verwalten */
-function populateAdminProducts() {
-    const sel = document.getElementById("admin-product-select");
-    sel.innerHTML = "<option value=''>Produkt wählen…</option>";
-    Object.keys(PRODUCTS)
-        .map(id => PRODUCTS[id])
-        .sort((a,b) => a.id - b.id)
-        .forEach(p => {
-            const opt = document.createElement("option");
-            opt.value = p.id;
-            opt.textContent = p.id + " – " + p.name + " (" + p.group + ")";
-            sel.appendChild(opt);
-        });
-
-    sel.onchange = () => {
-        const id = sel.value;
-        if (!id || !PRODUCTS[id]) return;
-        const p = PRODUCTS[id];
-        document.getElementById("admin-prod-name").value = p.name;
-        document.getElementById("admin-prod-price").value = p.preis.toString().replace(".", ",").replace(",",".");
-        document.getElementById("admin-prod-group").value = p.group;
-        document.getElementById("admin-prod-type").value = p.type;
-        document.getElementById("admin-prod-sahne").checked = !!p.sahne;
-    };
-}
-
-function saveExistingProduct() {
-    const sel = document.getElementById("admin-product-select");
-    const id = sel.value;
-    if (!id || !PRODUCTS[id]) {
-        alert("Bitte zuerst ein Produkt wählen.");
-        return;
-    }
-    const name = document.getElementById("admin-prod-name").value.trim();
-    let preis = parseFloat(document.getElementById("admin-prod-price").value.replace(",","."));
-    const group = document.getElementById("admin-prod-group").value;
-    const type = document.getElementById("admin-prod-type").value;
-    const sahne = document.getElementById("admin-prod-sahne").checked;
-
-    if (!name || isNaN(preis)) {
-        alert("Name und Preis sind erforderlich.");
-        return;
-    }
-
-    PRODUCTS[id].name = name;
-    PRODUCTS[id].preis = preis;
-    PRODUCTS[id].group = group;
-    PRODUCTS[id].type = type;
-    PRODUCTS[id].sahne = sahne;
-
-    saveConfig();
-    populateAdminProducts();
-    buildProduktSelect(currentGroup);
-    alert("Produkt gespeichert.");
-}
-
-function deleteExistingProduct() {
-    const sel = document.getElementById("admin-product-select");
-    const id = sel.value;
-    if (!id || !PRODUCTS[id]) {
-        alert("Bitte zuerst ein Produkt wählen.");
-        return;
-    }
-    if (!confirm("Produkt wirklich löschen?")) return;
-    delete PRODUCTS[id];
-    saveConfig();
-    populateAdminProducts();
-    buildProduktSelect(currentGroup);
-    alert("Produkt gelöscht.");
-}
-
-function addNewProduct() {
-    const idVal = document.getElementById("new-prod-id").value;
-    const name = document.getElementById("new-prod-name").value.trim();
-    let preis = parseFloat(document.getElementById("new-prod-price").value.replace(",","."));
-    const group = document.getElementById("new-prod-group").value;
-    const type = document.getElementById("new-prod-type").value;
-    const sahne = document.getElementById("new-prod-sahne").checked;
-
-    const id = parseInt(idVal, 10);
-    if (!idVal || isNaN(id) || !name || isNaN(preis)) {
-        alert("Bitte Produktnummer, Name und Preis eingeben.");
-        return;
-    }
-    if (PRODUCTS[id]) {
-        if (!confirm("Diese Produktnummer existiert bereits. Überschreiben?")) return;
-    }
-
-    PRODUCTS[id] = { id, name, preis, type, group, sahne };
-
-    document.getElementById("new-prod-id").value = "";
-    document.getElementById("new-prod-name").value = "";
-    document.getElementById("new-prod-price").value = "";
-    document.getElementById("new-prod-group").value = "portions";
-    document.getElementById("new-prod-type").value = "normal";
-    document.getElementById("new-prod-sahne").checked = false;
-
-    saveConfig();
-    populateAdminProducts();
-    buildProduktSelect(currentGroup);
-    alert("Neues Produkt angelegt.");
-}
-
-/* Admin: Sorten verwalten */
-function renderSortenList() {
-    const cont = document.getElementById("sorten-list");
-    if (!cont) return;
-    if (SORTEN.length === 0) {
-        cont.textContent = "Keine Sorten definiert.";
-        return;
-    }
-    let html = "";
-    SORTEN.forEach((s, idx) => {
-        html += `<span style="display:inline-block;margin:2px 4px;padding:2px 6px;border-radius:999px;background:#f1f1f1;">
-            ${s}
-            <button style="border:none;background:transparent;font-size:11px;cursor:pointer;" onclick="deleteSorte(${idx})">x</button>
-        </span>`;
-    });
-    cont.innerHTML = html;
-}
-
-function deleteSorte(idx) {
-    SORTEN.splice(idx, 1);
-    saveConfig();
-    renderSortenList();
-    ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
-}
-
-function addNewSorte() {
-    const input = document.getElementById("new-sorte");
-    const name = input.value.trim();
-    if (!name) {
-        alert("Bitte einen Sortennamen eingeben.");
-        return;
-    }
-    SORTEN.push(name);
-    input.value = "";
-    saveConfig();
-    renderSortenList();
-    ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
-}
-
-/* Init */
-window.addEventListener("load", initLocation);
-</script>
-
-</body>
-</html>
+            
+            // Em um sistema real,
