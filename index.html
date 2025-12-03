@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -860,8 +859,7 @@ html
             Ausgewähltes Produkt speichern
         </button>
         <button class="btn" style="margin-top:6px; background:#c62828;" onclick="deleteExistingProduct()" id="delete-product-btn">
-            Ausgewähltes Produkt löschen
-        </button>
+            Ausgewähltes Prodùkt löschen</button>
 
         <h3 class="section-title" style="border-left-color:#0288d1; margin-top:20px;" id="new-product-title">Neues Produkt hinzufügen</h3>
         <label for="new-prod-id" id="new-id-label">Produkt-Nr. (z.B. 701):</label>
@@ -970,8 +968,8 @@ const TRANSLATIONS = {
         
         // Labels
         "product-label": "Produkt:",
-        "flavor-label": "Wählen Sie Geschmacksrichtungen:",
-        "flavor-info": "Bitte wählen Sie die richtige Anzahl Sorten aus.",
+        "flavor-label": "Wählen Sie Geschmacksrichtungen (optional):",
+        "flavor-info": "Wenn keine Sorten gewählt werden, kommt die Portion in unserer Standardmischung.",
         "cream-label": "Mit Sahne oder ohne Sahne?",
         "cream-info": "",
         "note-label": "Bemerkung (optional):",
@@ -1047,8 +1045,8 @@ const TRANSLATIONS = {
         "tab-drinks": "Bebidas",
         
         "product-label": "Produto:",
-        "flavor-label": "Escolha sabores:",
-        "flavor-info": "Por favor, escolha o número correto de sabores.",
+        "flavor-label": "Escolha sabores (opcional):",
+        "flavor-info": "Se nenhum sabor for escolhido, será servida a mistura padrão.",
         "cream-label": "Com ou sem creme?",
         "cream-info": "",
         "note-label": "Observação (opcional):",
@@ -1114,8 +1112,8 @@ const TRANSLATIONS = {
         "tab-drinks": "Bevande",
         
         "product-label": "Prodotto:",
-        "flavor-label": "Scegliere gusti:",
-        "flavor-info": "Per favore, scegliere il numero corretto di gusti.",
+        "flavor-label": "Scegliere gusti (opzionale):",
+        "flavor-info": "Se nessun gusto viene scelto, verrà servito il miscuglio standard.",
         "cream-label": "Con panna o senza panna?",
         "cream-info": "",
         "note-label": "Nota (opzionale):",
@@ -1181,8 +1179,8 @@ const TRANSLATIONS = {
         "tab-drinks": "Dranken",
         
         "product-label": "Product:",
-        "flavor-label": "Kies smaken:",
-        "flavor-info": "Kies alstublieft het juiste aantal smaken.",
+        "flavor-label": "Kies smaken (optioneel):",
+        "flavor-info": "Als er geen smaken worden gekozen, wordt het standaardmengsel geserveerd.",
         "cream-label": "Met slagroom of zonder slagroom?",
         "cream-info": "",
         "note-label": "Opmerking (optioneel):",
@@ -1372,21 +1370,22 @@ function showIceOptions(produktId) {
     // Determinar quantos sabores devem ser escolhidos
     let requiredFlavors = 3; // Default
     let flavorLabel = TRANSLATIONS[currentLanguage]['flavor-label'];
+    let flavorOptional = true; // Por padrão, agora é opcional
     
     if (produkt.type === 'cup2' || (produkt.id === 23 && produkt.name.includes('Kinder Portion'))) {
-        // Kinder Portion (2 Kugeln) - apenas 2 sabores
+        // Kinder Portion (2 Kugeln) - apenas 2 sabores, mas agora opcional
         requiredFlavors = 2;
-        flavorLabel = currentLanguage === 'de' ? 'Wählen Sie 2 Geschmacksrichtungen:' :
-                     currentLanguage === 'pt' ? 'Escolha 2 sabores:' :
-                     currentLanguage === 'it' ? 'Scegliere 2 gusti:' :
-                     'Kies 2 smaken:';
+        flavorLabel = currentLanguage === 'de' ? 'Wählen Sie 2 Geschmacksrichtungen (optional):' :
+                     currentLanguage === 'pt' ? 'Escolha 2 sabores (opcional):' :
+                     currentLanguage === 'it' ? 'Scegliere 2 gusti (opzionale):' :
+                     'Kies 2 smaken (optioneel):';
     } else if (produkt.type === 'cup3') {
-        // Portion normal - 3 sabores
+        // Portion normal - 3 sabores, agora opcional
         requiredFlavors = 3;
-        flavorLabel = currentLanguage === 'de' ? 'Wählen Sie 3 Geschmacksrichtungen:' :
-                     currentLanguage === 'pt' ? 'Escolha 3 sabores:' :
-                     currentLanguage === 'it' ? 'Scegliere 3 gusti:' :
-                     'Kies 3 smaken:';
+        flavorLabel = currentLanguage === 'de' ? 'Wählen Sie 3 Geschmacksrichtungen (optional):' :
+                     currentLanguage === 'pt' ? 'Escolha 3 sabores (opcional):' :
+                     currentLanguage === 'it' ? 'Scegliere 3 gusti (opzionale):' :
+                     'Kies 3 smaken (optioneel):';
     }
     
     // Criar HTML para opções de gelado
@@ -1403,7 +1402,7 @@ function showIceOptions(produktId) {
             <div class="flavor-grid" id="flavor-grid">
                 <!-- Sabores serão inseridos por JavaScript -->
             </div>
-            <div class="flavor-counter" id="flavor-counter">0/${requiredFlavors} ${currentLanguage === 'de' ? 'ausgewählt' : 'selecionados'}</div>
+            <div class="flavor-counter" id="flavor-counter">0/${requiredFlavors} ${currentLanguage === 'de' ? 'ausgewählt (optional)' : 'selecionados (opcional)'}</div>
         </div>
         `;
     }
@@ -1450,13 +1449,13 @@ function showIceOptions(produktId) {
                 flavorDiv.className = 'flavor-option';
                 flavorDiv.textContent = flavor;
                 flavorDiv.addEventListener('click', function() {
-                    toggleFlavorSelection(this, flavor, requiredFlavors);
+                    toggleFlavorSelection(this, flavor, requiredFlavors, flavorOptional);
                 });
                 flavorGrid.appendChild(flavorDiv);
             });
             
             // Atualizar contador
-            updateFlavorCounter(requiredFlavors);
+            updateFlavorCounter(requiredFlavors, flavorOptional);
         }
     }
     
@@ -1471,8 +1470,8 @@ function showIceOptions(produktId) {
     });
 }
 
-// Função para alternar seleção de sabor
-function toggleFlavorSelection(element, flavor, maxFlavors) {
+// Função para alternar seleção de sabor (AGORA OPCIONAL)
+function toggleFlavorSelection(element, flavor, maxFlavors, optional) {
     if (currentSelectedFlavors.includes(flavor)) {
         // Remover sabor
         const index = currentSelectedFlavors.indexOf(flavor);
@@ -1484,22 +1483,23 @@ function toggleFlavorSelection(element, flavor, maxFlavors) {
             currentSelectedFlavors.push(flavor);
             element.classList.add('selected');
         } else {
-            const msg = currentLanguage === 'de' ? `Bitte wählen Sie maximal ${maxFlavors} Geschmacksrichtungen aus!` :
-                       currentLanguage === 'pt' ? `Por favor, escolha no máximo ${maxFlavors} sabores!` :
-                       currentLanguage === 'it' ? `Per favore, scegliere al massimo ${maxFlavors} gusti!` :
-                       `Kies alstublieft maximaal ${maxFlavors} smaken!`;
+            const msg = currentLanguage === 'de' ? `Sie können maximal ${maxFlavors} Geschmacksrichtungen wählen!` :
+                       currentLanguage === 'pt' ? `Você pode escolher no máximo ${maxFlavors} sabores!` :
+                       currentLanguage === 'it' ? `Puoi scegliere al massimo ${maxFlavors} gusti!` :
+                       `U kunt maximaal ${maxFlavors} smaken kiezen!`;
             alert(msg);
         }
     }
     
-    updateFlavorCounter(maxFlavors);
+    updateFlavorCounter(maxFlavors, optional);
 }
 
-// Função para atualizar contador de sabores
-function updateFlavorCounter(maxFlavors) {
+// Função para atualizar contador de sabores (AGORA OPCIONAL)
+function updateFlavorCounter(maxFlavors, optional) {
     const counter = document.getElementById('flavor-counter');
     if (counter) {
-        counter.textContent = `${currentSelectedFlavors.length}/${maxFlavors} ${currentLanguage === 'de' ? 'ausgewählt' : 'selecionados'}`;
+        let optionalText = optional ? ` ${currentLanguage === 'de' ? '(optional)' : '(opcional)'}` : '';
+        counter.textContent = `${currentSelectedFlavors.length}/${maxFlavors} ${currentLanguage === 'de' ? 'ausgewählt' : 'selecionados'}${optionalText}`;
         
         // Mudar cor se tiver todos selecionados
         if (currentSelectedFlavors.length === maxFlavors) {
@@ -1674,7 +1674,7 @@ let gpsOk = false;
 let adminOrders = [];
 let isAdmin = false;
 
-/* BASIS-PRODUKTE (Standard) - ATUALIZADO COM NOVO TIPO cup2 */
+/* BASIS-PRODUKTE (Standard) - ATUALIZADO COM NOVAS CONFIGURAÇÕES DE SAHNE */
 const BASE_PRODUCTS = {
     23: { id:23,  name:"23. Kinder Portion (2 Kugeln)",      preis:3.50, type:"cup2",  group:"portions", sahne:true },
     24: { id:24,  name:"24. Kleine Portion (3 Kugeln)",      preis:5.00, type:"cup3",  group:"portions", sahne:true },
@@ -1844,7 +1844,7 @@ const BASE_PRODUCTS = {
     602:{ id:602, name:"Apfelstrudel mit Sahne",              preis:4.70, type:"normal", group:"food", sahne:true },
     603:{ id:603, name:"Apfelstrudel mit Eis",                preis:6.10, type:"normal", group:"food", sahne:true },
     610:{ id:610, name:"Hausgemachtes Tiramisu",              preis:4.20, type:"normal", group:"food", sahne:true },
-    620:{ id:620, name:"Waffel mit Puderzucker",              preis:4.00, type:"normal", group:"food", sahne:false },
+    620:{ id:620, name:"Waffel mit Puderzucker",              preis:4.00, type:"normal", group:"food", sahne:true },
     621:{ id:621, name:"Waffel mit Sahne",                    preis:5.00, type:"normal", group:"food", sahne:true },
     622:{ id:622, name:"Waffel mit Eis",                      preis:5.30, type:"normal", group:"food", sahne:true },
     623:{ id:623, name:"Waffel mit Eis & Sahne",              preis:6.30, type:"normal", group:"food", sahne:true },
@@ -1924,7 +1924,7 @@ for (let i = 1; i <= 33; i++) {
 /* Sorten-Selects füllen */
 function fillSortenSelect(id) {
     const sel = document.getElementById(id);
-    sel.innerHTML = "<option value=''>Sorte wählen…</option>";
+    sel.innerHTML = "<option value=''>Sorte wählen (optional)…</option>";
     SORTEN.forEach(s => {
         const opt = document.createElement("option");
         opt.value = s;
@@ -2035,22 +2035,8 @@ function addToCart() {
             sorten = [...currentSelectedFlavors];
         }
         
-        // Determinar quantos sabores são necessários
-        let requiredFlavors = 3;
-        if (produkt.type === 'cup2' || (produkt.id === 23 && produkt.name.includes('Kinder Portion'))) {
-            requiredFlavors = 2;
-        }
-        
-        // Verificar se precisa selecionar sabores
-        if ((produkt.type === 'cup3' || produkt.type === 'cup2' || produkt.group === 'portions' || produkt.group === 'eis') && 
-            sorten.length < requiredFlavors) {
-            const msg = currentLanguage === 'de' ? `Bitte wählen Sie genau ${requiredFlavors} Geschmacksrichtungen aus!` :
-                       currentLanguage === 'pt' ? `Por favor, escolha exatamente ${requiredFlavors} sabores!` :
-                       currentLanguage === 'it' ? `Per favore, scegliere esattamente ${requiredFlavors} gusti!` :
-                       `Kies alstublieft precies ${requiredFlavors} smaken!`;
-            alert(msg);
-            return;
-        }
+        // Determinar quantos sabores são necessários (AGORA É OPCIONAL)
+        // Não há verificação obrigatória, pode ter 0, 1, 2 ou 3 sabores
         
         // Usar seleção de Sahne da nova interface (apenas se o produto permitir)
         var sahne = produkt.sahne ? currentSahneOption : "";
@@ -2570,6 +2556,9 @@ window.addEventListener("load", function() {
     setTimeout(() => {
         buildProduktSelect(currentGroup);
         updateTableDisplay();
+        // Atualizar textos para refletir que sabores são opcionais
+        document.getElementById('flavor-info').textContent = 'Wenn keine Sorten gewählt werden, kommt die Portion in unserer Standardmischung.';
+        
         // Garantir que temos sabores suficientes
         if (SORTEN.length < 25) {
             // Adicionar mais sabores por padrão
